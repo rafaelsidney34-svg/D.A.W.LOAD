@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let pixCountdownInterval = null;
   let pixAutoSyncTimer = null;
   let toastTimer;
+  let cart = JSON.parse(localStorage.getItem('dawload_cart')) || [];
 
   // ==========================================================
   //  UTILITÁRIOS
@@ -180,6 +181,103 @@ document.addEventListener("DOMContentLoaded", function () {
   function formatBRL(value) {
     return `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}`;
   }
+
+  // ==========================================================
+  //  CART SYSTEM
+  // ==========================================================
+  const cartIconToggle = document.getElementById("cartIconToggle");
+  const cartBadgeCount = document.getElementById("cartBadgeCount");
+  const cartDrawer = document.getElementById("cartDrawer");
+  const cartDrawerBackdrop = document.getElementById("cartDrawerBackdrop");
+  const cartDrawerClose = document.getElementById("cartDrawerClose");
+  const cartItemsContainer = document.getElementById("cartItemsContainer");
+  const cartTotalPrice = document.getElementById("cartTotalPrice");
+  const btnCheckoutCart = document.getElementById("btnCheckoutCart");
+  const btnClearCart = document.getElementById("btnClearCart");
+
+  function saveCart() {
+    localStorage.setItem('dawload_cart', JSON.stringify(cart));
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    if (cartBadgeCount) {
+      cartBadgeCount.textContent = cart.length;
+    }
+    
+    if (cartItemsContainer) {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="cart-empty-msg">Seu carrinho está vazio.</div>';
+        if (cartTotalPrice) cartTotalPrice.textContent = 'R$ 0,00';
+        if (btnCheckoutCart) btnCheckoutCart.disabled = true;
+        return;
+      }
+
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.imgUrl || 'assets/logo.jpg'}" alt="${item.title}" class="cart-item-img">
+          <div class="cart-item-details">
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-price">${formatBRL(item.price)}</div>
+          </div>
+          <button class="cart-item-remove" data-index="${index}" title="Remover">✕</button>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+
+      if (cartTotalPrice) cartTotalPrice.textContent = formatBRL(total);
+      if (btnCheckoutCart) btnCheckoutCart.disabled = false;
+
+      // Bind remove buttons
+      document.querySelectorAll('.cart-item-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+          cart.splice(idx, 1);
+          saveCart();
+          showToast("Item removido do carrinho");
+        });
+      });
+    }
+  }
+
+  function toggleCartDrawer() {
+    const isShowing = cartDrawer.classList.contains('show');
+    if (isShowing) {
+      cartDrawer.classList.remove('show');
+      cartDrawerBackdrop.classList.remove('show');
+    } else {
+      updateCartUI();
+      cartDrawer.classList.add('show');
+      cartDrawerBackdrop.classList.add('show');
+    }
+  }
+
+  if (cartIconToggle) cartIconToggle.addEventListener("click", toggleCartDrawer);
+  if (cartDrawerClose) cartDrawerClose.addEventListener("click", toggleCartDrawer);
+  if (cartDrawerBackdrop) cartDrawerBackdrop.addEventListener("click", toggleCartDrawer);
+  if (btnClearCart) {
+    btnClearCart.addEventListener("click", () => {
+      cart = [];
+      saveCart();
+    });
+  }
+
+  // Add checkout listener for cart
+  if (btnCheckoutCart) {
+    btnCheckoutCart.addEventListener("click", () => {
+      if (cart.length === 0) return;
+      toggleCartDrawer();
+      openCartCheckout();
+    });
+  }
+
+  // Initial cart render
+  updateCartUI();
 
   // ==========================================================
   //  AUTH — Login, Registro, Sessão
@@ -307,14 +405,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let badgeBg = "#275c7e";
     let badgeText = prod.tagLabel || "Premium";
-    let buttonLabel = "Adquirir Biblioteca";
+    let buttonLabel = "Adicionar ao Carrinho";
     let buyClass = "btn-primary product-buy-btn";
     let priceStyle = "#fff";
 
     if (prod.category === "pre-venda") {
       badgeBg = "#f59e0b"; // Orange
       badgeText = "Pré-Venda";
-      buttonLabel = "Garantir Pré-Venda";
+      buttonLabel = "Adicionar ao Carrinho";
     }
 
     if (isFree) {
@@ -373,7 +471,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (btn.classList.contains("free-btn") || btn.classList.contains("download-btn")) {
           triggerDownload(prod);
         } else {
-          openCheckout(prod);
+          const itemExists = cart.find(i => i.id === prod.id);
+          if (itemExists) {
+            showToast("Este item já está no carrinho!");
+          } else {
+            cart.push(prod);
+            saveCart();
+            showToast(prod.title + " adicionado ao carrinho!");
+            if (!cartDrawer.classList.contains('show')) toggleCartDrawer();
+          }
         }
       });
     });
@@ -491,7 +597,15 @@ document.addEventListener("DOMContentLoaded", function () {
           desc: "Combo especial de bibliotecas",
           category: "combo"
         };
-        openCheckout(comboProd);
+        const itemExists = cart.find(i => i.id === comboProd.id);
+        if (itemExists) {
+            showToast("Este combo já está no carrinho!");
+        } else {
+            cart.push(comboProd);
+            saveCart();
+            showToast(comboProd.title + " adicionado ao carrinho!");
+            if (!cartDrawer.classList.contains('show')) toggleCartDrawer();
+        }
       });
     });
   }
@@ -814,9 +928,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function openCartCheckout() {
+    if (cart.length === 0) return;
+    const cartProd = {
+      id: cart.map(i => i.id).join(","), // Combine IDs
+      title: `Carrinho (${cart.length} itens)`,
+      price: cart.reduce((sum, item) => sum + item.price, 0),
+      isCart: true,
+      items: cart
+    };
+    openCheckout(cartProd);
+  }
+
   // Abrir checkout
   function openCheckout(prod) {
     if (!checkoutModal) return;
+    
+    // Require login
+    if (!isLoggedIn()) {
+      showToast("Faça login ou cadastre-se para finalizar a compra.");
+      openAuthModal(registerModal);
+      return;
+    }
+
     selectedProductForCheckout = prod;
 
     // Reset ao estado inicial
@@ -859,6 +993,26 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedProductForCheckout = null;
   }
 
+  function registerSuccessfulPurchase(method, installments) {
+    const user = getCurrentUser();
+    if (selectedProductForCheckout.isCart) {
+      selectedProductForCheckout.items.forEach(item => {
+        if (user) addUserPurchase(user.id, item, method, item.price, installments);
+        else addPurchaseId(item.id);
+      });
+      cart = [];
+      saveCart();
+    } else {
+      if (user) addUserPurchase(user.id, selectedProductForCheckout, method, selectedProductForCheckout.price, installments);
+      else addPurchaseId(selectedProductForCheckout.id);
+    }
+    
+    checkoutProcessing.style.display = "none";
+    checkoutSuccess.style.display = "";
+    renderProducts();
+    updateMyAccountList();
+  }
+
   async function processPayment(method, installments, cardData) {
     if (!selectedProductForCheckout) return;
 
@@ -866,6 +1020,12 @@ document.addEventListener("DOMContentLoaded", function () {
     checkoutBody.style.display = "none";
     checkoutProcessing.style.display = "";
     checkoutSuccess.style.display = "none";
+
+    // Handle PIX fast pass
+    if (method === "PIX") {
+      registerSuccessfulPurchase(method, 1);
+      return;
+    }
 
     // 1. Validar e Formatar CPF
     const rawCpf = cardData.cpf.replace(/\D/g, '');
@@ -924,21 +1084,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (data.success && (data.status === 'approved' || data.status === 'in_process')) {
-        // Registrar compra
-        const user = getCurrentUser();
-        if (user) {
-          addUserPurchase(user.id, selectedProductForCheckout, method, selectedProductForCheckout.price, installments);
-        } else {
-          addPurchaseId(selectedProductForCheckout.id);
-        }
-
-        // Exibir sucesso
-        checkoutProcessing.style.display = "none";
-        checkoutSuccess.style.display = "";
-
-        // Atualizar grid
-        renderProducts();
-        updateMyAccountList();
+        registerSuccessfulPurchase(method, installments);
       } else {
         throw new Error(data.error || "O banco recusou o pagamento.");
       }
