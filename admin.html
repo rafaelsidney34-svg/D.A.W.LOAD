@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D.A.W.LOAD | Painel Administrativo Master</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos extras específicos para o painel admin */
+    .admin-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+    
+    .login-box {
+      max-width: 400px;
+      margin: 100px auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 50px var(--shadow);
+      text-align: center;
+    }
+    
+    .login-box h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    
+    .login-box p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .form-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: var(--transition);
+    }
+    
+    .form-input:focus {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.08);
+    }
+    
+    .btn-block {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    .admin-dashboard {
+      display: none;
+    }
+    
+    .admin-dashboard.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    
+    .admin-header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    
+    .admin-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn-admin-nav {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+    
+    .btn-admin-nav:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--border-hover);
+    }
+    
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    
+    .btn-logout:hover {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }
+    
+    .product-list-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .product-edit-item {
+      display: grid;
+      grid-template-columns: 80px 180px 130px 130px 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .product-edit-item:last-child {
+      border-bottom: none;
+    }
+    
+    .product-thumb {
+      width: 70px;
+      height: 70px;
+      background: #111;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    
+    .product-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .product-info-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+    }
+    
+    .product-info-cat {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      text-transform: uppercase;
+    }
+    
+    .cat-gratis {
+      background: rgba(37, 162, 68, 0.15);
+      color: #52b788;
+    }
+    
+    .cat-pagas {
+      background: rgba(39, 92, 126, 0.2);
+      color: var(--accent);
+    }
+    
+    .input-small {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    
+    .btn-save-all {
+      background: linear-gradient(180deg, #8abbd8, var(--accent));
+      color: #10212b;
+      font-weight: 900;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      float: right;
+      box-shadow: 0 10px 20px rgba(129,176,207,0.2);
+      transition: var(--transition);
+    }
+    
+    .btn-save-all:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    
+    .admin-footer {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    
+    @media (max-width: 768px) {
+      .product-edit-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 24px 0;
+      }
+      .product-thumb {
+        justify-self: center;
+        width: 100px;
+        height: 100px;
+      }
+      .product-info-title {
+        text-align: center;
+      }
+        .admin-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 10px;
+      }
+      
+      .admin-tab-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-weight: 700;
+        font-size: 14px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: var(--transition);
+        border-radius: 6px;
+      }
+      
+      .admin-tab-btn:hover {
+        background: rgba(255,255,255,0.05);
+      }
+      
+      .admin-tab-btn.active {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+      }
+
+      .admin-tab-content {
+        display: none;
+      }
+      
+      .admin-tab-content.active {
+        display: block;
+        animation: fadeIn 0.4s ease;
+      }
+
+      .combo-edit-item {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 16px;
+        align-items: end;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+      
+      .combo-edit-item:last-child {
+        border-bottom: none;
+      }
+      
+      .combo-edit-item .form-group {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        .combo-edit-item {
+          grid-template-columns: 1fr;
+          gap: 12px;
+          padding: 16px 0;
+        }
+      }
+    </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./" class="logo-link">
+        <img src="assets/logo.jpg" alt="D.A.W.LOAD Logo" class="site-logo-img">
+        <span>D.A.W.LOAD - Admin</span>
+      </a>
+      <a href="./" class="btn-admin-nav">Voltar para a Loja</a>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    
+    <!-- 1. Tela de Login Master -->
+    <div class="login-box" id="adminLoginBox">
+      <h2>Acesso Restrito</h2>
+      <p>Digite a senha master para gerenciar os arquivos e preços da D.A.W.LOAD.</p>
+      
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label for="adminPassword">Senha Master</label>
+          <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary btn-block">Entrar no Painel</button>
+      </form>
+    </div>
+
+    <!-- 2. Dashboard do Desenvolvedor -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <div class="admin-header">
+        <div>
+          <h1>Painel do Desenvolvedor</h1>
+          <p class="opt-sub">Edite preços, descontos e links de downloads das bibliotecas</p>
+        </div>
+        <div class="admin-header-actions">
+          <button class="btn-admin-nav btn-logout" id="btnLogout" type="button">Sair</button>
+        </div>
+      </div>
+      <div class="product-list-card" style="margin-bottom:20px;">
+        <h3 style="font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;">💳 Conta de Recebimento & Chave PIX</h3>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Chave PIX / E-mail de Recebimento (PIX, Crédito e Débito)</label>
+          <input type="email" id="adminPaymentAccount" class="form-input" placeholder="seu@email.com" value="D.A.W.LOAD">
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button type="button" class="admin-tab-btn active" data-tab="produtos">Produtos</button>
+        <button type="button" class="admin-tab-btn" data-tab="combos">Planos & Combos</button>
+        <button type="button" class="admin-tab-btn" data-tab="prevenda">Pré-Vendas</button>
+      </div>
+
+      <div class="admin-tab-content active" id="tab-produtos">
+        <div class="product-list-card">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
+            <span>Produto</span>
+            <span style="margin-left: 20px;">Detalhes</span>
+          </div>
+          
+          <div id="adminProductList">
+            <!-- Populado dinamicamente -->
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-combos">
+        <div class="product-list-card">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
+            <span>Configuração de Planos & Combos</span>
+          </div>
+          
+          <div id="adminComboList">
+            <!-- Populado dinamicamente -->
+          </div>
+          
+          <div style="margin-top: 16px; text-align: center;">
+            <button type="button" class="btn-admin-nav" id="btnAddCombo" style="background: rgba(255,255,255,0.05);">+ Adicionar Novo Combo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-prevenda">
+        <div class="product-list-card">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
+            <span>Gerenciamento de Pré-Vendas</span>
+          </div>
+          
+          <div id="adminPreVendaList">
+            <!-- Populado dinamicamente -->
+          </div>
+          
+          <div style="margin-top: 16px; text-align: center;">
+            <button type="button" class="btn-admin-nav" id="btnAddPreVenda" style="background: rgba(255,255,255,0.05);">+ Adicionar Nova Pré-Venda</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="btn-save-all" id="btnSaveAll" type="button" style="margin-top: 20px;">Salvar Todas as Alterações</button>
+    </div>
+
+    <footer class="admin-footer">
+      <p>© 2026 D.A.W.LOAD - Painel do Desenvolvedor Restrito.</p>
+    </footer>
+  </div>
+
+  <div class="toast-msg" id="toast">Alterações salvas!</div>
+
+  <!-- Banco de dados compartilhado -->
+  <script src="database.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginBox = document.getElementById("adminLoginBox");
+      const dashboard = document.getElementById("adminDashboard");
+      const loginForm = document.getElementById("adminLoginForm");
+      const passwordInput = document.getElementById("adminPassword");
+      const productListContainer = document.getElementById("adminProductList");
+      const btnSaveAll = document.getElementById("btnSaveAll");
+      const btnLogout = document.getElementById("btnLogout");
+      const toast = document.getElementById("toast");
+      
+      let products = [];
+      let combos = [];
+      let toastTimer;
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      // Tab Logic
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          const tabId = 'tab-' + btn.dataset.tab;
+          const tabEl = document.getElementById(tabId);
+          if (tabEl) tabEl.classList.add('active');
+        });
+      });
+
+      // Verificar login na sessão
+      if (sessionStorage.getItem("adminLoggedIn") === "true") {
+        showDashboard();
+      }
+
+      // Ação de Login
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const pwd = passwordInput.value;
+        
+        // Senha master configurada como "admin123"
+        if (pwd === "admin123") {
+          sessionStorage.setItem("adminLoggedIn", "true");
+          passwordInput.value = "";
+          showDashboard();
+          showToast("Acesso autorizado!");
+        } else {
+          showToast("Senha master incorreta!");
+          passwordInput.closest(".login-box").classList.add("shake-card");
+          setTimeout(() => {
+            passwordInput.closest(".login-box").classList.remove("shake-card");
+          }, 450);
+        }
+      });
+
+      // Ação de Logout
+      btnLogout.addEventListener("click", function () {
+        sessionStorage.removeItem("adminLoggedIn");
+        dashboard.classList.remove("active");
+        loginBox.style.display = "block";
+        showToast("Você saiu do painel.");
+      });
+
+      function showDashboard() {
+        loginBox.style.display = "none";
+        dashboard.classList.add("active");
+        loadProductsFromStorage();
+        renderAdminProducts();
+        renderAdminCombos();
+        renderAdminPreVenda();
+      }
+
+      function loadProductsFromStorage() {
+        // Carrega do localStorage ou inicia com os dados embutidos
+        const saved = localStorage.getItem("dawload_products");
+        if (saved) {
+          products = JSON.parse(saved);
+        } else {
+          // Fallback: usa o banco de dados padrão completo do app.js
+          products = JSON.parse(JSON.stringify(defaultProducts));
+          localStorage.setItem("dawload_products", JSON.stringify(products));
+        }
+
+        const savedCombos = localStorage.getItem("dawload_combos");
+        if (savedCombos) {
+          combos = JSON.parse(savedCombos);
+        } else {
+          combos = typeof defaultCombos !== "undefined" ? JSON.parse(JSON.stringify(defaultCombos)) : [];
+          localStorage.setItem("dawload_combos", JSON.stringify(combos));
+        }
+      }
+
+      function renderAdminProducts() {
+        productListContainer.innerHTML = "";
+        
+        products.forEach((prod, index) => {
+          if (prod.category === "pre-venda") return; // Ignora pré-vendas aqui
+          
+          const item = document.createElement("div");
+          item.className = "product-edit-item";
+          
+          const isFree = prod.price === 0;
+          const imagePath = `assets/${prod.id.replace(/-/g, '_')}.png`;
+          const catClass = prod.category === "gratis" ? "cat-gratis" : "cat-pagas";
+          const catLabel = prod.category === "gratis" ? "Grátis" : "Premium";
+          
+          item.innerHTML = `
+            <div class="product-thumb">
+              <img src="${imagePath}" alt="${prod.title}">
+            </div>
+            <div>
+              <div class="product-info-title">${prod.title}</div>
+              <span class="product-info-cat ${catClass}">${catLabel}</span>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Preço Venda (R$)</label>
+              <input type="number" step="0.01" class="form-input input-small edit-price" data-index="${index}" value="${prod.price}" ${isFree ? 'disabled' : ''}>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Preço Antigo (R$)</label>
+              <input type="number" step="0.01" class="form-input input-small edit-oldprice" data-index="${index}" value="${prod.oldPrice || ''}" ${isFree ? 'disabled' : ''}>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Link de Download (Drive/Dropbox/Mega)</label>
+              <input type="url" class="form-input input-small edit-link" data-index="${index}" placeholder="https://drive.google.com/..." value="${prod.downloadLink || ''}">
+            </div>
+          `;
+          productListContainer.appendChild(item);
+        });
+      }
+
+      function renderAdminPreVenda() {
+        const preVendaListContainer = document.getElementById("adminPreVendaList");
+        if (!preVendaListContainer) return;
+        preVendaListContainer.innerHTML = "";
+        
+        products.forEach((prod, index) => {
+          if (prod.category !== "pre-venda") return;
+          
+          const item = document.createElement("div");
+          item.className = "combo-edit-item";
+          item.style.position = "relative";
+          item.style.gridTemplateColumns = "1fr 1fr";
+          item.style.alignItems = "start";
+          
+          item.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="product-info-title">${prod.title || 'Nova Pré-Venda'}</div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>ID da Pré-Venda (único)</label>
+                <input type="text" class="form-input input-small edit-pv-id" data-index="${index}" value="${prod.id || ''}" placeholder="Ex: novo-vst">
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Título / Nome</label>
+                <input type="text" class="form-input input-small edit-pv-title" data-index="${index}" value="${prod.title || ''}">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Preço Venda (R$)</label>
+                <input type="number" step="0.01" class="form-input input-small edit-pv-price" data-index="${index}" value="${prod.price || 0}">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Preço Antigo (R$)</label>
+                <input type="number" step="0.01" class="form-input input-small edit-pv-oldprice" data-index="${index}" value="${prod.oldPrice || ''}">
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <button type="button" class="btn-admin-nav btn-delete-pv" data-index="${index}" style="position:absolute; top: 16px; right: 0; padding: 4px 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Excluir Pré-Venda</button>
+              
+              <div class="form-group" style="margin-top: 34px; margin-bottom:0;">
+                <label>Caminho da Imagem</label>
+                <input type="text" class="form-input input-small edit-pv-image" data-index="${index}" value="${prod.image || ''}" placeholder="assets/minha_imagem.png">
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Data de Lançamento Prevista</label>
+                <input type="text" class="form-input input-small edit-pv-date" data-index="${index}" value="${prod.releaseDate || ''}" placeholder="DD/MM/AAAA">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Link de Download (Opcional - só preencha quando lançar)</label>
+                <input type="url" class="form-input input-small edit-pv-link" data-index="${index}" value="${prod.downloadLink || ''}" placeholder="https://drive...">
+              </div>
+            </div>
+          `;
+          preVendaListContainer.appendChild(item);
+        });
+
+        // Eventos de exclusão de pré-venda
+        preVendaListContainer.querySelectorAll(".btn-delete-pv").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            products.splice(idx, 1);
+            renderAdminPreVenda();
+          });
+        });
+      }
+
+      // Adicionar Nova Pré-Venda
+      document.getElementById("btnAddPreVenda")?.addEventListener("click", () => {
+        products.push({
+          id: "prevenda-" + Date.now(),
+          title: "Nova Pré-Venda",
+          category: "pre-venda",
+          tagLabel: "Pré-Venda",
+          desc: "Produto em desenvolvimento. Garanta com desconto antes do lançamento!",
+          rating: 0,
+          ratingCount: 0,
+          oldPrice: 199.90,
+          price: 99.90,
+          discount: null,
+          meta: ["Pré-Venda"],
+          image: "assets/logo.jpg",
+          searchTags: "pre venda lancamento",
+          youtube: "",
+          midi: "",
+          downloadLink: "",
+          releaseDate: "Em breve"
+        });
+        renderAdminPreVenda();
+      });
+
+      function renderAdminCombos() {
+        const comboListContainer = document.getElementById("adminComboList");
+        if (!comboListContainer) return;
+        comboListContainer.innerHTML = "";
+        
+        combos.forEach((combo, index) => {
+          const item = document.createElement("div");
+          item.className = "combo-edit-item";
+          item.style.position = "relative";
+          item.style.gridTemplateColumns = "1fr 1fr";
+          item.style.alignItems = "start";
+          
+          const featuresText = (combo.features || []).join('\n');
+          
+          item.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="product-info-title">${combo.title || 'Novo Combo'}</div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Título do Combo</label>
+                <input type="text" class="form-input input-small edit-c-title" data-index="${index}" value="${combo.title || ''}" placeholder="Ex: Combo Essencial">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Subtítulo</label>
+                <input type="text" class="form-input input-small edit-c-subtitle" data-index="${index}" value="${combo.subtitle || ''}" placeholder="Ex: 2 Bibliotecas incríveis">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>IDs das Bibliotecas Inclusas (separados por vírgula)</label>
+                <input type="text" class="form-input input-small edit-c-prods" data-index="${index}" value="${combo.products || ''}" placeholder="ex: vst-stage,piano-stage">
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Tag (ex: Mais Vendido, Promoção)</label>
+                <input type="text" class="form-input input-small edit-c-tag" data-index="${index}" value="${combo.tag || ''}">
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <button type="button" class="btn-admin-nav btn-delete-combo" data-index="${index}" style="position:absolute; top: 16px; right: 0; padding: 4px 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Excluir Combo</button>
+              
+              <div style="display:flex; gap: 12px; margin-top: 34px;">
+                <div class="form-group" style="margin-bottom:0; flex: 1;">
+                  <label>Preço Venda (R$)</label>
+                  <input type="number" step="0.01" class="form-input input-small edit-c-price" data-index="${index}" value="${combo.price || 0}">
+                </div>
+                <div class="form-group" style="margin-bottom:0; flex: 1;">
+                  <label>Preço Antigo (R$)</label>
+                  <input type="number" step="0.01" class="form-input input-small edit-c-oldprice" data-index="${index}" value="${combo.oldPrice || ''}">
+                </div>
+              </div>
+              
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Benefícios / Features (Um por linha)</label>
+                <textarea class="form-input input-small edit-c-features" data-index="${index}" style="resize: vertical; min-height: 80px;" placeholder="Benefício 1&#10;Benefício 2">${featuresText}</textarea>
+              </div>
+            </div>
+          `;
+          comboListContainer.appendChild(item);
+        });
+
+        // Adicionar eventos de exclusão
+        comboListContainer.querySelectorAll(".btn-delete-combo").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            combos.splice(idx, 1);
+            renderAdminCombos();
+          });
+        });
+      }
+
+      // Adicionar Novo Combo
+      document.getElementById("btnAddCombo")?.addEventListener("click", () => {
+        combos.push({
+          id: "combo-" + Date.now(),
+          tag: "Novo",
+          title: "Novo Combo",
+          subtitle: "",
+          oldPrice: 0,
+          price: 0,
+          discountBadge: "",
+          features: [],
+          products: ""
+        });
+        renderAdminCombos();
+      });
+
+      // Carregar e salvar conta de pagamento / PIX
+      const paymentAccountInput = document.getElementById("adminPaymentAccount");
+      const savedAccount = localStorage.getItem("dawload_payment_account") || "D.A.W.LOAD";
+      if (paymentAccountInput) paymentAccountInput.value = savedAccount;
+
+      // Salvar alterações
+      btnSaveAll.addEventListener("click", function () {
+        const priceInputs = productListContainer.querySelectorAll(".edit-price");
+        const oldPriceInputs = productListContainer.querySelectorAll(".edit-oldprice");
+        const linkInputs = productListContainer.querySelectorAll(".edit-link");
+
+        if (paymentAccountInput) {
+          const acct = paymentAccountInput.value.trim() || "D.A.W.LOAD";
+          localStorage.setItem("dawload_payment_account", acct);
+        }
+        
+        // Atualizar banco local de Produtos e Pré-Vendas
+        products.forEach((prod, index) => {
+          if (prod.category !== "pre-venda") {
+            const priceEl = productListContainer.querySelector(`.edit-price[data-index="${index}"]`);
+            const oldPriceEl = productListContainer.querySelector(`.edit-oldprice[data-index="${index}"]`);
+            const linkEl = productListContainer.querySelector(`.edit-link[data-index="${index}"]`);
+            
+            if (priceEl) {
+              const priceVal = parseFloat(priceEl.value);
+              if (!isNaN(priceVal)) prod.price = priceVal;
+            }
+            if (oldPriceEl) prod.oldPrice = oldPriceEl.value ? parseFloat(oldPriceEl.value) : null;
+            if (linkEl) prod.downloadLink = linkEl.value.trim();
+
+          } else {
+            // É Pré-venda
+            const preVendaContainer = document.getElementById("adminPreVendaList");
+            const idEl = preVendaContainer.querySelector(`.edit-pv-id[data-index="${index}"]`);
+            const titleEl = preVendaContainer.querySelector(`.edit-pv-title[data-index="${index}"]`);
+            const priceEl = preVendaContainer.querySelector(`.edit-pv-price[data-index="${index}"]`);
+            const oldPriceEl = preVendaContainer.querySelector(`.edit-pv-oldprice[data-index="${index}"]`);
+            const imageEl = preVendaContainer.querySelector(`.edit-pv-image[data-index="${index}"]`);
+            const dateEl = preVendaContainer.querySelector(`.edit-pv-date[data-index="${index}"]`);
+            const linkEl = preVendaContainer.querySelector(`.edit-pv-link[data-index="${index}"]`);
+            
+            if (idEl) prod.id = idEl.value.trim();
+            if (titleEl) prod.title = titleEl.value;
+            if (priceEl) {
+              const pVal = parseFloat(priceEl.value);
+              if (!isNaN(pVal)) prod.price = pVal;
+            }
+            if (oldPriceEl) prod.oldPrice = oldPriceEl.value ? parseFloat(oldPriceEl.value) : null;
+            if (imageEl) prod.image = imageEl.value.trim();
+            if (dateEl) prod.releaseDate = dateEl.value.trim();
+            if (linkEl) prod.downloadLink = linkEl.value.trim();
+          }
+          
+          // Recalcular desconto
+          if (prod.price > 0 && prod.oldPrice && prod.oldPrice > prod.price) {
+            const discPct = Math.round(((prod.oldPrice - prod.price) / prod.oldPrice) * 100);
+            prod.discount = `${discPct}% OFF`;
+          } else {
+            prod.discount = null;
+          }
+        });
+        
+        // Atualizar combos
+        const comboListContainer = document.getElementById("adminComboList");
+        if (comboListContainer) {
+          const cTitleInputs = comboListContainer.querySelectorAll(".edit-c-title");
+          const cSubInputs = comboListContainer.querySelectorAll(".edit-c-subtitle");
+          const cProdsInputs = comboListContainer.querySelectorAll(".edit-c-prods");
+          const cTagInputs = comboListContainer.querySelectorAll(".edit-c-tag");
+          const cPriceInputs = comboListContainer.querySelectorAll(".edit-c-price");
+          const cOldPriceInputs = comboListContainer.querySelectorAll(".edit-c-oldprice");
+          const cFeaturesInputs = comboListContainer.querySelectorAll(".edit-c-features");
+
+          combos.forEach((combo, index) => {
+            combo.title = cTitleInputs[index].value;
+            combo.subtitle = cSubInputs[index].value;
+            combo.products = cProdsInputs[index].value;
+            combo.tag = cTagInputs[index].value;
+            
+            // Converter features para array pulando linhas vazias
+            const featsText = cFeaturesInputs[index].value;
+            combo.features = featsText.split('\\n').map(f => f.trim()).filter(f => f.length > 0);
+            
+            const pVal = parseFloat(cPriceInputs[index].value);
+            const oVal = parseFloat(cOldPriceInputs[index].value);
+            if (!isNaN(pVal)) combo.price = pVal;
+            if (!isNaN(oVal)) combo.oldPrice = oVal;
+            
+            if (combo.price > 0 && combo.oldPrice && combo.oldPrice > combo.price) {
+               const discPct = Math.round(((combo.oldPrice - combo.price) / combo.oldPrice) * 100);
+               combo.discountBadge = `+${discPct}% OFF EXTRA`;
+            } else {
+               combo.discountBadge = "";
+            }
+          });
+          localStorage.setItem("dawload_combos", JSON.stringify(combos));
+        }
+
+        // Salvar no localStorage
+        localStorage.setItem("dawload_products", JSON.stringify(products));
+        showToast("Todas as alterações salvas com sucesso!");
+        
+        // Re-renderizar
+        renderAdminProducts();
+        renderAdminCombos();
+        renderAdminPreVenda();
+      });
+    });
+  </script>
+</body>
+</html>
