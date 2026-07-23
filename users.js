@@ -301,3 +301,15 @@ function updateAffiliatePasswordAdmin(userId, newPassword) {
     saveUsers(users);
   }
 }
+// --- Remover Afiliado pelo Admin ---
+function removeAffiliateAdmin(userId) {
+  const users = getUsers();
+  const index = users.findIndex(u => u.id === userId);
+  if (index !== -1) {
+    users[index].isAffiliate = false;
+    // Opcionalmente manter o affiliateCode e stats para histórico, ou limpar
+    saveUsers(users);
+    return true;
+  }
+  return false;
+}
