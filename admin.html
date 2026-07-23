@@ -852,6 +852,13 @@
               <div style="color: var(--text-muted); font-size: 13px;">E-mail: ${aff.email}</div>
               <div style="color: var(--text-muted); font-size: 13px;">Código: <strong>${aff.affiliateCode}</strong></div>
               <div style="color: var(--text-muted); font-size: 13px;">PIX: <strong style="color:#52b788;">${aff.affiliatePixKey || 'Não cadastrado'}</strong></div>
+              <div style="margin-top: 8px;">
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Link de Divulgação (Copie e Envie)</label>
+                <div style="display:flex; gap:6px;">
+                  <input type="text" class="form-input input-small" style="font-size:11px; padding:6px; color:#52b788;" value="${window.location.href.split('admin.html')[0]}?ref=${aff.affiliateCode}" readonly>
+                  <button type="button" class="btn-primary" style="padding: 6px 12px; font-size: 11px;" onclick="navigator.clipboard.writeText('${window.location.href.split('admin.html')[0]}?ref=${aff.affiliateCode}'); alert('Link copiado!')">Copiar</button>
+                </div>
+              </div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div style="display:flex; gap: 12px;">
