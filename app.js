@@ -1300,7 +1300,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const slide = document.createElement("div");
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
-      slide.style.backgroundImage = `linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 100%), url('${bgImage}')`;
+      
+      // Configuração para caixas de produtos verticais
+      slide.style.backgroundImage = `linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 40%, rgba(10,10,10,0.1) 100%), url('${bgImage}')`;
+      slide.style.backgroundSize = `cover, contain`;
+      slide.style.backgroundPosition = `left center, right 5% center`;
+      slide.style.backgroundRepeat = `no-repeat, no-repeat`;
+      slide.style.backgroundColor = `#0a0a0a`;
       
       let demoBtn = '';
       if (prod.demoUrl || prod.youtubeUrl) {
