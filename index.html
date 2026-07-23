@@ -574,7 +574,7 @@
         <div class="form-group">
           <label for="loginPassword">Senha</label>
           <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
-          <a href="#" onclick="prompt('Digite seu e-mail para recuperação:'); alert('Um link de recuperação foi enviado para seu e-mail.'); return false;" style="font-size: 11px; color: var(--accent); display:block; margin-top: 6px; text-align:right; text-decoration:none;">Esqueceu a senha?</a>
+          <a href="#" onclick="handleClientPasswordReset(); return false;" style="font-size: 11px; color: var(--accent); display:block; margin-top: 6px; text-align:right; text-decoration:none;">Esqueceu a senha?</a>
         </div>
         <div class="auth-error-msg" id="loginError"></div>
         <button type="submit" class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:14px;">Entrar</button>
