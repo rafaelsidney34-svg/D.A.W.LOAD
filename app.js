@@ -1289,7 +1289,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //  CAROUSEL BANNER HERO
   // ==========================================================
   const heroCarousel = document.querySelector(".hero-carousel");
-  const heroProducts = typeof getProducts === "function" ? getProducts() : [];
+  const heroProducts = typeof productsData !== "undefined" ? productsData : [];
   
   if (heroCarousel && heroProducts.length > 0) {
     const controls = heroCarousel.querySelector(".hero-controls");
