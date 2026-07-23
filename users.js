@@ -175,6 +175,7 @@ function registerAsAffiliate(userId, channel) {
 
   users[idx].isAffiliate = true;
   users[idx].affiliateChannel = channel || '';
+  users[idx].affiliateCommissionRate = COMMISSION_RATE; // Taxa padrão inicial
   saveUsers(users);
   return { success: true };
 }
@@ -184,7 +185,8 @@ function creditAffiliateCommission(affiliateCode, purchase) {
   const idx = users.findIndex(u => u.affiliateCode === affiliateCode);
   if (idx === -1) return;
 
-  const commission = parseFloat((purchase.amount * COMMISSION_RATE).toFixed(2));
+  const rate = users[idx].affiliateCommissionRate !== undefined ? users[idx].affiliateCommissionRate : COMMISSION_RATE;
+  const commission = parseFloat((purchase.amount * rate).toFixed(2));
   users[idx].affiliateConversions.push({
     date: new Date().toISOString(),
     productTitle: purchase.productTitle,
@@ -195,6 +197,15 @@ function creditAffiliateCommission(affiliateCode, purchase) {
     (users[idx].totalCommission + commission).toFixed(2)
   );
   saveUsers(users);
+}
+
+function updateAffiliateRateAdmin(userId, newRate) {
+  const users = getUsers();
+  const idx = users.findIndex(u => u.id === userId);
+  if (idx !== -1 && users[idx].isAffiliate) {
+    users[idx].affiliateCommissionRate = parseFloat(newRate);
+    saveUsers(users);
+  }
 }
 
 function getAffiliateDashboard(userId) {
