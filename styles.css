@@ -1344,6 +1344,11 @@ body.search-overlay-open {
   border-color: var(--accent);
   color: #fff;
 }
+.pay-svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
 
 @media (max-width: 1024px) {
   .product-card {
