@@ -416,7 +416,7 @@
         <div class="product-list-card">
           <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
             <span>Gerenciamento de Afiliados</span>
-            <span style="margin-left: 20px;">Detalhes</span>
+            <button type="button" class="btn-admin-nav" id="btnOpenAddAffiliate" style="background: var(--accent); color: #000; padding: 6px 12px;">+ Adicionar Parceiro</button>
           </div>
           
           <div id="adminAffiliatesList">
@@ -431,6 +431,30 @@
     <footer class="admin-footer">
       <p>© 2026 D.A.W.LOAD - Painel do Desenvolvedor Restrito.</p>
     </footer>
+  </div>
+
+  <!-- Modal Adicionar Afiliado -->
+  <div class="modal-overlay" id="addAffiliateModal">
+    <div class="modal">
+      <button class="modal-close" id="btnCloseAddAffiliate" type="button">&times;</button>
+      <h2>Novo Parceiro</h2>
+      <p style="color:var(--text-muted); margin-bottom:15px; font-size:14px;">Crie uma conta de parceiro para gerar o link exclusivo.</p>
+      
+      <div class="form-group">
+        <label>Nome Completo do Parceiro</label>
+        <input type="text" id="newAffName" class="form-input" placeholder="Ex: João Silva">
+      </div>
+      <div class="form-group">
+        <label>E-mail do Parceiro</label>
+        <input type="email" id="newAffEmail" class="form-input" placeholder="joao@email.com">
+      </div>
+      <div class="form-group">
+        <label>Comissão Padrão (%)</label>
+        <input type="number" id="newAffRate" class="form-input" placeholder="Ex: 50" value="50">
+      </div>
+      
+      <button type="button" class="btn-primary" id="btnConfirmAddAffiliate" style="width: 100%; padding: 12px; border-radius: 8px;">Adicionar e Gerar Link</button>
+    </div>
   </div>
 
   <div class="toast-msg" id="toast">Alterações salvas!</div>
@@ -448,6 +472,11 @@
       const btnSaveAll = document.getElementById("btnSaveAll");
       const btnLogout = document.getElementById("btnLogout");
       const toast = document.getElementById("toast");
+      
+      const addAffiliateModal = document.getElementById("addAffiliateModal");
+      const btnOpenAddAffiliate = document.getElementById("btnOpenAddAffiliate");
+      const btnCloseAddAffiliate = document.getElementById("btnCloseAddAffiliate");
+      const btnConfirmAddAffiliate = document.getElementById("btnConfirmAddAffiliate");
       
       let products = [];
       let combos = [];
@@ -794,6 +823,42 @@
             </div>
           `;
           affList.appendChild(item);
+        });
+      }
+
+      // Adicionar Parceiro Modal Logic
+      if (btnOpenAddAffiliate) {
+        btnOpenAddAffiliate.addEventListener("click", () => {
+          document.getElementById("newAffName").value = "";
+          document.getElementById("newAffEmail").value = "";
+          document.getElementById("newAffRate").value = "50";
+          addAffiliateModal.classList.add("show");
+        });
+      }
+      if (btnCloseAddAffiliate) {
+        btnCloseAddAffiliate.addEventListener("click", () => {
+          addAffiliateModal.classList.remove("show");
+        });
+      }
+      if (btnConfirmAddAffiliate) {
+        btnConfirmAddAffiliate.addEventListener("click", () => {
+          const name = document.getElementById("newAffName").value.trim();
+          const email = document.getElementById("newAffEmail").value.trim();
+          const rate = document.getElementById("newAffRate").value.trim();
+          
+          if (!name || !email || !rate) {
+            showToast("Preencha todos os campos do parceiro.");
+            return;
+          }
+          
+          if (typeof createAffiliateAdmin === "function") {
+            createAffiliateAdmin(name, email, parseFloat(rate) / 100);
+            showToast("Parceiro criado com sucesso!");
+            addAffiliateModal.classList.remove("show");
+            renderAdminAffiliates(); // Recarrega a lista
+          } else {
+            showToast("Erro: Arquivo users.js não carregado corretamente.");
+          }
         });
       }
 

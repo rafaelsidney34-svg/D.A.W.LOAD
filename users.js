@@ -247,3 +247,40 @@ function trackAffiliateRef() {
 
 // Executar rastreamento ao carregar a página
 trackAffiliateRef();
+
+// --- Criação Manual pelo Admin ---
+function createAffiliateAdmin(name, email, commission) {
+  const users = getUsers();
+  
+  // Verifica se email já existe
+  const existingUser = users.find(u => u.email === email);
+  if (existingUser) {
+    if (!existingUser.isAffiliate) {
+      existingUser.isAffiliate = true;
+      existingUser.affiliateCode = existingUser.affiliateCode || generateAffiliateCode(existingUser.name);
+      existingUser.affiliateCommissionRate = parseFloat(commission);
+      saveUsers(users);
+    }
+    return existingUser;
+  }
+  
+  // Cria novo usuário
+  const newUser = {
+    id: "user-" + Date.now(),
+    name: name,
+    email: email,
+    password: "btoa('123456')", // Senha padrão 123456 codificada
+    purchases: [],
+    affiliateCode: generateAffiliateCode(name),
+    isAffiliate: true,
+    affiliateChannel: 'Cadastrado via Painel Admin',
+    affiliateCommissionRate: parseFloat(commission),
+    affiliateConversions: [],
+    affiliateClicks: 0,
+    totalCommission: 0
+  };
+  
+  users.push(newUser);
+  saveUsers(users);
+  return newUser;
+}
