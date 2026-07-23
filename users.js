@@ -292,3 +292,12 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
   saveUsers(users);
   return newUser;
 }
+
+function updateAffiliatePasswordAdmin(userId, newPassword) {
+  const users = getUsers();
+  const user = users.find(u => u.id === userId);
+  if (user) {
+    user.password = btoa(newPassword);
+    saveUsers(users);
+  }
+}

@@ -876,11 +876,17 @@
                   <label>Comissão a Pagar (R$)</label>
                   <input type="text" class="form-input input-small" value="${totalEarned.toFixed(2)}" disabled>
                 </div>
-              </div>
-              <div class="form-group" style="margin-bottom:0;">
-                <label>Taxa de Comissão (%)</label>
-                <input type="number" step="1" class="form-input input-small edit-aff-rate" data-userid="${aff.id}" value="${currentRate}" placeholder="Ex: 30">
-                <small style="color:var(--text-muted); font-size:11px; display:block; margin-top:4px;">Define a % que este parceiro ganha por venda.</small>
+              <div style="display:flex; gap: 12px;">
+                <div class="form-group" style="margin-bottom:0; flex:1;">
+                  <label>Taxa de Comissão (%)</label>
+                  <input type="number" step="1" class="form-input input-small edit-aff-rate" data-userid="${aff.id}" value="${currentRate}" placeholder="Ex: 30">
+                  <small style="color:var(--text-muted); font-size:11px; display:block; margin-top:4px;">Define a % que este parceiro ganha por venda.</small>
+                </div>
+                <div class="form-group" style="margin-bottom:0; flex:1;">
+                  <label>Nova Senha</label>
+                  <input type="text" class="form-input input-small edit-aff-pass" data-userid="${aff.id}" placeholder="Deixe em branco para não mudar">
+                  <small style="color:var(--text-muted); font-size:11px; display:block; margin-top:4px;">Digite para alterar a senha.</small>
+                </div>
               </div>
             </div>
           `;
@@ -1046,14 +1052,22 @@
           localStorage.setItem("dawload_combos", JSON.stringify(combos));
         }
 
-        // Salvar Taxas de Afiliados
+        // Salvar Taxas e Senhas de Afiliados
         const affList = document.getElementById("adminAffiliatesList");
         if (affList) {
           affList.querySelectorAll(".edit-aff-rate").forEach(input => {
             const userId = input.dataset.userid;
             const newRate = parseFloat(input.value) / 100;
+            const passInput = affList.querySelector(`.edit-aff-pass[data-userid="${userId}"]`);
+            const newPass = passInput ? passInput.value.trim() : "";
+            
             if (!isNaN(newRate) && typeof updateAffiliateRateAdmin === "function") {
               updateAffiliateRateAdmin(userId, newRate);
+            }
+            // Se houver função para atualizar senha e o campo não estiver vazio
+            if (newPass && typeof updateAffiliatePasswordAdmin === "function") {
+              updateAffiliatePasswordAdmin(userId, newPass);
+              passInput.value = ""; // limpa o campo após salvar
             }
           });
         }
