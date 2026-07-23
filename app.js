@@ -1289,7 +1289,41 @@ document.addEventListener("DOMContentLoaded", function () {
   //  CAROUSEL BANNER HERO
   // ==========================================================
   const heroCarousel = document.querySelector(".hero-carousel");
-  if (heroCarousel) {
+  if (heroCarousel && typeof products !== "undefined" && products.length > 0) {
+    const controls = heroCarousel.querySelector(".hero-controls");
+    const dotsContainer = heroCarousel.querySelector(".hero-dots");
+    
+    // Create slides dynamically
+    products.forEach((prod, index) => {
+      const slide = document.createElement("div");
+      slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
+      const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
+      slide.style.backgroundImage = `linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 100%), url('${bgImage}')`;
+      
+      let demoBtn = '';
+      if (prod.demoUrl || prod.youtubeUrl) {
+        demoBtn = `<button type="button" class="hero-btn demo-button" data-title="${prod.title}" data-midi="${prod.demoUrl || ''}" data-youtube="${prod.youtubeUrl || ''}">Conhecer Biblioteca</button>`;
+      } else {
+        demoBtn = `<a href="#storeGrid" class="hero-btn">Ver Catálogo</a>`;
+      }
+
+      slide.innerHTML = `
+        <div class="hero-content">
+          <h2>${prod.title}</h2>
+          <p>${prod.desc}</p>
+          ${demoBtn}
+        </div>
+      `;
+      heroCarousel.insertBefore(slide, controls);
+      
+      const dot = document.createElement("button");
+      dot.className = `hero-dot ${index === 0 ? "active" : ""}`;
+      dot.type = "button";
+      dot.dataset.index = index;
+      dot.setAttribute("aria-label", `Slide ${index + 1}`);
+      dotsContainer.appendChild(dot);
+    });
+
     const slides = heroCarousel.querySelectorAll(".hero-slide");
     const dots = heroCarousel.querySelectorAll(".hero-dot");
     const nextBtn = heroCarousel.querySelector(".hero-arrow.next");
