@@ -152,7 +152,7 @@
     
     .product-edit-item {
       display: grid;
-      grid-template-columns: 80px 180px 130px 130px 1fr;
+      grid-template-columns: 70px 150px 100px 100px 1fr 1fr;
       align-items: center;
       gap: 16px;
       padding: 16px 0;
@@ -553,6 +553,10 @@
               <label>Link de Download (Drive/Dropbox/Mega)</label>
               <input type="url" class="form-input input-small edit-link" data-index="${index}" placeholder="https://drive.google.com/..." value="${prod.downloadLink || ''}">
             </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Vídeo YouTube</label>
+              <input type="url" class="form-input input-small edit-youtube" data-index="${index}" placeholder="https://youtube.com/..." value="${prod.youtube || ''}">
+            </div>
           `;
           productListContainer.appendChild(item);
         });
@@ -770,6 +774,9 @@
             }
             if (oldPriceEl) prod.oldPrice = oldPriceEl.value ? parseFloat(oldPriceEl.value) : null;
             if (linkEl) prod.downloadLink = linkEl.value.trim();
+            
+            const youtubeEl = productListContainer.querySelector(`.edit-youtube[data-index="${index}"]`);
+            if (youtubeEl) prod.youtube = youtubeEl.value.trim();
 
           } else {
             // É Pré-venda

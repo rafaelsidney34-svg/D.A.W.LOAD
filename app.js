@@ -451,8 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="product-meta">${prod.meta.map(m => `<span>${m}</span>`).join("")}</div>
         <div class="product-actions">
           <a href="#" class="${buyClass}">${buttonLabel}</a>
-          <button type="button" class="btn-secondary demo-button"
-            data-title="${prod.title}" data-midi="${prod.midi || ''}" data-youtube="${prod.youtube || ''}">Ver Demonstrativo</button>
+          ${prod.youtube ? `<a href="${prod.youtube}" target="_blank" class="btn-secondary">Ver Vídeo</a>` : ""}
         </div>
       </div>`;
     return card;
@@ -482,9 +481,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       });
-    });
-    container.querySelectorAll(".demo-button").forEach(btn => {
-      btn.addEventListener("click", () => openDemoModal(btn));
     });
   }
 
@@ -714,20 +710,6 @@ document.addEventListener("DOMContentLoaded", function () {
   searchOverlayBackdrop?.addEventListener("click", closeSearchOverlay);
 
   // ==========================================================
-  //  DEMO MODAL
-  // ==========================================================
-  function openDemoModal(button) {
-    if (!demoModal) return;
-    demoTitle.textContent = `Demonstração — ${button.dataset.title || ""}`;
-    demoOptions.innerHTML = "";
-    const { midi, youtube } = button.dataset;
-    if (midi) demoOptions.insertAdjacentHTML("beforeend", `<a class="demo-link-opt primary" href="${midi}" target="_blank"><span class="opt-text"><span class="opt-title">Demo Interativa</span><span class="opt-sub">Ouça direto no navegador</span></span><span class="opt-icon">↗</span></a>`);
-    else demoOptions.insertAdjacentHTML("beforeend", `<div class="demo-link-opt disabled"><span class="opt-text"><span class="opt-title">Demo Interativa</span><span class="opt-sub">Indisponível no momento</span></span><span class="opt-icon">—</span></div>`);
-    if (youtube) demoOptions.insertAdjacentHTML("beforeend", `<a class="demo-link-opt" href="${youtube}" target="_blank"><span class="opt-text"><span class="opt-title">Review no YouTube</span><span class="opt-sub">Veja um review completo</span></span><span class="opt-icon">▶</span></a>`);
-    demoModal.classList.add("show");
-  }
-  demoClose?.addEventListener("click", () => demoModal?.classList.remove("show"));
-  demoModal?.addEventListener("click", e => { if (e.target === demoModal) demoModal.classList.remove("show"); });
 
   // ==========================================================
   //  CHECKOUT — 3 Abas: PIX / Crédito / Débito
