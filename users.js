@@ -249,7 +249,7 @@ function trackAffiliateRef() {
 trackAffiliateRef();
 
 // --- Criação Manual pelo Admin ---
-function createAffiliateAdmin(name, email, commission) {
+function createAffiliateAdmin(name, email, commission, pix) {
   const users = getUsers();
   
   // Verifica se email já existe
@@ -259,6 +259,12 @@ function createAffiliateAdmin(name, email, commission) {
       existingUser.isAffiliate = true;
       existingUser.affiliateCode = existingUser.affiliateCode || generateAffiliateCode(existingUser.name);
       existingUser.affiliateCommissionRate = parseFloat(commission);
+      if (pix) existingUser.affiliatePixKey = pix;
+      saveUsers(users);
+    } else {
+      // Já é afiliado, só atualiza os dados se fornecidos
+      if (commission !== undefined) existingUser.affiliateCommissionRate = parseFloat(commission);
+      if (pix) existingUser.affiliatePixKey = pix;
       saveUsers(users);
     }
     return existingUser;
@@ -275,6 +281,7 @@ function createAffiliateAdmin(name, email, commission) {
     isAffiliate: true,
     affiliateChannel: 'Cadastrado via Painel Admin',
     affiliateCommissionRate: parseFloat(commission),
+    affiliatePixKey: pix || '',
     affiliateConversions: [],
     affiliateClicks: 0,
     totalCommission: 0
