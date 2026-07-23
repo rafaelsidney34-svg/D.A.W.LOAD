@@ -1301,11 +1301,18 @@ document.addEventListener("DOMContentLoaded", function () {
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
       
-      // Configuração para caixas de produtos verticais
-      slide.style.backgroundImage = `linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 40%, rgba(10,10,10,0.1) 100%), url('${bgImage}')`;
-      slide.style.backgroundSize = `cover, contain`;
-      slide.style.backgroundPosition = `left center, right 5% center`;
-      slide.style.backgroundRepeat = `no-repeat, no-repeat`;
+      // Configuração para caixas de produtos verticais (3 camadas)
+      // 1. Gradiente para dar contraste no texto
+      // 2. Imagem contida na direita
+      // 3. Imagem esticada bem escura preenchendo o fundo
+      slide.style.backgroundImage = `
+        linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.85) 45%, rgba(10,10,10,0.4) 100%), 
+        url('${bgImage}'), 
+        url('${bgImage}')
+      `;
+      slide.style.backgroundSize = `cover, contain, cover`;
+      slide.style.backgroundPosition = `left center, right 5% center, center`;
+      slide.style.backgroundRepeat = `no-repeat, no-repeat, no-repeat`;
       slide.style.backgroundColor = `#0a0a0a`;
       
       let demoBtn = '';
@@ -1353,7 +1360,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     nextBtn?.addEventListener("click", () => showSlide(activeIdx + 1));
     prevBtn?.addEventListener("click", () => showSlide(activeIdx - 1));
-    pauseBtn?.addEventListener("click", () => { autoPlay = !autoPlay; pauseBtn.textContent = autoPlay ? "Ⅱ" : "▶"; });
+    pauseBtn?.addEventListener("click", () => { 
+      autoPlay = !autoPlay; 
+      const iconPause = pauseBtn.querySelector('.icon-pause');
+      const iconPlay = pauseBtn.querySelector('.icon-play');
+      if (iconPause) iconPause.style.display = autoPlay ? 'block' : 'none';
+      if (iconPlay) iconPlay.style.display = autoPlay ? 'none' : 'block';
+    });
     dots.forEach(d => d.addEventListener("click", () => showSlide(parseInt(d.dataset.index || 0))));
     showSlide(0);
     startSlider();
