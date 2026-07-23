@@ -1289,12 +1289,14 @@ document.addEventListener("DOMContentLoaded", function () {
   //  CAROUSEL BANNER HERO
   // ==========================================================
   const heroCarousel = document.querySelector(".hero-carousel");
-  if (heroCarousel && typeof products !== "undefined" && products.length > 0) {
+  const heroProducts = typeof getProducts === "function" ? getProducts() : [];
+  
+  if (heroCarousel && heroProducts.length > 0) {
     const controls = heroCarousel.querySelector(".hero-controls");
     const dotsContainer = heroCarousel.querySelector(".hero-dots");
     
     // Create slides dynamically
-    products.forEach((prod, index) => {
+    heroProducts.forEach((prod, index) => {
       const slide = document.createElement("div");
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
