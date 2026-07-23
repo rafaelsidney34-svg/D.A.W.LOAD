@@ -112,6 +112,26 @@ const defaultProducts = [
     downloadLink: ""
   },
 
+  // Plugins VST/AU (Grátis ou Pagos)
+  {
+    id: "exemplo-plugin-vst",
+    title: "Exemplo Plugin VST",
+    category: "plugins",
+    tagLabel: "Plugin",
+    desc: "Sintetizador e Efeitos. Exemplo de como adicionar um Plugin no sistema (Pode ser grátis colocando preço 0).",
+    rating: 5.0,
+    ratingCount: 10,
+    oldPrice: 199.90,
+    price: 99.90,
+    discount: "50% OFF",
+    meta: ["Win/macOS", "VST3/AU", "64-bit"],
+    image: "assets/logo.jpg", // Substitua pela imagem do plugin
+    searchTags: "plugin vst efeito synth",
+    youtube: "",
+    midi: "",
+    downloadLink: ""
+  },
+
   // Bibliotecas Grátis
   {
     id: "dawload-keys",
