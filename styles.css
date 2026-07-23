@@ -852,6 +852,10 @@ button {
   padding: 11px;
   font-size: 13px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
   transition: var(--transition);
 }
 
@@ -868,6 +872,10 @@ button {
   padding: 10px;
   font-size: 13px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
   transition: var(--transition);
 }
 
@@ -1308,6 +1316,35 @@ body.search-overlay-open {
 }
 
 /* Responsive adjustments */
+.trust-payments {
+  margin-top: 10px;
+  padding-top: 15px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+.payment-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pay-icon {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+.pay-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 @media (max-width: 1024px) {
   .product-card {
     flex: 0 0 calc(50% - 8px);
