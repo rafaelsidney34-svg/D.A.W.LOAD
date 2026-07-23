@@ -249,7 +249,7 @@ function trackAffiliateRef() {
 trackAffiliateRef();
 
 // --- Criação Manual pelo Admin ---
-function createAffiliateAdmin(name, email, commission, pix) {
+function createAffiliateAdmin(name, email, commission, pix, password) {
   const users = getUsers();
   
   // Verifica se email já existe
@@ -265,6 +265,7 @@ function createAffiliateAdmin(name, email, commission, pix) {
       // Já é afiliado, só atualiza os dados se fornecidos
       if (commission !== undefined) existingUser.affiliateCommissionRate = parseFloat(commission);
       if (pix) existingUser.affiliatePixKey = pix;
+      if (password) existingUser.password = btoa(password);
       saveUsers(users);
     }
     return existingUser;
@@ -275,7 +276,7 @@ function createAffiliateAdmin(name, email, commission, pix) {
     id: "user-" + Date.now(),
     name: name,
     email: email,
-    password: "btoa('123456')", // Senha padrão 123456 codificada
+    password: password ? btoa(password) : btoa("123456"),
     purchases: [],
     affiliateCode: generateAffiliateCode(name),
     isAffiliate: true,

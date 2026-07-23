@@ -496,9 +496,15 @@
         <label>Chave PIX do Parceiro (Opcional)</label>
         <input type="text" id="newAffPix" class="form-input" placeholder="Telefone, CPF, E-mail ou Aleatória">
       </div>
-      <div class="form-group">
-        <label>Comissão Padrão (%)</label>
-        <input type="number" id="newAffRate" class="form-input" placeholder="Ex: 50" value="50">
+      <div style="display:flex; gap:12px;">
+        <div class="form-group" style="flex:1;">
+          <label>Senha de Acesso</label>
+          <input type="text" id="newAffPass" class="form-input" placeholder="Ex: 123456" value="123456">
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Comissão (%)</label>
+          <input type="number" id="newAffRate" class="form-input" placeholder="Ex: 50" value="50">
+        </div>
       </div>
       
       <button type="button" class="btn-primary" id="btnConfirmAddAffiliate" style="width: 100%; padding: 12px; border-radius: 8px;">Adicionar e Gerar Link</button>
@@ -887,6 +893,8 @@
         btnOpenAddAffiliate.addEventListener("click", () => {
           document.getElementById("newAffName").value = "";
           document.getElementById("newAffEmail").value = "";
+          document.getElementById("newAffPix").value = "";
+          document.getElementById("newAffPass").value = "123456";
           document.getElementById("newAffRate").value = "50";
           addAffiliateModal.classList.add("show");
         });
@@ -901,15 +909,16 @@
           const name = document.getElementById("newAffName").value.trim();
           const email = document.getElementById("newAffEmail").value.trim();
           const pix = document.getElementById("newAffPix").value.trim();
+          const pass = document.getElementById("newAffPass").value.trim();
           const rate = document.getElementById("newAffRate").value.trim();
           
-          if (!name || !email || !rate) {
-            showToast("Preencha Nome, Email e Comissão do parceiro.");
+          if (!name || !email || !rate || !pass) {
+            showToast("Preencha Nome, Email, Senha e Comissão do parceiro.");
             return;
           }
           
           if (typeof createAffiliateAdmin === "function") {
-            createAffiliateAdmin(name, email, parseFloat(rate) / 100, pix);
+            createAffiliateAdmin(name, email, parseFloat(rate) / 100, pix, pass);
             showToast("Parceiro criado com sucesso!");
             addAffiliateModal.classList.remove("show");
             renderAdminAffiliates(); // Recarrega a lista
