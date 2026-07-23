@@ -1,15 +1,15 @@
-// ==========================================================
-// users.js — Sistema de Contas, Sessões e Afiliados
+﻿// ==========================================================
+// users.js â€” Sistema de Contas, SessÃµes e Afiliados
 // D.A.W.LOAD | Tudo salvo no localStorage do navegador
 // ==========================================================
 
 const USERS_KEY = 'dawload_users';
 const SESSION_KEY = 'dawload_session';
-const COMMISSION_RATE = 0.30; // 30% de comissão para afiliados
+const COMMISSION_RATE = 0.30; // 30% de comissÃ£o para afiliados
 
-// --- Utilitários ---
+// --- UtilitÃ¡rios ---
 
-// Hash simples para ofuscar senhas (não criptográfico, apenas para demo)
+// Hash simples para ofuscar senhas (nÃ£o criptogrÃ¡fico, apenas para demo)
 function hashPassword(password) {
   let hash = 0;
   for (let i = 0; i < password.length; i++) {
@@ -20,14 +20,14 @@ function hashPassword(password) {
   return Math.abs(hash).toString(16);
 }
 
-// Gera código de afiliado único: 4 letras do nome + 4 dígitos aleatórios
+// Gera cÃ³digo de afiliado Ãºnico: 4 letras do nome + 4 dÃ­gitos aleatÃ³rios
 function generateAffiliateCode(name) {
   const prefix = name.replace(/\s+/g, '').replace(/[^a-zA-Z]/g, '').substring(0, 4).toUpperCase() || 'DAWD';
   const suffix = Math.floor(1000 + Math.random() * 9000);
   return `${prefix}${suffix}`;
 }
 
-// --- CRUD de Usuários ---
+// --- CRUD de UsuÃ¡rios ---
 
 function getUsers() {
   const saved = localStorage.getItem(USERS_KEY);
@@ -56,7 +56,7 @@ function registerUser(name, email, password) {
   }
 
   if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-    return { success: false, error: 'Este e-mail já está cadastrado.' };
+    return { success: false, error: 'Este e-mail jÃ¡ estÃ¡ cadastrado.' };
   }
 
   const newUser = {
@@ -68,7 +68,7 @@ function registerUser(name, email, password) {
     isAffiliate: false,
     affiliateChannel: '',
     purchases: [],         // Array de compras realizadas
-    affiliateConversions: [], // Array de conversões atribuídas
+    affiliateConversions: [], // Array de conversÃµes atribuÃ­das
     totalCommission: 0,
     totalClicks: 0,
     createdAt: new Date().toISOString()
@@ -90,10 +90,10 @@ function loginUser(email, password) {
   const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
-    return { success: false, error: 'E-mail não encontrado.' };
+    return { success: false, error: 'E-mail nÃ£o encontrado.' };
   }
 
-  if (user.passwordHash !== hashPassword(password)) {
+  const isOldPasswordMatch = user.password && user.password === btoa(password); const isNewPasswordMatch = user.passwordHash && user.passwordHash === hashPassword(password); if (!isOldPasswordMatch && !isNewPasswordMatch) {
     return { success: false, error: 'Senha incorreta.' };
   }
 
@@ -105,7 +105,7 @@ function logoutUser() {
   sessionStorage.removeItem(SESSION_KEY);
 }
 
-// --- Sessão ---
+// --- SessÃ£o ---
 
 function startSession(user) {
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({
@@ -152,7 +152,7 @@ function addUserPurchase(userId, product, paymentMethod, amount, installments) {
   // Compatibilidade com o sistema antigo de IDs de compra
   addPurchaseId(product.id);
 
-  // Checar afiliado e creditar comissão
+  // Checar afiliado e creditar comissÃ£o
   const refCode = localStorage.getItem('dawload_ref');
   if (refCode && refCode !== users[userIndex].affiliateCode) {
     creditAffiliateCommission(refCode, purchase);
@@ -171,11 +171,11 @@ function getUserPurchases(userId) {
 function registerAsAffiliate(userId, channel) {
   const users = getUsers();
   const idx = users.findIndex(u => u.id === userId);
-  if (idx === -1) return { success: false, error: 'Usuário não encontrado.' };
+  if (idx === -1) return { success: false, error: 'UsuÃ¡rio nÃ£o encontrado.' };
 
   users[idx].isAffiliate = true;
   users[idx].affiliateChannel = channel || '';
-  users[idx].affiliateCommissionRate = COMMISSION_RATE; // Taxa padrão inicial
+  users[idx].affiliateCommissionRate = COMMISSION_RATE; // Taxa padrÃ£o inicial
   saveUsers(users);
   return { success: true };
 }
@@ -245,14 +245,14 @@ function trackAffiliateRef() {
   }
 }
 
-// Executar rastreamento ao carregar a página
+// Executar rastreamento ao carregar a pÃ¡gina
 trackAffiliateRef();
 
-// --- Criação Manual pelo Admin ---
+// --- CriaÃ§Ã£o Manual pelo Admin ---
 function createAffiliateAdmin(name, email, commission, pix, password) {
   const users = getUsers();
   
-  // Verifica se email já existe
+  // Verifica se email jÃ¡ existe
   const existingUser = users.find(u => u.email === email);
   if (existingUser) {
     if (!existingUser.isAffiliate) {
@@ -262,21 +262,21 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
       if (pix) existingUser.affiliatePixKey = pix;
       saveUsers(users);
     } else {
-      // Já é afiliado, só atualiza os dados se fornecidos
+      // JÃ¡ Ã© afiliado, sÃ³ atualiza os dados se fornecidos
       if (commission !== undefined) existingUser.affiliateCommissionRate = parseFloat(commission);
       if (pix) existingUser.affiliatePixKey = pix;
-      if (password) existingUser.password = btoa(password);
+      if (password) existingUser.passwordHash = hashPassword(password);
       saveUsers(users);
     }
     return existingUser;
   }
   
-  // Cria novo usuário
+  // Cria novo usuÃ¡rio
   const newUser = {
     id: "user-" + Date.now(),
     name: name,
     email: email,
-    password: password ? btoa(password) : btoa("123456"),
+    passwordHash: password ? hashPassword(password) : hashPassword("123456"),
     purchases: [],
     affiliateCode: generateAffiliateCode(name),
     isAffiliate: true,
@@ -297,7 +297,7 @@ function updateAffiliatePasswordAdmin(userId, newPassword) {
   const users = getUsers();
   const user = users.find(u => u.id === userId);
   if (user) {
-    user.password = btoa(newPassword);
+    user.passwordHash = hashPassword(newPassword);
     saveUsers(users);
   }
 }
@@ -307,9 +307,32 @@ function removeAffiliateAdmin(userId) {
   const index = users.findIndex(u => u.id === userId);
   if (index !== -1) {
     users[index].isAffiliate = false;
-    // Opcionalmente manter o affiliateCode e stats para hist�rico, ou limpar
+    // Opcionalmente manter o affiliateCode e stats para histórico, ou limpar
     saveUsers(users);
     return true;
   }
   return false;
 }
+
+// --- Client Password Reset Flow ---
+function handleClientPasswordReset() {
+  const email = prompt("Recuperação de Senha\n\nDigite o seu e-mail cadastrado:");
+  if (!email) return;
+  
+  const users = getUsers();
+  const user = users.find(u => u.email === email);
+  
+  if (user) {
+    const newPass = prompt("E-mail encontrado!\n\n(Simulação de Código) Conta verificada.\n\nDigite a sua NOVA SENHA agora:");
+    if (newPass && newPass.length >= 6) {
+      user.passwordHash = hashPassword(newPass);
+      saveUsers(users);
+      alert("Sua senha foi redefinida com sucesso!\nVocê já pode fazer login com a sua nova senha.");
+    } else if (newPass) {
+      alert("Erro: A nova senha deve ter pelo menos 6 caracteres.");
+    }
+  } else {
+    alert("Não encontramos nenhuma conta cadastrada com esse e-mail.");
+  }
+}
+
