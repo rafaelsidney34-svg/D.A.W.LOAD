@@ -1614,3 +1614,29 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeaderForUser();
   renderProducts();
 });
+
+  // ==========================================================
+  //  GLOBAL BACKGROUND MUSIC
+  // ==========================================================
+  const bgMusicToggle = document.getElementById('bgMusicToggle');
+  const bgMusicAudio = document.getElementById('bgMusicAudio');
+  if (bgMusicToggle && bgMusicAudio) {
+    // Set a lower volume for background music
+    bgMusicAudio.volume = 0.3;
+    
+    bgMusicToggle.addEventListener('click', () => {
+      const iconPlay = bgMusicToggle.querySelector('.icon-play');
+      const iconPause = bgMusicToggle.querySelector('.icon-pause');
+      
+      if (bgMusicAudio.paused) {
+        bgMusicAudio.play().then(() => {
+          if(iconPlay) iconPlay.style.display = 'none';
+          if(iconPause) iconPause.style.display = 'block';
+        }).catch(err => console.error("Error playing audio:", err));
+      } else {
+        bgMusicAudio.pause();
+        if(iconPlay) iconPlay.style.display = 'block';
+        if(iconPause) iconPause.style.display = 'none';
+      }
+    });
+  }
