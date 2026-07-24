@@ -1,4 +1,4 @@
-﻿// Dados DinÃ¢micos em MemÃ³ria â€” defaultProducts vem de database.js
+﻿// Dados Dinâmicos em Memória — defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
@@ -6,10 +6,10 @@ function loadDatabase() {
   const saved = localStorage.getItem("dawload_products");
   if (saved) {
     const parsed = JSON.parse(saved);
-    // VerificaÃ§Ã£o de integridade: se o primeiro produto nÃ£o tiver o campo 'image',
-    // os dados estÃ£o corrompidos/desatualizados â€” resetar para o padrÃ£o.
+    // Verificação de integridade: se o primeiro produto não tiver o campo 'image',
+    // os dados estão corrompidos/desatualizados — resetar para o padrão.
     if (parsed.length > 0 && (!parsed[0].image || !parsed[0].desc)) {
-      console.warn("[D.A.W.LOAD] Banco de dados desatualizado. Resetando para o padrÃ£o...");
+      console.warn("[D.A.W.LOAD] Banco de dados desatualizado. Resetando para o padrão...");
       // Preserva os links de download configurados pelo admin
       const mergedProducts = defaultProducts.map(defaultProd => {
         const old = parsed.find(p => p.id === defaultProd.id);
@@ -41,7 +41,7 @@ function loadDatabase() {
 }
 loadDatabase();
 
-// FunÃ§Ãµes de Gerenciamento de Compras Simuladas
+// Funções de Gerenciamento de Compras Simuladas
 function getPurchasedIds() {
   const saved = localStorage.getItem("dawload_purchases");
   return saved ? JSON.parse(saved) : [];
@@ -73,25 +73,25 @@ function clearPurchases() {
 
 // Dados dos Membros (Widgets)
 const topMembers = [
-  { nome: "Philippe Romain", icone: "â­", tipo: "membro" },
-  { nome: "JosÃ© Vieira", icone: "â­", tipo: "membro" },
-  { nome: "VANDERLEI Cruz", icone: "ðŸ‘‘", tipo: "top" },
-  { nome: "AMIRRUL HAFIZ", icone: "â­", tipo: "membro" },
-  { nome: "Eduardo Porcho", icone: "â­", tipo: "membro" },
-  { nome: "Viktor Stos", icone: "â­", tipo: "membro" },
-  { nome: "Daniel Rios", icone: "ðŸ‘‘", tipo: "top" },
-  { nome: "Cleiton Pacheco Gino", icone: "â­", tipo: "membro" },
-  { nome: "AndrÃ© Sampaio", icone: "ðŸ‘‘", tipo: "top" },
-  { nome: "Darin Costa", icone: "ðŸ‘‘", tipo: "top" },
-  { nome: "Steve Landry", icone: "ðŸ‘‘", tipo: "top" }
+  { nome: "Philippe Romain", icone: "⭐", tipo: "membro" },
+  { nome: "José Vieira", icone: "⭐", tipo: "membro" },
+  { nome: "VANDERLEI Cruz", icone: "👑", tipo: "top" },
+  { nome: "AMIRRUL HAFIZ", icone: "⭐", tipo: "membro" },
+  { nome: "Eduardo Porcho", icone: "⭐", tipo: "membro" },
+  { nome: "Viktor Stos", icone: "⭐", tipo: "membro" },
+  { nome: "Daniel Rios", icone: "👑", tipo: "top" },
+  { nome: "Cleiton Pacheco Gino", icone: "⭐", tipo: "membro" },
+  { nome: "André Sampaio", icone: "👑", tipo: "top" },
+  { nome: "Darin Costa", icone: "👑", tipo: "top" },
+  { nome: "Steve Landry", icone: "👑", tipo: "top" }
 ];
 
 const topWeekMembers = topMembers.filter(m => m.tipo === "top");
 const regularMembers = topMembers.filter(m => m.tipo !== "top");
-const regularMemberIcons = ["â¤", "â­", "ðŸŽ¹", "ðŸ™Œ", "ðŸ”¥", "âœ¨", "ðŸŽ§", "ðŸš€", "ðŸ’™"];
+const regularMemberIcons = ["❤", "⭐", "🎹", "🙌", "🔥", "✨", "🎧", "🚀", "💙"];
 
 // ==========================================================
-//  LÃ“GICA PRINCIPAL â€” DOMContentLoaded
+//  LÓGICA PRINCIPAL — DOMContentLoaded
 // ==========================================================
 document.addEventListener("DOMContentLoaded", function () {
   // --- Refs DOM ---
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let cart = JSON.parse(localStorage.getItem('dawload_cart')) || [];
 
   // ==========================================================
-  //  UTILITÃRIOS
+  //  UTILITÁRIOS
   // ==========================================================
   function showToast(msg, duration) {
     if (!toast) return;
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cartItemsContainer) {
       cartItemsContainer.innerHTML = '';
       if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<div class="cart-empty-msg">Seu carrinho estÃ¡ vazio.</div>';
+        cartItemsContainer.innerHTML = '<div class="cart-empty-msg">Seu carrinho está vazio.</div>';
         if (cartTotalPrice) cartTotalPrice.textContent = 'R$ 0,00';
         if (btnCheckoutCart) btnCheckoutCart.disabled = true;
         return;
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="cart-item-title">${item.title}</div>
             <div class="cart-item-price">${formatBRL(item.price)}</div>
           </div>
-          <button class="cart-item-remove" data-index="${index}" title="Remover">âœ•</button>
+          <button class="cart-item-remove" data-index="${index}" title="Remover">✕</button>
         `;
         cartItemsContainer.appendChild(div);
       });
@@ -280,14 +280,14 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCartUI();
 
   // ==========================================================
-  //  AUTH â€” Login, Registro, SessÃ£o
+  //  AUTH — Login, Registro, Sessão
   // ==========================================================
   function updateHeaderForUser() {
     const user = getCurrentUser();
     if (user) {
       if (headerActions) headerActions.style.display = "none";
       if (userGreeting) userGreeting.style.display = "flex";
-      if (userGreetingName) userGreetingName.textContent = `ðŸ‘¤ ${user.name.split(" ")[0]}`;
+      if (userGreetingName) userGreetingName.textContent = `👤 ${user.name.split(" ")[0]}`;
     } else {
       if (headerActions) headerActions.style.display = "flex";
       if (userGreeting) userGreeting.style.display = "none";
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeAuthModal(loginModal);
       updateHeaderForUser();
       renderProducts();
-      showToast(`Bem-vindo de volta, ${result.user.name.split(" ")[0]}! ðŸŽ¹`);
+      showToast(`Bem-vindo de volta, ${result.user.name.split(" ")[0]}! 🎹`);
     } else {
       if (loginError) { loginError.textContent = result.error; loginError.classList.add("show"); }
     }
@@ -348,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const passwordConfirm = document.getElementById("registerPasswordConfirm").value;
 
     if (password !== passwordConfirm) {
-      if (registerError) { registerError.textContent = "As senhas nÃ£o coincidem."; registerError.classList.add("show"); }
+      if (registerError) { registerError.textContent = "As senhas não coincidem."; registerError.classList.add("show"); }
       return;
     }
 
@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeAuthModal(registerModal);
       updateHeaderForUser();
       renderProducts();
-      showToast(`Conta criada com sucesso! Bem-vindo, ${result.user.name.split(" ")[0]}! ðŸŽ‰`);
+      showToast(`Conta criada com sucesso! Bem-vindo, ${result.user.name.split(" ")[0]}! 🎉`);
     } else {
       if (registerError) { registerError.textContent = result.error; registerError.classList.add("show"); }
     }
@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
       logoutUser();
       updateHeaderForUser();
       renderProducts();
-      showToast("VocÃª saiu da sua conta.");
+      showToast("Você saiu da sua conta.");
     });
   }
 
@@ -411,21 +411,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (prod.category === "pre-venda") {
       badgeBg = "#f59e0b"; // Orange
-      badgeText = "PrÃ©-Venda";
+      badgeText = "Pré-Venda";
       buttonLabel = "Adicionar ao Carrinho";
     }
 
     if (isFree) {
-      badgeBg = "#25a244"; badgeText = "GrÃ¡tis";
-      buttonLabel = "Download GrÃ¡tis"; buyClass += " free-btn";
+      badgeBg = "#25a244"; badgeText = "Grátis";
+      buttonLabel = "Download Grátis"; buyClass += " free-btn";
     } else if (isPurchased) {
       badgeBg = "#25a244"; badgeText = "Adquirido";
-      buttonLabel = prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "") ? "Aguardando LanÃ§amento" : "Baixar Biblioteca"; 
+      buttonLabel = prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "") ? "Aguardando Lançamento" : "Baixar Biblioteca"; 
       buyClass += " download-btn";
       priceStyle = "#52b788";
     }
 
-    const priceText = isFree ? "GrÃ¡tis" : formatBRL(prod.price);
+    const priceText = isFree ? "Grátis" : formatBRL(prod.price);
     const oldPriceText = (!isFree && prod.oldPrice) ? formatBRL(prod.oldPrice) : "";
 
     card.innerHTML = `
@@ -440,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <p class="product-desc">${prod.desc}</p>
         <div class="product-sales">
           <div class="sales-row">
-            ${prod.category === "pre-venda" && prod.releaseDate ? `<div class="rating-score" style="color:#f59e0b;font-size:11px;">LanÃ§amento: ${prod.releaseDate}</div>` : `<div class="rating-score">â˜… <span>${prod.rating.toFixed(1)}</span></div>`}
+            ${prod.category === "pre-venda" && prod.releaseDate ? `<div class="rating-score" style="color:#f59e0b;font-size:11px;">Lançamento: ${prod.releaseDate}</div>` : `<div class="rating-score">★ <span>${prod.rating.toFixed(1)}</span></div>`}
             ${oldPriceText ? `<div class="price-old">${oldPriceText}</div>` : ""}
           </div>
           <div class="price-row">
@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="product-meta">${prod.meta.map(m => `<span>${m}</span>`).join("")}</div>
         <div class="product-actions">
           <a href="#" class="${buyClass}">${buttonLabel}</a>
-          ${prod.youtube ? `<a href="${prod.youtube}" target="_blank" class="btn-secondary">Ver VÃ­deo</a>` : ""}
+          ${prod.youtube ? `<a href="${prod.youtube}" target="_blank" class="btn-secondary">Ver Vídeo</a>` : ""}
         </div>
       </div>`;
     return card;
@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           const itemExists = cart.find(i => i.id === prod.id);
           if (itemExists) {
-            showToast("Este item jÃ¡ estÃ¡ no carrinho!");
+            showToast("Este item já está no carrinho!");
           } else {
             cart.push(prod);
             saveCart();
@@ -494,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btnGoToYoutube")?.addEventListener("click", () => {
     localStorage.setItem("dawload_yt_sub", "true");
     closeAuthModal(ytSubModal);
-    showToast("Obrigado por se inscrever! Liberando download... ðŸŽ‰");
+    showToast("Obrigado por se inscrever! Liberando download... 🎉");
     if (pendingDownloadProduct) {
       const prod = pendingDownloadProduct;
       pendingDownloadProduct = null;
@@ -505,12 +505,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function triggerDownload(prod) {
     // 1. Exigir cadastro/login no site
     if (!isLoggedIn()) {
-      showToast("Cadastre-se ou faÃ§a login gratuitamente para baixar!");
+      showToast("Cadastre-se ou faça login gratuitamente para baixar!");
       openAuthModal(registerModal);
       return;
     }
 
-    // 2. Exigir inscriÃ§Ã£o no YouTube para libs grÃ¡tis
+    // 2. Exigir inscrição no YouTube para libs grátis
     if (prod.category === "gratis" && localStorage.getItem("dawload_yt_sub") !== "true") {
       pendingDownloadProduct = prod;
       const titleEl = document.getElementById("ytSubProdTitle");
@@ -519,9 +519,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // 3. Efetuar download ou barrar prÃ©-venda
+    // 3. Efetuar download ou barrar pré-venda
     if (prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "")) {
-      showToast(`Ainda em prÃ©-venda! DisponÃ­vel a partir de: ${prod.releaseDate || 'Breve'}`);
+      showToast(`Ainda em pré-venda! Disponível a partir de: ${prod.releaseDate || 'Breve'}`);
       return;
     }
 
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showToast(`Iniciando download: ${prod.title}...`);
       setTimeout(() => window.open(prod.downloadLink, "_blank"), 800);
     } else {
-      showToast("Link de download nÃ£o configurado. Acesse o Painel Admin.");
+      showToast("Link de download não configurado. Acesse o Painel Admin.");
     }
   }
 
@@ -562,7 +562,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
       let featuresHtml = "";
       if (combo.features && combo.features.length) {
-        featuresHtml = `<ul class="plan-features">` + combo.features.map(f => `<li>âœ“ ${f}</li>`).join('') + `</ul>`;
+        featuresHtml = `<ul class="plan-features">` + combo.features.map(f => `<li>✓ ${f}</li>`).join('') + `</ul>`;
       }
 
       card.innerHTML = `
@@ -595,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         const itemExists = cart.find(i => i.id === comboProd.id);
         if (itemExists) {
-            showToast("Este combo jÃ¡ estÃ¡ no carrinho!");
+            showToast("Este combo já está no carrinho!");
         } else {
             cart.push(comboProd);
             saveCart();
@@ -606,10 +606,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Chamar logo na inicializaÃ§Ã£o
+  // Chamar logo na inicialização
   renderCombos();
   // ==========================================================
-  //  BUSCA & SUGESTÃ•ES
+  //  BUSCA & SUGESTÕES
   // ==========================================================
   function normalize(t) {
     return String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -640,7 +640,7 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedSuggestionIndex = -1;
     if (!currentSuggestions.length) { suggestionsDropdown.classList.remove("show"); return; }
     suggestionsDropdown.innerHTML = currentSuggestions.map((term, i) =>
-      `<button class="suggestion-option" type="button" data-index="${i}"><span>âŒ•</span><span>${highlightSuggestion(term, query)}</span></button>`
+      `<button class="suggestion-option" type="button" data-index="${i}"><span>⌕</span><span>${highlightSuggestion(term, query)}</span></button>`
     ).join("");
     suggestionsDropdown.classList.add("show");
     suggestionsDropdown.querySelectorAll(".suggestion-option").forEach(opt => {
@@ -712,12 +712,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================================================
 
   // ==========================================================
-  //  CHECKOUT â€” 3 Abas: PIX / CrÃ©dito / DÃ©bito
+  //  CHECKOUT — 3 Abas: PIX / Crédito / Débito
   // ==========================================================
   // ----------------------------------------------------------------------
-  // CONFIGURAÃ‡ÃƒO MERCADO PAGO - CARTÃ•ES (FRONTEND)
+  // CONFIGURAÇÃO MERCADO PAGO - CARTÕES (FRONTEND)
   // ----------------------------------------------------------------------
-  // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave PÃºblica) do Mercado Pago
+  // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave Pública) do Mercado Pago
   const MP_PUBLIC_KEY = 'APP_USR-4a1c9479-eeb2-49e0-843c-4dadd505cba8'; 
   const mp = typeof MercadoPago !== 'undefined' ? new MercadoPago(MP_PUBLIC_KEY) : null;
   // ----------------------------------------------------------------------
@@ -744,7 +744,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- PIX countdown e Auto Sync ---
   let currentPaymentId = null;
-  // Fallback para desenvolvimento local (file://) ou produÃ§Ã£o (caminho relativo)
+  // Fallback para desenvolvimento local (file://) ou produção (caminho relativo)
   const API_BASE = window.location.protocol === 'file:' 
     ? 'http://localhost:3000' 
     : '';
@@ -783,7 +783,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const qrImg = document.querySelector(".pix-qr-box img");
         if (qrImg && data.qrCodeImage) qrImg.src = data.qrCodeImage;
 
-        // 2. Iniciar Polling (perguntar ao servidor a cada 3s se jÃ¡ pagou)
+        // 2. Iniciar Polling (perguntar ao servidor a cada 3s se já pagou)
         pollPaymentStatus();
       }
     } catch (err) {
@@ -797,7 +797,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     pixAutoSyncTimer = setTimeout(async () => {
       if (!selectedProductForCheckout || !document.getElementById("tab-pix")?.classList.contains("active")) {
-        return; // UsuÃ¡rio fechou ou trocou de aba
+        return; // Usuário fechou ou trocou de aba
       }
 
       try {
@@ -837,12 +837,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Card 3D Flip helpers ---
   function detectBrand(num) {
     const n = num.replace(/\s/g, "");
-    if (/^4/.test(n)) return { label: "VISA", emoji: "ðŸ’³", css: "brand-visa" };
-    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "ðŸ”´ðŸŸ¡", css: "brand-mastercard" };
-    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "ðŸ’›", css: "brand-elo" };
-    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "ðŸ”´", css: "brand-hipercard" };
-    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "ðŸ”·", css: "brand-amex" };
-    return { label: "ðŸ’³", emoji: "ðŸ’³", css: "" };
+    if (/^4/.test(n)) return { label: "VISA", emoji: "💳", css: "brand-visa" };
+    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "🔴🟡", css: "brand-mastercard" };
+    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "💛", css: "brand-elo" };
+    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "🔴", css: "brand-hipercard" };
+    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "🔷", css: "brand-amex" };
+    return { label: "💳", emoji: "💳", css: "" };
   }
 
   function maskCardNumber(val) {
@@ -865,8 +865,8 @@ document.addEventListener("DOMContentLoaded", function () {
     numInput?.addEventListener("input", e => {
       const masked = maskCardNumber(e.target.value);
       e.target.value = masked;
-      const display = masked || "â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢";
-      if (numDisplay) numDisplay.textContent = display.padEnd(19, "â€¢").replace(/(.{4})/g, "$1 ").trim();
+      const display = masked || "•••• •••• •••• ••••";
+      if (numDisplay) numDisplay.textContent = display.padEnd(19, "•").replace(/(.{4})/g, "$1 ").trim();
       const brand = detectBrand(masked);
       if (brandDisplay) brandDisplay.textContent = brand.emoji;
     });
@@ -887,7 +887,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cvvInput?.addEventListener("input", e => {
       const v = e.target.value.replace(/\D/g, "").substring(0, 4);
       e.target.value = v;
-      if (cvvDisplay) cvvDisplay.textContent = v ? "â€¢".repeat(v.length) : "â€¢â€¢â€¢";
+      if (cvvDisplay) cvvDisplay.textContent = v ? "•".repeat(v.length) : "•••";
     });
   }
 
@@ -904,7 +904,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("option");
       opt.value = i;
       opt.textContent = i === 1
-        ? `1x de ${formatBRL(price)} (Ã  vista)`
+        ? `1x de ${formatBRL(price)} (à vista)`
         : `${i}x de ${formatBRL(installment)} (total ${formatBRL(total)})`;
       sel.appendChild(opt);
     }
@@ -928,7 +928,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Require login
     if (!isLoggedIn()) {
-      showToast("FaÃ§a login ou cadastre-se para finalizar a compra.");
+      showToast("Faça login ou cadastre-se para finalizar a compra.");
       openAuthModal(registerModal);
       return;
     }
@@ -958,7 +958,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Iniciar countdown PIX
     startPixCountdown();
 
-    // Setup cartÃ£o
+    // Setup cartão
     setupCardInputs("credit", "card3dCredit");
     setupCardInputs("debit", "card3dDebit");
     setupInstallments(prod.price);
@@ -1012,14 +1012,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Validar e Formatar CPF
     const rawCpf = cardData.cpf.replace(/\D/g, '');
     if (rawCpf.length !== 11) {
-      showToast("CPF invÃ¡lido! Por favor digite corretamente.", 4000);
+      showToast("CPF inválido! Por favor digite corretamente.", 4000);
       checkoutBody.style.display = "";
       checkoutProcessing.style.display = "none";
       return;
     }
 
     try {
-      // 2. Tokenizar CartÃ£o de CrÃ©dito/DÃ©bito direto na API do Mercado Pago
+      // 2. Tokenizar Cartão de Crédito/Débito direto na API do Mercado Pago
       const tokenReq = await fetch(`https://api.mercadopago.com/v1/card_tokens?public_key=${MP_PUBLIC_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1042,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!tokenResponse || !tokenResponse.id) {
         console.error("Erro no MP:", tokenResponse);
-        throw new Error(tokenResponse.message || "NÃ£o foi possÃ­vel gerar o Token do CartÃ£o. Verifique os dados.");
+        throw new Error(tokenResponse.message || "Não foi possível gerar o Token do Cartão. Verifique os dados.");
       }
 
       // 3. Enviar o Token para o Servidor cobrar
@@ -1054,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", function () {
           productId: selectedProductForCheckout.id,
           token: tokenResponse.id,
           installments: installments,
-          paymentMethodId: method === "DÃ©bito" ? "debmaster" : "master", // SerÃ¡ descoberto pelo backend/SDK, mas enviamos fallback
+          paymentMethodId: method === "Débito" ? "debmaster" : "master", // Será descoberto pelo backend/SDK, mas enviamos fallback
           payer: {
             email: cardData.email,
             identification: { type: "CPF", number: rawCpf },
@@ -1071,8 +1071,8 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(data.error || "O banco recusou o pagamento.");
       }
     } catch (err) {
-      console.error("Erro ao processar cartÃ£o:", err);
-      showToast(err.message || "Erro ao processar o cartÃ£o. Tente novamente.", 4000);
+      console.error("Erro ao processar cartão:", err);
+      showToast(err.message || "Erro ao processar o cartão. Tente novamente.", 4000);
       checkoutBody.style.display = "";
       checkoutProcessing.style.display = "none";
     }
@@ -1094,10 +1094,10 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     if (!cardData.number || !cardData.exp || !cardData.cvv || !cardData.name || !cardData.cpf || !cardData.email) {
-      return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
+      return showToast("Preencha todos os campos do cartão (inclusive CPF e E-mail).", 3000);
     }
     
-    processPayment("CartÃ£o de CrÃ©dito", installments, cardData);
+    processPayment("Cartão de Crédito", installments, cardData);
   });
 
   document.getElementById("btnConfirmDebit")?.addEventListener("click", () => {
@@ -1111,10 +1111,10 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     if (!cardData.number || !cardData.exp || !cardData.cvv || !cardData.name || !cardData.cpf || !cardData.email) {
-      return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
+      return showToast("Preencha todos os campos do cartão (inclusive CPF e E-mail).", 3000);
     }
 
-    processPayment("DÃ©bito", 1, cardData);
+    processPayment("Débito", 1, cardData);
   });
 
   btnGoToDownload?.addEventListener("click", () => {
@@ -1125,13 +1125,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ==========================================================
-  //  MINHA CONTA â€” Painel com abas
+  //  MINHA CONTA — Painel com abas
   // ==========================================================
   function openMyAccount() {
     if (!myAccountOverlay) return;
     const user = getCurrentUser();
     const emailEl = document.getElementById("accountUserEmail");
-    if (emailEl) emailEl.textContent = user ? user.email : "Downloads DisponÃ­veis";
+    if (emailEl) emailEl.textContent = user ? user.email : "Downloads Disponíveis";
     updateMyAccountList();
     updatePurchaseHistory();
     updateAffiliateDashboard();
@@ -1168,7 +1168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const myLibs = productsData.filter(p => p.category === "gratis" || purchases.includes(p.id));
 
     if (!myLibs.length) {
-      myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponÃ­vel ainda.</div>`;
+      myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponível ainda.</div>`;
       return;
     }
 
@@ -1181,9 +1181,9 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="purchase-history-info">
           <div class="purchase-history-title">${prod.title}</div>
-          <div class="purchase-history-meta" style="color:${prod.category==='gratis'?'#52b788':'var(--accent)'};">${prod.category==='gratis'?'GrÃ¡tis':'Adquirida'}</div>
+          <div class="purchase-history-meta" style="color:${prod.category==='gratis'?'#52b788':'var(--accent)'};">${prod.category==='gratis'?'Grátis':'Adquirida'}</div>
         </div>
-        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">â¬‡ Download</button>`;
+        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">⬇ Download</button>`;
       myAccountDownloadsList.appendChild(div);
     });
 
@@ -1215,7 +1215,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.innerHTML = `
         <div class="purchase-history-info">
           <div class="purchase-history-title">${p.productTitle}</div>
-          <div class="purchase-history-meta">${date} Â· ${p.paymentMethod} Â· ${formatBRL(p.amount)}</div>
+          <div class="purchase-history-meta">${date} · ${p.paymentMethod} · ${formatBRL(p.amount)}</div>
         </div>`;
       list.appendChild(div);
     });
@@ -1245,11 +1245,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const convList = document.getElementById("conversionsList");
       if (convList) {
         if (!stats.conversions.length) {
-          convList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px;">Nenhuma venda atribuÃ­da ainda.</div>`;
+          convList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px;">Nenhuma venda atribuída ainda.</div>`;
         } else {
           convList.innerHTML = stats.conversions.map(c => `
             <div class="conversion-item">
-              <span>${new Date(c.date).toLocaleDateString("pt-BR")} Â· ${c.productTitle}</span>
+              <span>${new Date(c.date).toLocaleDateString("pt-BR")} · ${c.productTitle}</span>
               <span class="conversion-commission">+${formatBRL(c.commission)}</span>
             </div>`).join("");
         }
@@ -1267,10 +1267,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("btnRegisterAffiliate")?.addEventListener("click", () => {
     const user = getCurrentUser();
-    if (!user) { showToast("FaÃ§a login para se tornar afiliado."); openAuthModal(loginModal); return; }
+    if (!user) { showToast("Faça login para se tornar afiliado."); openAuthModal(loginModal); return; }
     const channel = document.getElementById("affiliateChannelInput")?.value || "";
     registerAsAffiliate(user.id, channel);
-    showToast("VocÃª agora Ã© um Afiliado D.A.W.LOAD! ðŸŽ‰");
+    showToast("Você agora é um Afiliado D.A.W.LOAD! 🎉");
     updateAffiliateDashboard();
   });
 
@@ -1280,7 +1280,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnResetPurchases?.addEventListener("click", () => {
     clearPurchases();
-    showToast("HistÃ³rico de compras resetado.");
+    showToast("Histórico de compras resetado.");
     updateMyAccountList();
     renderProducts();
   });
@@ -1301,7 +1301,7 @@ document.addEventListener("DOMContentLoaded", function () {
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
       
-      // ConfiguraÃ§Ã£o para caixas de produtos verticais (3 camadas)
+      // Configuração para caixas de produtos verticais (3 camadas)
       // 1. Gradiente para dar contraste no texto
       // 2. Imagem contida na direita
       // 3. Imagem esticada bem escura preenchendo o fundo
@@ -1319,7 +1319,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (prod.demoUrl || prod.youtubeUrl) {
         demoBtn = `<button type="button" class="hero-btn demo-button" data-title="${prod.title}" data-midi="${prod.demoUrl || ''}" data-youtube="${prod.youtubeUrl || ''}">Conhecer Biblioteca</button>`;
       } else {
-        demoBtn = `<a href="#storeGrid" class="hero-btn">Ver CatÃ¡logo</a>`;
+        demoBtn = `<a href="#storeGrid" class="hero-btn">Ver Catálogo</a>`;
       }
 
       slide.innerHTML = `
@@ -1451,7 +1451,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   topMembersRankButton?.addEventListener("click", openMemberOverlay);
   topMembersJoinButton?.addEventListener("click", () => {
-    showToast("Ãrea de Membros em desenvolvimento!");
+    showToast("Área de Membros em desenvolvimento!");
   });
   memberOverlayClose?.addEventListener("click", () => memberOverlay?.classList.remove("is-open"));
   memberOverlayBackdrop?.addEventListener("click", () => memberOverlay?.classList.remove("is-open"));
@@ -1507,7 +1507,7 @@ document.addEventListener("DOMContentLoaded", function () {
   supportModalBackdrop?.addEventListener("click", closeSupportModal);
 
   function renderHumanSupportCard(userQuery) {
-    const defaultText = userQuery ? `OlÃ¡, preciso de suporte no D.A.W.LOAD: ${userQuery}` : "OlÃ¡, preciso de ajuda no D.A.W.LOAD";
+    const defaultText = userQuery ? `Olá, preciso de suporte no D.A.W.LOAD: ${userQuery}` : "Olá, preciso de ajuda no D.A.W.LOAD";
     const encText = encodeURIComponent(defaultText);
     const rafaelLink = `https://wa.me/5521981134378?text=${encText}`;
     const alexLink = `https://wa.me/5513991298707?text=${encText}`;
@@ -1516,10 +1516,10 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="human-support-card">
         <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:2px;">Fale diretamente no WhatsApp:</div>
         <a href="${rafaelLink}" target="_blank" class="human-contact-btn rafael">
-          <span>ðŸ’¬</span> Falar com Rafael (+55 21 981134378)
+          <span>💬</span> Falar com Rafael (+55 21 981134378)
         </a>
         <a href="${alexLink}" target="_blank" class="human-contact-btn alex">
-          <span>ðŸ’¬</span> Falar com Alex (+55 13 99129-8707)
+          <span>💬</span> Falar com Alex (+55 13 99129-8707)
         </a>
       </div>`;
   }
@@ -1538,31 +1538,31 @@ document.addEventListener("DOMContentLoaded", function () {
     let botReply = "";
 
     if (topic === "download") {
-      userText = "ðŸ“¥ Tenho problemas no download";
-      botReply = `Se o seu download nÃ£o iniciou ou foi interrompido, verifique:<br>
-      â€¢ Se a sua conexÃ£o com a internet estÃ¡ estÃ¡vel.<br>
-      â€¢ Se o seu navegador nÃ£o bloqueou a janela pop-up do download.<br>
-      â€¢ Para bibliotecas grÃ¡tis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
+      userText = "📥 Tenho problemas no download";
+      botReply = `Se o seu download não iniciou ou foi interrompido, verifique:<br>
+      • Se a sua conexão com a internet está estável.<br>
+      • Se o seu navegador não bloqueou a janela pop-up do download.<br>
+      • Para bibliotecas grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
       Caso o problema persista, fale agora com a nossa equipe no WhatsApp:
       ${renderHumanSupportCard("Tenho um problema no download da minha biblioteca no D.A.W.LOAD")}`;
     } else if (topic === "kontakt") {
-      userText = "ðŸŽ¹ DÃºvida sobre InstalaÃ§Ã£o / Kontakt";
-      botReply = `Nossas bibliotecas sÃ£o compatÃ­veis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
-      <strong>Passo a passo rÃ¡pido:</strong><br>
+      userText = "🎹 Dúvida sobre Instalação / Kontakt";
+      botReply = `Nossas bibliotecas são compatíveis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
+      <strong>Passo a passo rápido:</strong><br>
       1. Baixe e extraia o arquivo da biblioteca (.rar ou .zip).<br>
       2. Abra seu Kontakt.<br>
       3. Arraste a pasta/arquivo .nki para dentro do Kontakt.<br><br>
-      Precisa de auxÃ­lio direto na instalaÃ§Ã£o ou configuraÃ§Ã£o?
-      ${renderHumanSupportCard("Preciso de ajuda na instalaÃ§Ã£o/configuraÃ§Ã£o do Kontakt")}`;
+      Precisa de auxílio direto na instalação ou configuração?
+      ${renderHumanSupportCard("Preciso de ajuda na instalação/configuração do Kontakt")}`;
     } else if (topic === "pagamento") {
-      userText = "ðŸ’³ DÃºvidas de Pagamento / Comprovante";
-      botReply = `Pagamentos por **PIX** e **CartÃ£o** sÃ£o verificados e liberados no site.<br><br>
-      Se vocÃª efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dÃºvida de cobranÃ§a:
+      userText = "💳 Dúvidas de Pagamento / Comprovante";
+      botReply = `Pagamentos por **PIX** e **Cartão** são verificados e liberados no site.<br><br>
+      Se você efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dúvida de cobrança:
       ${renderHumanSupportCard("Gostaria de enviar o comprovante do meu pagamento no D.A.W.LOAD")}`;
     } else if (topic === "humano") {
-      userText = "ðŸ’¬ Quero falar com suporte humano";
+      userText = "💬 Quero falar com suporte humano";
       botReply = `Com certeza! Escolha abaixo com quem prefere falar diretamente no WhatsApp:
-      ${renderHumanSupportCard("OlÃ¡! Gostaria de falar com o suporte do D.A.W.LOAD.")}`;
+      ${renderHumanSupportCard("Olá! Gostaria de falar com o suporte do D.A.W.LOAD.")}`;
     }
 
     if (userText) appendChatMessage("user", userText);
@@ -1571,7 +1571,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Clique nos botÃµes de tÃ³picos
+  // Clique nos botões de tópicos
   document.getElementById("supportOptionsGrid")?.addEventListener("click", e => {
     const btn = e.target.closest(".chat-option-btn");
     if (btn) {
@@ -1579,7 +1579,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // FormulÃ¡rio de mensagem de texto livre
+  // Formulário de mensagem de texto livre
   supportChatForm?.addEventListener("submit", e => {
     e.preventDefault();
     const text = supportChatInput?.value.trim();
@@ -1592,16 +1592,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let reply = "";
 
     if (norm.includes("download") || norm.includes("baixar") || norm.includes("link")) {
-      reply = `Se vocÃª nÃ£o conseguiu baixar, certifique-se de estar logado no site e ter liberado o link.<br><br>Para ajuda direta dos desenvolvedores:
+      reply = `Se você não conseguiu baixar, certifique-se de estar logado no site e ter liberado o link.<br><br>Para ajuda direta dos desenvolvedores:
       ${renderHumanSupportCard(text)}`;
     } else if (norm.includes("kontakt") || norm.includes("instalar") || norm.includes("erro") || norm.includes("nki")) {
-      reply = `As bibliotecas exigem Kontakt 6 ou 7 Full.<br><br>Quer que ajudemos vocÃª a configurar no seu computador?
+      reply = `As bibliotecas exigem Kontakt 6 ou 7 Full.<br><br>Quer que ajudemos você a configurar no seu computador?
       ${renderHumanSupportCard(text)}`;
     } else if (norm.includes("pix") || norm.includes("pagar") || norm.includes("comprar") || norm.includes("comprovante")) {
-      reply = `Encaminhando seu comprovante / dÃºvida de pagamento para verificaÃ§Ã£o rÃ¡pida:
+      reply = `Encaminhando seu comprovante / dúvida de pagamento para verificação rápida:
       ${renderHumanSupportCard(text)}`;
     } else {
-      reply = `Entendi a sua solicitaÃ§Ã£o! Para te responder com atenÃ§Ã£o total, escolha quem vocÃª deseja chamar no WhatsApp:
+      reply = `Entendi a sua solicitação! Para te responder com atenção total, escolha quem você deseja chamar no WhatsApp:
       ${renderHumanSupportCard(text)}`;
     }
 

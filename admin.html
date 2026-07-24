@@ -8,7 +8,7 @@
   
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Estilos extras especÃ­ficos para o painel admin */
+    /* Estilos extras específicos para o painel admin */
     .admin-container {
       max-width: 1000px;
       margin: 40px auto;
@@ -374,12 +374,12 @@
     <!-- 1. Tela de Login Master -->
     <div class="login-box" id="adminLoginBox">
       <h2>Acesso Restrito</h2>
-      <p>Digite a senha master para gerenciar os arquivos e preÃ§os da D.A.W.LOAD.</p>
+      <p>Digite a senha master para gerenciar os arquivos e preços da D.A.W.LOAD.</p>
       
       <form id="adminLoginForm">
         <div class="form-group">
           <label for="adminPassword">Senha Master</label>
-          <input type="password" id="adminPassword" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+          <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required>
         </div>
         <button type="submit" class="btn-primary btn-block">Entrar no Painel</button>
       </form>
@@ -390,16 +390,16 @@
       <div class="admin-header">
         <div>
           <h1>Painel do Desenvolvedor</h1>
-          <p class="opt-sub">Edite preÃ§os, descontos e links de downloads das bibliotecas</p>
+          <p class="opt-sub">Edite preços, descontos e links de downloads das bibliotecas</p>
         </div>
         <div class="admin-header-actions">
           <button class="btn-admin-nav btn-logout" id="btnLogout" type="button">Sair</button>
         </div>
       </div>
       <div class="product-list-card" style="margin-bottom:20px;">
-        <h3 style="font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;">ðŸ’³ Conta de Recebimento & Chave PIX</h3>
+        <h3 style="font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;">💳 Conta de Recebimento & Chave PIX</h3>
         <div class="form-group" style="margin-bottom:0;">
-          <label>Chave PIX / E-mail de Recebimento (PIX, CrÃ©dito e DÃ©bito)</label>
+          <label>Chave PIX / E-mail de Recebimento (PIX, Crédito e Débito)</label>
           <input type="email" id="adminPaymentAccount" class="form-input" placeholder="seu@email.com" value="D.A.W.LOAD">
         </div>
       </div>
@@ -407,7 +407,7 @@
       <div class="admin-tabs">
         <button type="button" class="admin-tab-btn active" data-tab="produtos">Produtos</button>
         <button type="button" class="admin-tab-btn" data-tab="combos">Planos & Combos</button>
-        <button type="button" class="admin-tab-btn" data-tab="prevenda">PrÃ©-Vendas</button>
+        <button type="button" class="admin-tab-btn" data-tab="prevenda">Pré-Vendas</button>
         <button type="button" class="admin-tab-btn" data-tab="afiliados">Afiliados / Parceiros</button>
       </div>
 
@@ -427,7 +427,7 @@
       <div class="admin-tab-content" id="tab-combos">
         <div class="product-list-card">
           <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
-            <span>ConfiguraÃ§Ã£o de Planos & Combos</span>
+            <span>Configuração de Planos & Combos</span>
           </div>
           
           <div id="adminComboList">
@@ -443,7 +443,7 @@
       <div class="admin-tab-content" id="tab-prevenda">
         <div class="product-list-card">
           <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: var(--text-muted); text-transform: uppercase;">
-            <span>Gerenciamento de PrÃ©-Vendas</span>
+            <span>Gerenciamento de Pré-Vendas</span>
           </div>
           
           <div id="adminPreVendaList">
@@ -451,7 +451,7 @@
           </div>
           
           <div style="margin-top: 16px; text-align: center;">
-            <button type="button" class="btn-admin-nav" id="btnAddPreVenda" style="background: rgba(255,255,255,0.05);">+ Adicionar Nova PrÃ©-Venda</button>
+            <button type="button" class="btn-admin-nav" id="btnAddPreVenda" style="background: rgba(255,255,255,0.05);">+ Adicionar Nova Pré-Venda</button>
           </div>
         </div>
       </div>
@@ -469,11 +469,11 @@
         </div>
       </div>
       
-      <button class="btn-save-all" id="btnSaveAll" type="button" style="margin-top: 20px;">Salvar Todas as AlteraÃ§Ãµes</button>
+      <button class="btn-save-all" id="btnSaveAll" type="button" style="margin-top: 20px;">Salvar Todas as Alterações</button>
     </div>
 
     <footer class="admin-footer">
-      <p>Â© 2026 D.A.W.LOAD - Painel do Desenvolvedor Restrito.</p>
+      <p>© 2026 D.A.W.LOAD - Painel do Desenvolvedor Restrito.</p>
     </footer>
   </div>
 
@@ -486,7 +486,7 @@
       
       <div class="form-group">
         <label>Nome Completo do Parceiro</label>
-        <input type="text" id="newAffName" class="form-input" placeholder="Ex: JoÃ£o Silva">
+        <input type="text" id="newAffName" class="form-input" placeholder="Ex: João Silva">
       </div>
       <div class="form-group">
         <label>E-mail do Parceiro</label>
@@ -494,7 +494,7 @@
       </div>
       <div class="form-group">
         <label>Chave PIX do Parceiro (Opcional)</label>
-        <input type="text" id="newAffPix" class="form-input" placeholder="Telefone, CPF, E-mail ou AleatÃ³ria">
+        <input type="text" id="newAffPix" class="form-input" placeholder="Telefone, CPF, E-mail ou Aleatória">
       </div>
       <div style="display:flex; gap:12px;">
         <div class="form-group" style="flex:1;">
@@ -502,7 +502,7 @@
           <input type="text" id="newAffPass" class="form-input" placeholder="Ex: 123456" value="123456">
         </div>
         <div class="form-group" style="flex:1;">
-          <label>ComissÃ£o (%)</label>
+          <label>Comissão (%)</label>
           <input type="number" id="newAffRate" class="form-input" placeholder="Ex: 50" value="50">
         </div>
       </div>
@@ -511,7 +511,7 @@
     </div>
   </div>
 
-  <div class="toast-msg" id="toast">AlteraÃ§Ãµes salvas!</div>
+  <div class="toast-msg" id="toast">Alterações salvas!</div>
 
   <!-- Banco de dados compartilhado -->
   <script src="database.js"></script>
@@ -558,12 +558,12 @@
         });
       });
 
-      // Verificar login na sessÃ£o
+      // Verificar login na sessão
       if (sessionStorage.getItem("adminLoggedIn") === "true") {
         showDashboard();
       }
 
-      // AÃ§Ã£o de Login
+      // Ação de Login
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
         const pwd = passwordInput.value;
@@ -583,12 +583,12 @@
         }
       });
 
-      // AÃ§Ã£o de Logout
+      // Ação de Logout
       btnLogout.addEventListener("click", function () {
         sessionStorage.removeItem("adminLoggedIn");
         dashboard.classList.remove("active");
         loginBox.style.display = "block";
-        showToast("VocÃª saiu do painel.");
+        showToast("Você saiu do painel.");
       });
 
       function showDashboard() {
@@ -607,7 +607,7 @@
         if (saved) {
           products = JSON.parse(saved);
         } else {
-          // Fallback: usa o banco de dados padrÃ£o completo do app.js
+          // Fallback: usa o banco de dados padrão completo do app.js
           products = JSON.parse(JSON.stringify(defaultProducts));
           localStorage.setItem("dawload_products", JSON.stringify(products));
         }
@@ -625,7 +625,7 @@
         productListContainer.innerHTML = "";
         
         products.forEach((prod, index) => {
-          if (prod.category === "pre-venda") return; // Ignora prÃ©-vendas aqui
+          if (prod.category === "pre-venda") return; // Ignora pré-vendas aqui
           
           const item = document.createElement("div");
           item.className = "product-edit-item";
@@ -633,7 +633,7 @@
           const isFree = prod.price === 0;
           const imagePath = `assets/${prod.id.replace(/-/g, '_')}.png`;
           const catClass = prod.category === "gratis" ? "cat-gratis" : "cat-pagas";
-          const catLabel = prod.category === "gratis" ? "GrÃ¡tis" : "Premium";
+          const catLabel = prod.category === "gratis" ? "Grátis" : "Premium";
           
           item.innerHTML = `
             <div class="product-thumb">
@@ -644,11 +644,11 @@
               <span class="product-info-cat ${catClass}">${catLabel}</span>
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label>PreÃ§o Venda (R$)</label>
+              <label>Preço Venda (R$)</label>
               <input type="number" step="0.01" class="form-input input-small edit-price" data-index="${index}" value="${prod.price}" ${isFree ? 'disabled' : ''}>
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label>PreÃ§o Antigo (R$)</label>
+              <label>Preço Antigo (R$)</label>
               <input type="number" step="0.01" class="form-input input-small edit-oldprice" data-index="${index}" value="${prod.oldPrice || ''}" ${isFree ? 'disabled' : ''}>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -656,7 +656,7 @@
               <input type="url" class="form-input input-small edit-link" data-index="${index}" placeholder="https://drive.google.com/..." value="${prod.downloadLink || ''}">
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label>VÃ­deo YouTube</label>
+              <label>Vídeo YouTube</label>
               <input type="url" class="form-input input-small edit-youtube" data-index="${index}" placeholder="https://youtube.com/..." value="${prod.youtube || ''}">
             </div>
           `;
@@ -680,31 +680,31 @@
           
           item.innerHTML = `
             <div style="display: flex; flex-direction: column; gap: 12px;">
-              <div class="product-info-title">${prod.title || 'Nova PrÃ©-Venda'}</div>
+              <div class="product-info-title">${prod.title || 'Nova Pré-Venda'}</div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>ID da PrÃ©-Venda (Ãºnico)</label>
+                <label>ID da Pré-Venda (único)</label>
                 <input type="text" class="form-input input-small edit-pv-id" data-index="${index}" value="${prod.id || ''}" placeholder="Ex: novo-vst">
               </div>
 
               <div class="form-group" style="margin-bottom:0;">
-                <label>TÃ­tulo / Nome</label>
+                <label>Título / Nome</label>
                 <input type="text" class="form-input input-small edit-pv-title" data-index="${index}" value="${prod.title || ''}">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>PreÃ§o Venda (R$)</label>
+                <label>Preço Venda (R$)</label>
                 <input type="number" step="0.01" class="form-input input-small edit-pv-price" data-index="${index}" value="${prod.price || 0}">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>PreÃ§o Antigo (R$)</label>
+                <label>Preço Antigo (R$)</label>
                 <input type="number" step="0.01" class="form-input input-small edit-pv-oldprice" data-index="${index}" value="${prod.oldPrice || ''}">
               </div>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px;">
-              <button type="button" class="btn-admin-nav btn-delete-pv" data-index="${index}" style="position:absolute; top: 16px; right: 0; padding: 4px 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Excluir PrÃ©-Venda</button>
+              <button type="button" class="btn-admin-nav btn-delete-pv" data-index="${index}" style="position:absolute; top: 16px; right: 0; padding: 4px 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Excluir Pré-Venda</button>
               
               <div class="form-group" style="margin-top: 34px; margin-bottom:0;">
                 <label>Caminho da Imagem</label>
@@ -712,12 +712,12 @@
               </div>
 
               <div class="form-group" style="margin-bottom:0;">
-                <label>Data de LanÃ§amento Prevista</label>
+                <label>Data de Lançamento Prevista</label>
                 <input type="text" class="form-input input-small edit-pv-date" data-index="${index}" value="${prod.releaseDate || ''}" placeholder="DD/MM/AAAA">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>Link de Download (Opcional - sÃ³ preencha quando lanÃ§ar)</label>
+                <label>Link de Download (Opcional - só preencha quando lançar)</label>
                 <input type="url" class="form-input input-small edit-pv-link" data-index="${index}" value="${prod.downloadLink || ''}" placeholder="https://drive...">
               </div>
             </div>
@@ -725,7 +725,7 @@
           preVendaListContainer.appendChild(item);
         });
 
-        // Eventos de exclusÃ£o de prÃ©-venda
+        // Eventos de exclusão de pré-venda
         preVendaListContainer.querySelectorAll(".btn-delete-pv").forEach(btn => {
           btn.addEventListener("click", (e) => {
             const idx = parseInt(e.target.dataset.index);
@@ -735,20 +735,20 @@
         });
       }
 
-      // Adicionar Nova PrÃ©-Venda
+      // Adicionar Nova Pré-Venda
       document.getElementById("btnAddPreVenda")?.addEventListener("click", () => {
         products.push({
           id: "prevenda-" + Date.now(),
-          title: "Nova PrÃ©-Venda",
+          title: "Nova Pré-Venda",
           category: "pre-venda",
-          tagLabel: "PrÃ©-Venda",
-          desc: "Produto em desenvolvimento. Garanta com desconto antes do lanÃ§amento!",
+          tagLabel: "Pré-Venda",
+          desc: "Produto em desenvolvimento. Garanta com desconto antes do lançamento!",
           rating: 0,
           ratingCount: 0,
           oldPrice: 199.90,
           price: 99.90,
           discount: null,
-          meta: ["PrÃ©-Venda"],
+          meta: ["Pré-Venda"],
           image: "assets/logo.jpg",
           searchTags: "pre venda lancamento",
           youtube: "",
@@ -778,22 +778,22 @@
               <div class="product-info-title">${combo.title || 'Novo Combo'}</div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>TÃ­tulo do Combo</label>
+                <label>Título do Combo</label>
                 <input type="text" class="form-input input-small edit-c-title" data-index="${index}" value="${combo.title || ''}" placeholder="Ex: Combo Essencial">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>SubtÃ­tulo</label>
-                <input type="text" class="form-input input-small edit-c-subtitle" data-index="${index}" value="${combo.subtitle || ''}" placeholder="Ex: 2 Bibliotecas incrÃ­veis">
+                <label>Subtítulo</label>
+                <input type="text" class="form-input input-small edit-c-subtitle" data-index="${index}" value="${combo.subtitle || ''}" placeholder="Ex: 2 Bibliotecas incríveis">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>IDs das Bibliotecas Inclusas (separados por vÃ­rgula)</label>
+                <label>IDs das Bibliotecas Inclusas (separados por vírgula)</label>
                 <input type="text" class="form-input input-small edit-c-prods" data-index="${index}" value="${combo.products || ''}" placeholder="ex: vst-stage,piano-stage">
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>Tag (ex: Mais Vendido, PromoÃ§Ã£o)</label>
+                <label>Tag (ex: Mais Vendido, Promoção)</label>
                 <input type="text" class="form-input input-small edit-c-tag" data-index="${index}" value="${combo.tag || ''}">
               </div>
             </div>
@@ -803,25 +803,25 @@
               
               <div style="display:flex; gap: 12px; margin-top: 34px;">
                 <div class="form-group" style="margin-bottom:0; flex: 1;">
-                  <label>PreÃ§o Venda (R$)</label>
+                  <label>Preço Venda (R$)</label>
                   <input type="number" step="0.01" class="form-input input-small edit-c-price" data-index="${index}" value="${combo.price || 0}">
                 </div>
                 <div class="form-group" style="margin-bottom:0; flex: 1;">
-                  <label>PreÃ§o Antigo (R$)</label>
+                  <label>Preço Antigo (R$)</label>
                   <input type="number" step="0.01" class="form-input input-small edit-c-oldprice" data-index="${index}" value="${combo.oldPrice || ''}">
                 </div>
               </div>
               
               <div class="form-group" style="margin-bottom:0;">
-                <label>BenefÃ­cios / Features (Um por linha)</label>
-                <textarea class="form-input input-small edit-c-features" data-index="${index}" style="resize: vertical; min-height: 80px;" placeholder="BenefÃ­cio 1&#10;BenefÃ­cio 2">${featuresText}</textarea>
+                <label>Benefícios / Features (Um por linha)</label>
+                <textarea class="form-input input-small edit-c-features" data-index="${index}" style="resize: vertical; min-height: 80px;" placeholder="Benefício 1&#10;Benefício 2">${featuresText}</textarea>
               </div>
             </div>
           `;
           comboListContainer.appendChild(item);
         });
 
-        // Adicionar eventos de exclusÃ£o
+        // Adicionar eventos de exclusão
         comboListContainer.querySelectorAll(".btn-delete-combo").forEach(btn => {
           btn.addEventListener("click", (e) => {
             const idx = parseInt(e.target.dataset.index);
@@ -857,12 +857,12 @@
           item.innerHTML = `
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div class="product-info-title">${aff.name}</div>
-              <div style="color: var(--text-muted); font-size: 13px;">Canal: ${aff.affiliateChannel || 'NÃ£o informado'}</div>
+              <div style="color: var(--text-muted); font-size: 13px;">Canal: ${aff.affiliateChannel || 'Não informado'}</div>
               <div style="color: var(--text-muted); font-size: 13px;">E-mail: ${aff.email}</div>
-              <div style="color: var(--text-muted); font-size: 13px;">CÃ³digo: <strong>${aff.affiliateCode}</strong></div>
-              <div style="color: var(--text-muted); font-size: 13px;">PIX: <strong style="color:#52b788;">${aff.affiliatePixKey || 'NÃ£o cadastrado'}</strong></div>
+              <div style="color: var(--text-muted); font-size: 13px;">Código: <strong>${aff.affiliateCode}</strong></div>
+              <div style="color: var(--text-muted); font-size: 13px;">PIX: <strong style="color:#52b788;">${aff.affiliatePixKey || 'Não cadastrado'}</strong></div>
               <div style="margin-top: 8px;">
-                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Link de DivulgaÃ§Ã£o (Copie e Envie)</label>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Link de Divulgação (Copie e Envie)</label>
                 <div style="display:flex; gap:6px;">
                   <input type="text" class="form-input input-small" style="font-size:11px; padding:6px; color:#52b788;" value="${window.location.href.split('admin.html')[0]}?ref=${aff.affiliateCode}" readonly>
                   <button type="button" class="btn-primary" style="padding: 6px 12px; font-size: 11px;" onclick="navigator.clipboard.writeText('${window.location.href.split('admin.html')[0]}?ref=${aff.affiliateCode}'); alert('Link copiado!')">Copiar</button>
@@ -876,18 +876,18 @@
                   <input type="text" class="form-input input-small" value="${totalSales}" disabled>
                 </div>
                 <div class="form-group" style="margin-bottom:0; flex: 1;">
-                  <label>ComissÃ£o a Pagar (R$)</label>
+                  <label>Comissão a Pagar (R$)</label>
                   <input type="text" class="form-input input-small" value="${totalEarned.toFixed(2)}" disabled>
                 </div>
               <div style="display:flex; gap: 12px;">
                 <div class="form-group" style="margin-bottom:0; flex:1;">
-                  <label>Taxa de ComissÃ£o (%)</label>
+                  <label>Taxa de Comissão (%)</label>
                   <input type="number" step="1" class="form-input input-small edit-aff-rate" data-userid="${aff.id}" value="${currentRate}" placeholder="Ex: 30">
                   <small style="color:var(--text-muted); font-size:11px; display:block; margin-top:4px;">Define a % que este parceiro ganha por venda.</small>
                 </div>
                 <div class="form-group" style="margin-bottom:0; flex:1;">
                   <label>Nova Senha</label>
-                  <input type="text" class="form-input input-small edit-aff-pass" data-userid="${aff.id}" placeholder="Deixe em branco para nÃ£o mudar">
+                  <input type="text" class="form-input input-small edit-aff-pass" data-userid="${aff.id}" placeholder="Deixe em branco para não mudar">
                   <small style="color:var(--text-muted); font-size:11px; display:block; margin-top:4px;">Digite para alterar a senha.</small>
                 </div>
               </div>
@@ -903,7 +903,7 @@
         document.querySelectorAll(".remove-aff-btn").forEach(btn => {
           btn.addEventListener("click", (e) => {
             const userId = e.target.getAttribute("data-userid");
-            if (confirm("Tem certeza que deseja remover este parceiro? (Ele nÃ£o poderÃ¡ mais divulgar links ou receber comissÃµes)")) {
+            if (confirm("Tem certeza que deseja remover este parceiro? (Ele não poderá mais divulgar links ou receber comissões)")) {
               if (typeof removeAffiliateAdmin === "function") {
                 if (removeAffiliateAdmin(userId)) {
                   alert("Parceiro removido com sucesso!");
@@ -942,7 +942,7 @@
           const rate = document.getElementById("newAffRate").value.trim();
           
           if (!name || !email || !rate || !pass) {
-            showToast("Preencha Nome, Email, Senha e ComissÃ£o do parceiro.");
+            showToast("Preencha Nome, Email, Senha e Comissão do parceiro.");
             return;
           }
           
@@ -952,7 +952,7 @@
             addAffiliateModal.classList.remove("show");
             renderAdminAffiliates(); // Recarrega a lista
           } else {
-            showToast("Erro: Arquivo users.js nÃ£o carregado corretamente.");
+            showToast("Erro: Arquivo users.js não carregado corretamente.");
           }
         });
       }
@@ -978,7 +978,7 @@
       const savedAccount = localStorage.getItem("dawload_payment_account") || "D.A.W.LOAD";
       if (paymentAccountInput) paymentAccountInput.value = savedAccount;
 
-      // Salvar alteraÃ§Ãµes
+      // Salvar alterações
       btnSaveAll.addEventListener("click", function () {
         const priceInputs = productListContainer.querySelectorAll(".edit-price");
         const oldPriceInputs = productListContainer.querySelectorAll(".edit-oldprice");
@@ -989,7 +989,7 @@
           localStorage.setItem("dawload_payment_account", acct);
         }
         
-        // Atualizar banco local de Produtos e PrÃ©-Vendas
+        // Atualizar banco local de Produtos e Pré-Vendas
         products.forEach((prod, index) => {
           if (prod.category !== "pre-venda") {
             const priceEl = productListContainer.querySelector(`.edit-price[data-index="${index}"]`);
@@ -1007,7 +1007,7 @@
             if (youtubeEl) prod.youtube = youtubeEl.value.trim();
 
           } else {
-            // Ã‰ PrÃ©-venda
+            // É Pré-venda
             const preVendaContainer = document.getElementById("adminPreVendaList");
             const idEl = preVendaContainer.querySelector(`.edit-pv-id[data-index="${index}"]`);
             const titleEl = preVendaContainer.querySelector(`.edit-pv-title[data-index="${index}"]`);
@@ -1087,17 +1087,17 @@
             if (!isNaN(newRate) && typeof updateAffiliateRateAdmin === "function") {
               updateAffiliateRateAdmin(userId, newRate);
             }
-            // Se houver funÃ§Ã£o para atualizar senha e o campo nÃ£o estiver vazio
+            // Se houver função para atualizar senha e o campo não estiver vazio
             if (newPass && typeof updateAffiliatePasswordAdmin === "function") {
               updateAffiliatePasswordAdmin(userId, newPass);
-              passInput.value = ""; // limpa o campo apÃ³s salvar
+              passInput.value = ""; // limpa o campo após salvar
             }
           });
         }
 
         // Salvar no localStorage
         localStorage.setItem("dawload_products", JSON.stringify(products));
-        showToast("Todas as alteraÃ§Ãµes salvas com sucesso!");
+        showToast("Todas as alterações salvas com sucesso!");
         
         // Re-renderizar
         renderAdminProducts();

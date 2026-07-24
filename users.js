@@ -1,5 +1,5 @@
 ﻿// ==========================================================
-// users.js - Sistema de Contas, Sessões e Afiliados
+// users.js - Sistema de Contas, Sess�es e Afiliados
 // D.A.W.LOAD | Firebase Real-time Database
 // ==========================================================
 
@@ -41,7 +41,7 @@ db.collection("store_data").doc("users_doc").onSnapshot((doc) => {
   }
 });
 
-// --- Utilitários ---
+// --- Utilit�rios ---
 
 function hashPassword(password) {
   let hash = 0;
@@ -59,10 +59,10 @@ function generateAffiliateCode(name) {
   return base + rnd;
 }
 
-// --- Funções de Banco de Dados Modificadas para Firebase ---
+// --- Fun��es de Banco de Dados Modificadas para Firebase ---
 
 function getUsers() {
-  // Retorna os usuários da memória RAM sincronizada com o Firebase
+  // Retorna os usu�rios da mem�ria RAM sincronizada com o Firebase
   return memoryUsers.length > 0 ? memoryUsers : (JSON.parse(localStorage.getItem(USERS_KEY)) || []);
 }
 
@@ -94,7 +94,7 @@ function registerUser(name, email, password) {
   }
 
   if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-    return { success: false, error: 'Este e-mail jÃ¡ estÃ¡ cadastrado.' };
+    return { success: false, error: 'Este e-mail já está cadastrado.' };
   }
 
   const newUser = {
@@ -106,7 +106,7 @@ function registerUser(name, email, password) {
     isAffiliate: false,
     affiliateChannel: '',
     purchases: [],         // Array de compras realizadas
-    affiliateConversions: [], // Array de conversÃµes atribuÃ­das
+    affiliateConversions: [], // Array de conversões atribuídas
     totalCommission: 0,
     totalClicks: 0,
     createdAt: new Date().toISOString()
@@ -128,7 +128,7 @@ function loginUser(email, password) {
   const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
-    return { success: false, error: 'E-mail nÃ£o encontrado.' };
+    return { success: false, error: 'E-mail não encontrado.' };
   }
 
   const isOldPasswordMatch = user.password && user.password === btoa(password); const isNewPasswordMatch = user.passwordHash && user.passwordHash === hashPassword(password); if (!isOldPasswordMatch && !isNewPasswordMatch) {
@@ -143,7 +143,7 @@ function logoutUser() {
   sessionStorage.removeItem(SESSION_KEY);
 }
 
-// --- SessÃ£o ---
+// --- Sessão ---
 
 function startSession(user) {
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({
@@ -190,7 +190,7 @@ function addUserPurchase(userId, product, paymentMethod, amount, installments) {
   // Compatibilidade com o sistema antigo de IDs de compra
   addPurchaseId(product.id);
 
-  // Checar afiliado e creditar comissÃ£o
+  // Checar afiliado e creditar comissão
   const refCode = localStorage.getItem('dawload_ref');
   if (refCode && refCode !== users[userIndex].affiliateCode) {
     creditAffiliateCommission(refCode, purchase);
@@ -209,11 +209,11 @@ function getUserPurchases(userId) {
 function registerAsAffiliate(userId, channel) {
   const users = getUsers();
   const idx = users.findIndex(u => u.id === userId);
-  if (idx === -1) return { success: false, error: 'UsuÃ¡rio nÃ£o encontrado.' };
+  if (idx === -1) return { success: false, error: 'Usuário não encontrado.' };
 
   users[idx].isAffiliate = true;
   users[idx].affiliateChannel = channel || '';
-  users[idx].affiliateCommissionRate = COMMISSION_RATE; // Taxa padrÃ£o inicial
+  users[idx].affiliateCommissionRate = COMMISSION_RATE; // Taxa padrão inicial
   saveUsers(users);
   return { success: true };
 }
@@ -283,14 +283,14 @@ function trackAffiliateRef() {
   }
 }
 
-// Executar rastreamento ao carregar a pÃ¡gina
+// Executar rastreamento ao carregar a página
 trackAffiliateRef();
 
-// --- CriaÃ§Ã£o Manual pelo Admin ---
+// --- Criação Manual pelo Admin ---
 function createAffiliateAdmin(name, email, commission, pix, password) {
   const users = getUsers();
   
-  // Verifica se email jÃ¡ existe
+  // Verifica se email já existe
   const existingUser = users.find(u => u.email === email);
   if (existingUser) {
     if (!existingUser.isAffiliate) {
@@ -300,7 +300,7 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
       if (pix) existingUser.affiliatePixKey = pix;
       saveUsers(users);
     } else {
-      // JÃ¡ Ã© afiliado, sÃ³ atualiza os dados se fornecidos
+      // Já é afiliado, só atualiza os dados se fornecidos
       if (commission !== undefined) existingUser.affiliateCommissionRate = parseFloat(commission);
       if (pix) existingUser.affiliatePixKey = pix;
       if (password) existingUser.passwordHash = hashPassword(password);
@@ -309,7 +309,7 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
     return existingUser;
   }
   
-  // Cria novo usuÃ¡rio
+  // Cria novo usuário
   const newUser = {
     id: "user-" + Date.now(),
     name: name,
@@ -345,7 +345,7 @@ function removeAffiliateAdmin(userId) {
   const index = users.findIndex(u => u.id === userId);
   if (index !== -1) {
     users[index].isAffiliate = false;
-    // Opcionalmente manter o affiliateCode e stats para histórico, ou limpar
+    // Opcionalmente manter o affiliateCode e stats para hist�rico, ou limpar
     saveUsers(users);
     return true;
   }
@@ -354,23 +354,23 @@ function removeAffiliateAdmin(userId) {
 
 // --- Client Password Reset Flow ---
 function handleClientPasswordReset() {
-  const email = prompt("Recuperação de Senha\n\nDigite o seu e-mail cadastrado:");
+  const email = prompt("Recupera��o de Senha\n\nDigite o seu e-mail cadastrado:");
   if (!email) return;
   
   const users = getUsers();
   const user = users.find(u => u.email === email);
   
   if (user) {
-    const newPass = prompt("E-mail encontrado!\n\n(Simulação de Código) Conta verificada.\n\nDigite a sua NOVA SENHA agora:");
+    const newPass = prompt("E-mail encontrado!\n\n(Simula��o de C�digo) Conta verificada.\n\nDigite a sua NOVA SENHA agora:");
     if (newPass && newPass.length >= 6) {
       user.passwordHash = hashPassword(newPass);
       saveUsers(users);
-      alert("Sua senha foi redefinida com sucesso!\nVocê já pode fazer login com a sua nova senha.");
+      alert("Sua senha foi redefinida com sucesso!\nVoc� j� pode fazer login com a sua nova senha.");
     } else if (newPass) {
       alert("Erro: A nova senha deve ter pelo menos 6 caracteres.");
     }
   } else {
-    alert("Não encontramos nenhuma conta cadastrada com esse e-mail.");
+    alert("N�o encontramos nenhuma conta cadastrada com esse e-mail.");
   }
 }
 
