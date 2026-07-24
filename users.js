@@ -1,15 +1,48 @@
 ﻿// ==========================================================
-// users.js â€” Sistema de Contas, SessÃµes e Afiliados
-// D.A.W.LOAD | Tudo salvo no localStorage do navegador
+// users.js - Sistema de Contas, Sessões e Afiliados
+// D.A.W.LOAD | Firebase Real-time Database
 // ==========================================================
 
 const USERS_KEY = 'dawload_users';
 const SESSION_KEY = 'dawload_session';
-const COMMISSION_RATE = 0.30; // 30% de comissÃ£o para afiliados
+const COMMISSION_RATE = 0.30;
 
-// --- UtilitÃ¡rios ---
+const firebaseConfig = {
+  apiKey: "AIzaSyB6bTEZv33O6oBlemYs1oLwkQ9Ixc2Z410",
+  authDomain: "dowload-store.firebaseapp.com",
+  projectId: "dowload-store",
+  storageBucket: "dowload-store.firebasestorage.app",
+  messagingSenderId: "993342659527",
+  appId: "1:993342659527:web:2c0b033b562a9c445b17e2",
+  measurementId: "G-H4QS5WPSLY"
+};
 
-// Hash simples para ofuscar senhas (nÃ£o criptogrÃ¡fico, apenas para demo)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+let memoryUsers = [];
+let isFirebaseLoaded = false;
+
+db.collection("store_data").doc("users_doc").onSnapshot((doc) => {
+  if (doc.exists) {
+    memoryUsers = doc.data().usersArray || [];
+  } else {
+    memoryUsers = [];
+    db.collection("store_data").doc("users_doc").set({ usersArray: [] });
+  }
+  
+  localStorage.setItem(USERS_KEY, JSON.stringify(memoryUsers));
+
+  if (!isFirebaseLoaded) {
+    isFirebaseLoaded = true;
+    document.dispatchEvent(new Event('firebaseLoaded'));
+  }
+});
+
+// --- Utilitários ---
+
 function hashPassword(password) {
   let hash = 0;
   for (let i = 0; i < password.length; i++) {
@@ -20,22 +53,27 @@ function hashPassword(password) {
   return Math.abs(hash).toString(16);
 }
 
-// Gera cÃ³digo de afiliado Ãºnico: 4 letras do nome + 4 dÃ­gitos aleatÃ³rios
 function generateAffiliateCode(name) {
-  const prefix = name.replace(/\s+/g, '').replace(/[^a-zA-Z]/g, '').substring(0, 4).toUpperCase() || 'DAWD';
-  const suffix = Math.floor(1000 + Math.random() * 9000);
-  return `${prefix}${suffix}`;
+  const base = name.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+  const rnd = Math.floor(1000 + Math.random() * 9000);
+  return base + rnd;
 }
 
-// --- CRUD de UsuÃ¡rios ---
+// --- Funções de Banco de Dados Modificadas para Firebase ---
 
 function getUsers() {
-  const saved = localStorage.getItem(USERS_KEY);
-  return saved ? JSON.parse(saved) : [];
+  // Retorna os usuários da memória RAM sincronizada com o Firebase
+  return memoryUsers.length > 0 ? memoryUsers : (JSON.parse(localStorage.getItem(USERS_KEY)) || []);
 }
 
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+function saveUsers(usersArray) {
+  // Atualiza localmente
+  memoryUsers = usersArray;
+  localStorage.setItem(USERS_KEY, JSON.stringify(usersArray));
+  
+  // Atualiza no Firebase Assincronamente (Fire-and-forget)
+  db.collection("store_data").doc("users_doc").set({ usersArray: usersArray })
+    .catch(err => console.error("Erro ao salvar no Firebase:", err));
 }
 
 function getUserById(id) {
@@ -335,4 +373,5 @@ function handleClientPasswordReset() {
     alert("Não encontramos nenhuma conta cadastrada com esse e-mail.");
   }
 }
+
 
