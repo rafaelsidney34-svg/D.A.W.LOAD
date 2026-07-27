@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -179,8 +179,8 @@
         <!-- Os cards de produtos serão renderizados dinamicamente pelo JavaScript (app.js) -->
       </div>
       
-      <button class="showcase-arrow prev" type="button" aria-label="Produtos anteriores">?</button>
-      <button class="showcase-arrow next" type="button" aria-label="Próximos produtos">?</button>
+      <button class="showcase-arrow prev" type="button" aria-label="Produtos anteriores">❮</button>
+      <button class="showcase-arrow next" type="button" aria-label="Próximos produtos">❯</button>
     </div>
   </main>
 
@@ -215,7 +215,7 @@
           <strong>Resultados da Busca</strong>
           <span id="searchOverlayQuery"></span>
         </div>
-        <button class="overlay-close" id="searchOverlayClose" type="button" aria-label="Fechar Busca">?</button>
+        <button class="overlay-close" id="searchOverlayClose" type="button" aria-label="Fechar Busca">&times;</button>
       </div>
       <div class="overlay-results-body">
         <div class="overlay-results-grid" id="searchOverlayResults"></div>
@@ -235,7 +235,7 @@
           <strong>Top da Semana</strong>
           <span>Membros em destaque da comunidade</span>
         </div>
-        <button class="overlay-close" id="memberOverlayClose" type="button" aria-label="Fechar Membros">?</button>
+        <button class="overlay-close" id="memberOverlayClose" type="button" aria-label="Fechar Membros">&times;</button>
       </div>
       <p class="member-overlay-text">Faça parte do grupo exclusivo de produtores e tecladistas da D.A.W.LOAD e tenha acesso a materiais extras, descontos e lançamentos antecipados.</p>
       <ul class="member-rank-list" id="memberRankList">
@@ -254,7 +254,7 @@
           <strong>Minha Conta</strong>
           <span id="accountUserEmail">Suas Bibliotecas & Downloads</span>
         </div>
-        <button class="overlay-close" id="myAccountOverlayClose" type="button" aria-label="Fechar Minha Conta">?</button>
+        <button class="overlay-close" id="myAccountOverlayClose" type="button" aria-label="Fechar Minha Conta">&times;</button>
       </div>
 
       <!-- Abas -->
@@ -291,7 +291,7 @@
           </div>
           <div class="affiliate-link-box">
             <div class="affiliate-link-label">Seu Link de Afiliado</div>
-            <div class="affiliate-link-value" id="affiliateLinkDisplay">?</div>
+            <div class="affiliate-link-value" id="affiliateLinkDisplay">-</div>
             <button class="btn-copy-pix" id="btnCopyAffiliateLink" type="button">Copiar Link</button>
           </div>
           <div class="conversions-list" id="conversionsList"></div>
@@ -309,7 +309,7 @@
           <h3 id="checkoutProdTitle">Finalizar Compra</h3>
           <div id="checkoutProdPrice" style="font-size: 18px; font-weight: 900; color: var(--accent); margin-top: 2px;">R$ 0,00</div>
         </div>
-        <button class="modal-close" type="button" id="checkoutClose" aria-label="Fechar">?</button>
+        <button class="modal-close" type="button" id="checkoutClose" aria-label="Fechar">&times;</button>
       </div>
 
       <!-- Corpo padrão do checkout -->
@@ -483,7 +483,7 @@
 
       <!-- Estado: Aprovado -->
       <div class="payment-success" id="checkoutSuccess" style="display:none;">
-        <div class="success-icon">?</div>
+        <div class="success-icon">✓</div>
         <h4>Pagamento Aprovado!</h4>
         <p>Sua biblioteca foi liberada com sucesso.</p>
         <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">Recebedor / Conta: <strong style="color:var(--accent);">D.A.W.LOAD</strong></p>
@@ -504,14 +504,14 @@
   <div class="auth-modal" id="ytSubModal">
     <div class="overlay-backdrop" id="ytSubModalBackdrop"></div>
     <div class="auth-box" style="max-width: 420px; text-align: center;">
-      <button class="auth-close" id="ytSubModalClose" type="button">?</button>
+      <button class="auth-close" id="ytSubModalClose" type="button">&times;</button>
       <div style="font-size: 40px; margin-bottom: 8px;">??</div>
       <h2 id="ytSubProdTitle">Liberar Download Grátis</h2>
       <p class="auth-sub" style="margin-bottom: 20px;">Inscreva-se no nosso canal oficial do YouTube para liberar seu download gratuitamente!</p>
       
       <div style="display: grid; gap: 10px;">
         <a href="https://www.youtube.com/@rafaelsidney?sub_confirmation=1" target="_blank" id="btnGoToYoutube" class="btn-primary" style="background: linear-gradient(135deg, #ff0000, #cc0000); color: #fff; padding: 14px; font-weight: 800; font-size: 15px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          <span>?</span> Inscrever-se no Canal & Liberar Download
+          <span>▶</span> Inscrever-se no Canal & Liberar Download
         </a>
         <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">O canal abrirá em nova aba e o download será liberado automaticamente!</p>
       </div>
@@ -531,7 +531,7 @@
             <div style="font-size: 11px; color: #52b788; display: flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #52b788; display: inline-block;"></span> Atendimento Inteligente Online</div>
           </div>
         </div>
-        <button class="auth-close" id="supportModalClose" type="button" style="position: static; width:28px; height:28px; font-size:16px;">?</button>
+        <button class="auth-close" id="supportModalClose" type="button" style="position: static; width:28px; height:28px; font-size:16px;">&times;</button>
       </div>
 
       <!-- Chat Messages Body -->
@@ -554,7 +554,7 @@
       <!-- Chat Input Form -->
       <form id="supportChatForm" style="padding: 10px 14px; background: #141414; border-top: 1px solid var(--border); display: flex; gap: 8px;">
         <input type="text" id="supportChatInput" placeholder="Digite sua mensagem ou dúvida..." autocomplete="off" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; padding: 9px 14px; color: #fff; font-size: 13px; outline: none;">
-        <button type="submit" class="btn-primary" style="border-radius: 50%; width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">?</button>
+        <button type="submit" class="btn-primary" style="border-radius: 50%; width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">➤</button>
       </form>
     </div>
   </div>
@@ -563,7 +563,7 @@
   <div class="auth-modal" id="loginModal">
     <div class="overlay-backdrop" id="loginModalBackdrop"></div>
     <div class="auth-box">
-      <button class="auth-close" id="loginModalClose" type="button">?</button>
+      <button class="auth-close" id="loginModalClose" type="button">&times;</button>
       <h2>Bem-vindo de volta!</h2>
       <p class="auth-sub">Entre na sua conta D.A.W.LOAD</p>
       <form class="auth-form" id="loginForm">
@@ -587,7 +587,7 @@
   <div class="auth-modal" id="registerModal">
     <div class="overlay-backdrop" id="registerModalBackdrop"></div>
     <div class="auth-box">
-      <button class="auth-close" id="registerModalClose" type="button">?</button>
+      <button class="auth-close" id="registerModalClose" type="button">&times;</button>
       <h2>Criar sua Conta</h2>
       <p class="auth-sub">Acesse seus downloads e gerencie suas compras</p>
       <form class="auth-form" id="registerForm">
@@ -619,7 +619,7 @@
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-drawer-header">
       <h3>Seu Carrinho</h3>
-      <button class="cart-drawer-close" id="cartDrawerClose" type="button">?</button>
+      <button class="cart-drawer-close" id="cartDrawerClose" type="button">&times;</button>
     </div>
     <div class="cart-items-container" id="cartItemsContainer">
       <!-- Items injectados via JS -->
@@ -692,6 +692,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
