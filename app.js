@@ -1,4 +1,4 @@
-﻿// Dados Dinâmicos em Memória — defaultProducts vem de database.js
+// Dados Dinâmicos em Memória — defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
@@ -904,7 +904,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("option");
       opt.value = i;
       opt.textContent = i === 1
-        ? `1x de ${formatBRL(à vista)`
+        ? `1x de ${formatBRL(price)} (à vista)`
         : `${i}x de ${formatBRL(installment)} (total ${formatBRL(total)})`;
       sel.appendChild(opt);
     }
@@ -1640,5 +1640,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+
 
 

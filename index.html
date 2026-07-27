@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -51,7 +51,7 @@
       </div>
       <!-- Exibido quando logado -->
       <div class="user-greeting" id="userGreeting" style="display:none;">
-        <span id="userGreetingName">ðŸ‘‹??</span>
+        <span id="userGreetingName">👋??</span>
         <button class="btn-logout-header" id="btnHeaderLogout" type="button">Sair</button>
       </div>
 
@@ -87,7 +87,7 @@
           <span>Membro ativo:</span>
           <span id="topMembersCurrent">
             <span id="topMembersName">Carlos</span>
-            <span id="topMembersIcon" style="color: #81b0cf;">ðŸ‘‘?</span>
+            <span id="topMembersIcon" style="color: #81b0cf;">👑</span>
           </span>
         </div>
       </div>
@@ -103,7 +103,7 @@
       <!-- Search Box with Suggestions -->
       <div class="search-bar-top">
         <input id="topProductSearch" type="search" placeholder="Pesquisar timbres e bibliotecas..." autocomplete="off">
-        <button id="topSearchIconButton" type="button" aria-label="Pesquisar">ðŸ”?</button>
+        <button id="topSearchIconButton" type="button" aria-label="Pesquisar">🔍</button>
         <div class="suggestions-dropdown" id="topSearchSuggestions"></div>
       </div>
     </div>
@@ -141,27 +141,27 @@
     <h2>Buscar por categoria</h2>
     <div class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
       <button class="category-btn active" type="button" data-filter="all">
-        <div class="category-icon-wrap">ðŸŽ¹</div>
+        <div class="category-icon-wrap">🎹</div>
         <span class="category-label">Todas as Bibliotecas</span>
       </button>
       
       <button class="category-btn" type="button" data-filter="Grátis">
-        <div class="category-icon-wrap">ðŸŽ</div>
-        <span class="category-label">Bibliotecas GrÃ¡tis</span>
+        <div class="category-icon-wrap">🎁</div>
+        <span class="category-label">Bibliotecas Grátis</span>
       </button>
       
       <button class="category-btn" type="button" data-filter="pagas">
-        <div class="category-icon-wrap">â­</div>
+        <div class="category-icon-wrap">⭐</div>
         <span class="category-label">Bibliotecas Premium</span>
       </button>
       
       <button class="category-btn" type="button" data-filter="pre-venda">
-        <div class="category-icon-wrap">ðŸš€</div>
-        <span class="category-label">PrÃ©-Vendas</span>
+        <div class="category-icon-wrap">🚀</div>
+        <span class="category-label">Pré-Vendas</span>
       </button>
       
       <button class="category-btn" type="button" data-filter="plugins">
-        <div class="category-icon-wrap">ðŸŽ›ï¸</div>
+        <div class="category-icon-wrap">🎛️</div>
         <span class="category-label">Plugins VSTs</span>
       </button>
     </div>
@@ -187,7 +187,7 @@
   <!-- Planos & Promoções Section -->
   <section class="plans-section" id="planos">
     <div class="plans-head">
-      <span class="plans-badge">?? Promoção de Combos</span>
+      <span class="plans-badge">🛒 Promoção de Combos</span>
       <h2>Planos & Descontos Especiais</h2>
       <p>Compre mais de uma biblioteca e ganhe <strong>+20% DE DESCONTO EXTRA</strong> automático no valor total!</p>
     </div>
@@ -316,9 +316,9 @@
       <div class="modal-body" id="checkoutBody">
         <!-- Abas de Pagamento -->
         <div class="checkout-tabs">
-          <button class="checkout-tab-btn active" data-tab="pix" type="button">? PIX</button>
-          <button class="checkout-tab-btn" data-tab="CRÉDITO" type="button">?? CRÉDITO</button>
-          <button class="checkout-tab-btn" data-tab="DÉBITO" type="button">?? DÉBITO</button>
+          <button class="checkout-tab-btn active" data-tab="pix" type="button">💠 PIX</button>
+          <button class="checkout-tab-btn" data-tab="CRÉDITO" type="button">💳 CRÉDITO</button>
+          <button class="checkout-tab-btn" data-tab="DÉBITO" type="button">💳 DÉBITO</button>
         </div>
 
         <!-- ABA PIX -->
@@ -544,10 +544,10 @@
 
         <!-- Quick Options -->
         <div class="chat-options-grid" id="supportOptionsGrid">
-          <button class="chat-option-btn" data-topic="download" type="button">?? Problemas no Download</button>
+          <button class="chat-option-btn" data-topic="download" type="button">📥 Problemas no Download</button>
           <button class="chat-option-btn" data-topic="kontakt" type="button">🎹 Instalação / Kontakt</button>
           <button class="chat-option-btn" data-topic="pagamento" type="button">💳 Dúvidas de Pagamento</button>
-          <button class="chat-option-btn" data-topic="humano" type="button">?? Falar com Suporte Humano</button>
+          <button class="chat-option-btn" data-topic="humano" type="button">💬 Falar com Suporte Humano</button>
         </div>
       </div>
 
@@ -627,7 +627,7 @@
     <div class="cart-drawer-footer">
       <div class="cart-total">
         <span>Total:</span>
-        <span id="CARTÃOtalPrice">R$ 0,00</span>
+        <span id="cartTotalPrice">R$ 0,00</span>
       </div>
       <button class="btn-primary btn-checkout-cart" id="btnCheckoutCart" type="button">Finalizar Compra</button>
       <button class="btn-secondary btn-clear-cart" id="btnClearCart" type="button" style="width: 100%; margin-top: 10px;">Esvaziar Carrinho</button>
