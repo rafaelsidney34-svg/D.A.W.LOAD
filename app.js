@@ -50,7 +50,7 @@ function getPurchasedIds() {
 function addPurchaseId(idString) {
   let idsToProcess = idString;
   if (idString === 'all-paid') {
-      idsToProcess = productsData.filter(p => p.category !== "gratis").map(p => p.id).join(',');
+      idsToProcess = productsData.filter(p => p.category !== "Grátis").map(p => p.id).join(',');
   }
   const ids = idsToProcess.split(',');
   const purchases = getPurchasedIds();
@@ -510,8 +510,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // 2. Exigir inscrição no YouTube para libs grátis
-    if (prod.category === "gratis" && localStorage.getItem("dawload_yt_sub") !== "true") {
+    // 2. Exigir inscrição no YouTube para libs Grátis
+    if (prod.category === "Grátis" && localStorage.getItem("dawload_yt_sub") !== "true") {
       pendingDownloadProduct = prod;
       const titleEl = document.getElementById("ytSubProdTitle");
       if (titleEl) titleEl.textContent = `Liberar: ${prod.title}`;
@@ -715,7 +715,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //  CHECKOUT — 3 Abas: PIX / Crédito / Débito
   // ==========================================================
   // ----------------------------------------------------------------------
-  // CONFIGURAÇÃO MERCADO PAGO - CARTÕES (FRONTEND)
+  // configuração MERCADO PAGO - CARTÕES (FRONTEND)
   // ----------------------------------------------------------------------
   // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave Pública) do Mercado Pago
   const MP_PUBLIC_KEY = 'APP_USR-4a1c9479-eeb2-49e0-843c-4dadd505cba8'; 
@@ -904,7 +904,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("option");
       opt.value = i;
       opt.textContent = i === 1
-        ? `1x de ${formatBRL(price)} (à vista)`
+        ? `1x de ${formatBRL(à vista)`
         : `${i}x de ${formatBRL(installment)} (total ${formatBRL(total)})`;
       sel.appendChild(opt);
     }
@@ -1165,7 +1165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!myAccountDownloadsList) return;
     myAccountDownloadsList.innerHTML = "";
     const purchases = getPurchasedIds();
-    const myLibs = productsData.filter(p => p.category === "gratis" || purchases.includes(p.id));
+    const myLibs = productsData.filter(p => p.category === "Grátis" || purchases.includes(p.id));
 
     if (!myLibs.length) {
       myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponível ainda.</div>`;
@@ -1181,7 +1181,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="purchase-history-info">
           <div class="purchase-history-title">${prod.title}</div>
-          <div class="purchase-history-meta" style="color:${prod.category==='gratis'?'#52b788':'var(--accent)'};">${prod.category==='gratis'?'Grátis':'Adquirida'}</div>
+          <div class="purchase-history-meta" style="color:${prod.category==='Grátis'?'#52b788':'var(--accent)'};">${prod.category==='Grátis'?'Grátis':'Adquirida'}</div>
         </div>
         <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">⬇ Download</button>`;
       myAccountDownloadsList.appendChild(div);
@@ -1301,7 +1301,7 @@ document.addEventListener("DOMContentLoaded", function () {
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
       
-      // Configuração para caixas de produtos verticais (3 camadas)
+      // configuração para caixas de produtos verticais (3 camadas)
       // 1. Gradiente para dar contraste no texto
       // 2. Imagem contida na direita
       // 3. Imagem esticada bem escura preenchendo o fundo
@@ -1542,11 +1542,11 @@ document.addEventListener("DOMContentLoaded", function () {
       botReply = `Se o seu download não iniciou ou foi interrompido, verifique:<br>
       • Se a sua conexão com a internet está estável.<br>
       • Se o seu navegador não bloqueou a janela pop-up do download.<br>
-      • Para bibliotecas grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
+      • Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
       Caso o problema persista, fale agora com a nossa equipe no WhatsApp:
       ${renderHumanSupportCard("Tenho um problema no download da minha biblioteca no D.A.W.LOAD")}`;
     } else if (topic === "kontakt") {
-      userText = "🎹 Dúvida sobre Instalação / Kontakt";
+      userText = "🎹 Dúvida sobre instalação / Kontakt";
       botReply = `Nossas bibliotecas são compatíveis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
       <strong>Passo a passo rápido:</strong><br>
       1. Baixe e extraia o arquivo da biblioteca (.rar ou .zip).<br>
@@ -1640,4 +1640,5 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
 

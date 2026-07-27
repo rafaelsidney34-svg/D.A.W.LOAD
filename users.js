@@ -59,7 +59,7 @@ function generateAffiliateCode(name) {
   return base + rnd;
 }
 
-// --- Fun��es de Banco de Dados Modificadas para Firebase ---
+// --- Funções de Banco de Dados Modificadas para Firebase ---
 
 function getUsers() {
   // Retorna os usu�rios da mem�ria RAM sincronizada com o Firebase
@@ -361,17 +361,19 @@ function handleClientPasswordReset() {
   const user = users.find(u => u.email === email);
   
   if (user) {
-    const newPass = prompt("E-mail encontrado!\n\n(Simula��o de C�digo) Conta verificada.\n\nDigite a sua NOVA SENHA agora:");
+    const newPass = prompt("E-mail encontrado!\n\n(Simulação de Código) Conta verificada.\n\nDigite a sua NOVA SENHA agora:");
     if (newPass && newPass.length >= 6) {
       user.passwordHash = hashPassword(newPass);
       saveUsers(users);
-      alert("Sua senha foi redefinida com sucesso!\nVoc� j� pode fazer login com a sua nova senha.");
+      alert("Sua senha foi redefinida com sucesso!\nVocê já pode fazer login com a sua nova senha.");
     } else if (newPass) {
       alert("Erro: A nova senha deve ter pelo menos 6 caracteres.");
     }
   } else {
-    alert("N�o encontramos nenhuma conta cadastrada com esse e-mail.");
+    alert("Não encontramos nenhuma conta cadastrada com esse e-mail.");
   }
 }
+
+
 
 

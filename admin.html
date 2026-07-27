@@ -196,7 +196,7 @@
       text-transform: uppercase;
     }
     
-    .cat-gratis {
+    .cat-Grátis {
       background: rgba(37, 162, 68, 0.15);
       color: #52b788;
     }
@@ -632,8 +632,8 @@
           
           const isFree = prod.price === 0;
           const imagePath = `assets/${prod.id.replace(/-/g, '_')}.png`;
-          const catClass = prod.category === "gratis" ? "cat-gratis" : "cat-pagas";
-          const catLabel = prod.category === "gratis" ? "Grátis" : "Premium";
+          const catClass = prod.category === "Grátis" ? "cat-Grátis" : "cat-pagas";
+          const catLabel = prod.category === "Grátis" ? "Grátis" : "Premium";
           
           item.innerHTML = `
             <div class="product-thumb">
@@ -1109,4 +1109,5 @@
   </script>
 </body>
 </html>
+
 
