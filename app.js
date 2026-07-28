@@ -979,14 +979,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const user = getCurrentUser();
     if (selectedProductForCheckout.isCart) {
       selectedProductForCheckout.items.forEach(item => {
-        if (user) addUserPurchase(user.id, item, method, item.price, installments);
-        else addPurchaseId(item.id);
+        if (user) {
+          addUserPurchase(user.id, item, method, item.price, installments);
+        } else {
+          addPurchaseId(item.id);
+          const refCode = localStorage.getItem('dawload_ref');
+          if (refCode && typeof creditAffiliateCommission === 'function') {
+            creditAffiliateCommission(refCode, { productTitle: item.title, amount: item.price });
+          }
+        }
       });
       cart = [];
       saveCart();
     } else {
-      if (user) addUserPurchase(user.id, selectedProductForCheckout, method, selectedProductForCheckout.price, installments);
-      else addPurchaseId(selectedProductForCheckout.id);
+      if (user) {
+        addUserPurchase(user.id, selectedProductForCheckout, method, selectedProductForCheckout.price, installments);
+      } else {
+        addPurchaseId(selectedProductForCheckout.id);
+        const refCode = localStorage.getItem('dawload_ref');
+        if (refCode && typeof creditAffiliateCommission === 'function') {
+          creditAffiliateCommission(refCode, { productTitle: selectedProductForCheckout.title, amount: selectedProductForCheckout.price });
+        }
+      }
     }
     
     checkoutProcessing.style.display = "none";
