@@ -1,4 +1,4 @@
-﻿// ==========================================================
+// ==========================================================
 // users.js - Sistema de Contas, Sess�es e Afiliados
 // D.A.W.LOAD | Firebase Real-time Database
 // ==========================================================
@@ -192,7 +192,7 @@ function addUserPurchase(userId, product, paymentMethod, amount, installments) {
 
   // Checar afiliado e creditar comissão
   const refCode = localStorage.getItem('dawload_ref');
-  if (refCode && refCode !== users[userIndex].affiliateCode) {
+  if (refCode && (!users[userIndex].affiliateCode || refCode.toLowerCase() !== users[userIndex].affiliateCode.toLowerCase())) {
     creditAffiliateCommission(refCode, purchase);
   }
 
@@ -220,7 +220,7 @@ function registerAsAffiliate(userId, channel) {
 
 function creditAffiliateCommission(affiliateCode, purchase) {
   const users = getUsers();
-  const idx = users.findIndex(u => u.affiliateCode === affiliateCode);
+  const idx = users.findIndex(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
   if (idx === -1) return;
 
   const rate = users[idx].affiliateCommissionRate !== undefined ? users[idx].affiliateCommissionRate : COMMISSION_RATE;
@@ -269,13 +269,13 @@ function getAffiliateLink(affiliateCode) {
 function trackAffiliateRef() {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get('ref');
-  if (ref) {
-    const code = ref.toUpperCase();
-    localStorage.setItem('dawload_ref', code);
+    if (ref) {
+      const code = ref.toLowerCase();
+      localStorage.setItem('dawload_ref', code);
 
     // Incrementar contador de cliques no afiliado
     const users = getUsers();
-    const idx = users.findIndex(u => u.affiliateCode === code);
+      const idx = users.findIndex(u => u.affiliateCode && u.affiliateCode.toLowerCase() === code);
     if (idx !== -1) {
       users[idx].totalClicks = (users[idx].totalClicks || 0) + 1;
       saveUsers(users);
@@ -373,6 +373,8 @@ function handleClientPasswordReset() {
     alert("Não encontramos nenhuma conta cadastrada com esse e-mail.");
   }
 }
+
+
 
 
 
