@@ -12,7 +12,15 @@ app.use(express.json());
 // ===== CONFIGURAÇÃO DO FIREBASE ADMIN =====
 let db = null;
 try {
-  const serviceAccount = require('./serviceAccountKey.json');
+  // Tenta carregar do arquivo local primeiro (desenvolvimento) ou do caminho secreto do Render
+  let serviceAccount;
+  try {
+    serviceAccount = require('./serviceAccountKey.json');
+  } catch (localError) {
+    // Se falhar no local, tenta carregar do caminho padrão de Secret Files do Render
+    serviceAccount = require('/etc/secrets/serviceAccountKey.json');
+  }
+  
   initializeApp({
     credential: cert(serviceAccount)
   });
