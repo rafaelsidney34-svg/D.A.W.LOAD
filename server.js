@@ -89,7 +89,11 @@ app.get('/auth/callback', async (req, res) => {
     res.send("Conta conectada com sucesso! Você já pode fechar esta janela e voltar para a loja.");
   } catch (error) {
     console.error("Erro na autorização:", error);
-    res.status(500).send("Erro ao conectar conta do Mercado Pago.");
+    res.status(500).send(`
+      <h1>Erro ao conectar conta do Mercado Pago</h1>
+      <p><b>Motivo exato:</b> ${error.message}</p>
+      <p>Se o motivo for "invalid_client", as suas chaves MP_CLIENT_ID ou MP_CLIENT_SECRET no Render estão erradas!</p>
+    `);
   }
 });
 
