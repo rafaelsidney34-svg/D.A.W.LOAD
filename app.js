@@ -1276,7 +1276,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const btnConnectMP = document.getElementById("btnConnectMP");
       if (btnConnectMP) {
-        btnConnectMP.href = `https://dirt-wagner-salmon-introduction.trycloudflare.com/auth/mercadopago?affiliateId=${user.id}`;
+        btnConnectMP.href = `https://d-a-w-load.onrender.com/auth/mercadopago?affiliateId=${user.id}`;
       }
     } else {
       if (notReg) notReg.style.display = "";
