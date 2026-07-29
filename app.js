@@ -1276,7 +1276,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const btnConnectMP = document.getElementById("btnConnectMP");
       if (btnConnectMP) {
-        btnConnectMP.href = `http://localhost:3000/auth/mercadopago?affiliateId=${user.id}`;
+        btnConnectMP.href = `http://localhost:3005/auth/mercadopago?affiliateId=${user.id}`;
       }
     } else {
       if (notReg) notReg.style.display = "";
