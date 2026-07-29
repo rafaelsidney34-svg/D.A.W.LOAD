@@ -1273,6 +1273,11 @@ document.addEventListener("DOMContentLoaded", function () {
         navigator.clipboard.writeText(link).catch(() => {});
         showToast("Link de afiliado copiado!");
       });
+
+      const btnConnectMP = document.getElementById("btnConnectMP");
+      if (btnConnectMP) {
+        btnConnectMP.href = `http://localhost:3000/auth/mercadopago?affiliateId=${user.id}`;
+      }
     } else {
       if (notReg) notReg.style.display = "";
       if (dash) dash.style.display = "none";
