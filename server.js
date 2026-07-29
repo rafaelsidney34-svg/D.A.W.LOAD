@@ -1,190 +1,150 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const axios = require('axios');
-const basicAuth = require('express-basic-auth');
+const { MercadoPagoConfig, Payment, OAuth } = require('mercadopago');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Autenticação Básica (Privacidade da Loja)
-// Usa usuário e senha do .env, ou padrão 'admin' / 'admin123'
-const authUser = process.env.STORE_USER || 'admin';
-const authPass = process.env.STORE_PASS || 'admin123';
-const authUsers = {};
-authUsers[authUser] = authPass;
-
-app.use(basicAuth({
-    users: authUsers,
-    challenge: true,
-    realm: 'D.A.W.LOAD Store Privada'
-}));
-
-// Serve os arquivos estáticos da pasta atual
-app.use(express.static(__dirname));
-
-// Simulação de banco de dados em memória para quando não houver Token
-const mockPayments = {};
-
-app.post('/api/create-pix', async (req, res) => {
-  const { amount, productId } = req.body;
-  const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
-
-  if (accessToken && accessToken.trim() !== "") {
-    try {
-      console.log(`[Mercado Pago] Gerando PIX de R$ ${amount} para ${productId}...`);
-      
-      const parsedAmount = Number(String(amount).replace(',', '.'));
-
-      const response = await axios.post('https://api.mercadopago.com/v1/payments', {
-        transaction_amount: parsedAmount,
-        payment_method_id: 'pix',
-        payer: {
-          email: 'comprador.loja@email.com',
-          first_name: 'Cliente',
-          last_name: 'Loja'
-        },
-        description: `Compra: ${productId}`
-      }, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'X-Idempotency-Key': `pix-${Date.now()}` // Garante que não duplique a cobrança se houver retry
-        }
-      });
-
-      const paymentId = response.data.id;
-      const pixData = response.data.point_of_interaction.transaction_data;
-
-      console.log(`[Mercado Pago] PIX Gerado com Sucesso! ID: ${paymentId}`);
-
-      return res.json({
-        success: true,
-        paymentId: paymentId,
-        pixKey: pixData.qr_code, // Código copia e cola
-        qrCodeImage: `data:image/png;base64,${pixData.qr_code_base64}` // Imagem Base64 do QR
-      });
-
-    } catch (error) {
-      console.error("[Mercado Pago] Erro ao gerar PIX:", error.response?.data || error.message);
-      return res.status(500).json({ success: false, error: "Erro na API do Mercado Pago" });
-    }
-  }
-
-  // --- MOCK / SIMULAÇÃO (Usado caso o Token não esteja no .env) ---
-  const paymentId = 'pay_' + Date.now();
-  mockPayments[paymentId] = 'pending';
-
-  console.log(`[Modo Simulação] PIX de ${amount} para ${productId} gerado.`);
-
-  setTimeout(() => {
-    mockPayments[paymentId] = 'paid';
-    console.log(`[Modo Simulação] Pagamento ${paymentId} APROVADO automaticamente!`);
-  }, 8000);
-
-  return res.json({
-    success: true,
-    paymentId: paymentId,
-    pixKey: '00020101021126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426655440000',
-    qrCodeImage: 'assets/pix_qrcode.png'
+// ===== CONFIGURAÇÃO DO FIREBASE ADMIN =====
+let db = null;
+try {
+  const serviceAccount = require('./serviceAccountKey.json');
+  initializeApp({
+    credential: cert(serviceAccount)
   });
+  db = getFirestore();
+  console.log("Firebase Admin inicializado com sucesso.");
+} catch (error) {
+  console.error("ATENÇÃO: Erro ao carregar o Firebase:", error);
+}
+
+// ===== CONFIGURAÇÃO DO MERCADO PAGO =====
+const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
+const MP_CLIENT_ID = process.env.MP_CLIENT_ID;
+const MP_CLIENT_SECRET = process.env.MP_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:3005/auth/callback';
+
+const client = new MercadoPagoConfig({ accessToken: MP_ACCESS_TOKEN });
+const oauth = new OAuth({ client });
+const payment = new Payment({ client });
+
+// ===== ROTAS DE AUTENTICAÇÃO OAUTH =====
+app.get('/auth/mercadopago', (req, res) => {
+  const affiliateId = req.query.affiliateId;
+  if (!affiliateId) {
+    return res.status(400).send("ID do afiliado não fornecido.");
+  }
+  
+  // O state serve para sabermos quem é o afiliado quando ele voltar
+  const state = affiliateId;
+  const authUrl = `https://auth.mercadopago.com/authorization?client_id=${MP_CLIENT_ID}&response_type=code&platform_id=mp&state=${state}&redirect_uri=${REDIRECT_URI}`;
+  
+  res.redirect(authUrl);
 });
 
-app.get('/api/check-payment/:id', async (req, res) => {
-  const { id } = req.params;
-  const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
-
-  // Se tiver Token, checa na API real do Mercado Pago
-  if (accessToken && accessToken.trim() !== "" && !id.startsWith('pay_')) {
-    try {
-      const response = await axios.get(`https://api.mercadopago.com/v1/payments/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      });
-
-      const status = response.data.status; // Pode ser 'pending', 'approved', 'rejected'
-      
-      if (status === 'approved') {
-        return res.json({ status: 'paid' });
-      } else {
-        return res.json({ status: 'pending' });
-      }
-    } catch (error) {
-      console.error(`[Mercado Pago] Erro ao checar pagamento ${id}:`, error.response?.data || error.message);
-      return res.json({ status: 'error' });
-    }
+app.get('/auth/callback', async (req, res) => {
+  const { code, state: affiliateId } = req.query;
+  
+  if (!code || !affiliateId) {
+    return res.status(400).send("Código de autorização ou ID do afiliado ausentes.");
   }
 
-  // Se for simulação
-  const status = mockPayments[id] || 'pending';
-  res.json({ status: status });
+  try {
+    const oauthResponse = await oauth.create({
+      body: {
+        client_secret: MP_CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: REDIRECT_URI
+      }
+    });
+
+    const { access_token, refresh_token, public_key, user_id } = oauthResponse;
+
+    // Salvar as credenciais no Firestore do afiliado
+    if (db) {
+      await db.collection("store_data").doc("affiliates_secrets").set({
+        [affiliateId]: {
+          mp_access_token: access_token,
+          mp_refresh_token: refresh_token,
+          mp_public_key: public_key,
+          mp_user_id: user_id,
+          updated_at: new Date().toISOString()
+        }
+      }, { merge: true });
+    }
+
+    res.send("Conta conectada com sucesso! Você já pode fechar esta janela e voltar para a loja.");
+  } catch (error) {
+    console.error("Erro na autorização:", error);
+    res.status(500).send("Erro ao conectar conta do Mercado Pago.");
+  }
 });
 
-app.post('/api/pay-card', async (req, res) => {
-  const { amount, productId, token, installments, paymentMethodId, payer } = req.body;
-  const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+// ===== ROTA DE PROCESSAMENTO DE PAGAMENTOS (SPLIT) =====
+app.post('/process_payment', async (req, res) => {
+  const { paymentData, affiliateCode } = req.body;
+  
+  try {
+    let affiliateSecret = null;
+    let affiliateRate = 0.30; // Padrão 30%
 
-  if (accessToken && accessToken.trim() !== "") {
-    try {
-      console.log(`[Mercado Pago] Processando Cartão de R$ ${amount} para ${productId}...`);
-      
-      const parsedAmount = Number(String(amount).replace(',', '.'));
-
-      const response = await axios.post('https://api.mercadopago.com/v1/payments', {
-        transaction_amount: parsedAmount,
-        token: token,
-        description: `Compra: ${productId}`,
-        installments: Number(installments) || 1,
-        payer: payer
-      }, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'X-Idempotency-Key': `card-${Date.now()}`
-        }
-      });
-
-      console.log(`[Mercado Pago] Cartão Processado! Status: ${response.data.status}`);
-
-      if (response.data.status === 'approved' || response.data.status === 'in_process') {
-        return res.json({ success: true, status: response.data.status, paymentId: response.data.id });
-      } else {
-        const statusDetail = response.data.status_detail;
-        let friendlyError = "Pagamento recusado pelo banco.";
+    // 1. Buscar se existe um afiliado vinculado e pegar a taxa dele
+    if (affiliateCode && db) {
+      const usersDoc = await db.collection("store_data").doc("users_doc").get();
+      if (usersDoc.exists) {
+        const usersArray = usersDoc.data().usersArray || [];
+        const affiliate = usersArray.find(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
         
-        if (statusDetail === 'cc_rejected_high_risk') friendlyError = "Pagamento recusado por segurança (Risco de Fraude). Use um cartão real e válido.";
-        else if (statusDetail === 'cc_rejected_insufficient_amount') friendlyError = "Saldo ou limite insuficiente no cartão.";
-        else if (statusDetail === 'cc_rejected_bad_filled_security_code') friendlyError = "Código CVV de segurança incorreto.";
-        else if (statusDetail === 'cc_rejected_bad_filled_date') friendlyError = "Data de validade do cartão incorreta.";
-        else if (statusDetail === 'cc_rejected_call_for_authorize') friendlyError = "O banco bloqueou. Você precisa ligar para o banco para autorizar.";
-        else if (statusDetail) friendlyError = `Recusado: ${statusDetail}`;
-
-        return res.json({ success: false, error: friendlyError });
+        if (affiliate) {
+          affiliateRate = affiliate.affiliateCommissionRate || 0.30;
+          
+          // Buscar credenciais secretas do afiliado
+          const secretsDoc = await db.collection("store_data").doc("affiliates_secrets").get();
+          if (secretsDoc.exists && secretsDoc.data()[affiliate.id]) {
+            affiliateSecret = secretsDoc.data()[affiliate.id];
+          }
+        }
       }
-
-    } catch (error) {
-      const errorData = error.response?.data;
-      console.error("[Mercado Pago] Erro ao processar cartão:", errorData || error.message);
-      
-      let friendlyError = "Erro na API do Mercado Pago";
-      if (errorData?.message === 'not_result_by_params') {
-        friendlyError = "Cartão não reconhecido. Verifique se você não digitou um cartão de Crédito na aba de Débito (ou vice-versa), ou se a bandeira não é suportada.";
-      } else if (errorData?.message) {
-        friendlyError = errorData.message;
-      }
-      
-      return res.status(400).json({ success: false, error: friendlyError });
     }
-  }
 
-  // --- MOCK / SIMULAÇÃO DE SEGURANÇA (Caso Token vazio) ---
-  console.log(`[Modo Simulação] Cartão Processado com Sucesso.`);
-  return res.json({ success: true, status: 'approved', paymentId: 'pay_' + Date.now() });
+    // 2. Preparar payload do pagamento
+    const paymentPayload = {
+      body: {
+        ...paymentData
+      }
+    };
+
+    // 3. Adicionar Split Payment se tiver afiliado conectado
+    if (affiliateSecret && affiliateSecret.mp_access_token) {
+      const amount = paymentData.transaction_amount;
+      const commission = parseFloat((amount * affiliateRate).toFixed(2));
+      const adminFee = parseFloat((amount - commission).toFixed(2)); // O que fica com o dono da loja (Admin)
+      
+      paymentPayload.body.application_fee = adminFee;
+      
+      // Criar pagamento usando a conta do afiliado, retendo a taxa do admin
+      const affiliateClient = new MercadoPagoConfig({ accessToken: affiliateSecret.mp_access_token });
+      const affiliatePayment = new Payment({ client: affiliateClient });
+      
+      const response = await affiliatePayment.create(paymentPayload);
+      return res.json(response);
+    } else {
+      // Pagamento normal sem afiliado ou afiliado não conectou a conta
+      const response = await payment.create(paymentPayload);
+      return res.json(response);
+    }
+  } catch (error) {
+    console.error("Erro no processamento de pagamento:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`👉 Acesse no navegador: http://localhost:${PORT}`);
+  console.log(`Backend rodando na porta ${PORT}`);
 });
