@@ -9,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Servir todos os arquivos da loja (HTML, CSS, JS, Imagens) diretamente pelo backend!
+const path = require('path');
+app.use(express.static(__dirname));
+
 // ===== CONFIGURAÇÃO DO FIREBASE ADMIN =====
 let db = null;
 try {

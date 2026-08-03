@@ -744,10 +744,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- PIX countdown e Auto Sync ---
   let currentPaymentId = null;
-  // Configurar para apontar para o backend no Render, já que o frontend e backend estão separados
+  // Agora o frontend e backend rodam no mesmo domínio do Render!
   const API_BASE = window.location.protocol === 'file:' 
     ? 'http://localhost:3005' 
-    : 'https://d-a-w-load.onrender.com';
+    : '';
 
   async function startPixCountdown() {
     clearInterval(pixCountdownInterval);
