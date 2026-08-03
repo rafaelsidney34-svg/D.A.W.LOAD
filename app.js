@@ -806,10 +806,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        const response = await fetch(`${API_BASE}/api/check-payment/${currentPaymentId}`);
+        const ref = localStorage.getItem('dawload_ref') || '';
+        const response = await fetch(`${API_BASE}/api/check-payment/${currentPaymentId}?affiliateCode=${ref}`);
         const data = await response.json();
 
-        if (data.status === 'paid') {
+        if (data.paid || data.status === 'approved') {
           processPayment("PIX", 1);
         } else {
           // Continua perguntando...

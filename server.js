@@ -188,13 +188,45 @@ app.post('/api/pay-card', async (req, res) => {
 });
 
 app.get('/api/check-payment/:id', async (req, res) => {
+  const affiliateCode = req.query.affiliateCode;
+  
   try {
-    const response = await payment.get({ id: req.params.id });
+    let checkPayment;
+    let isAffiliate = false;
+    
+    // Se tiver código de afiliado, tenta carregar as chaves dele
+    if (affiliateCode && db) {
+      const usersDoc = await db.collection("store_data").doc("users_doc").get();
+      if (usersDoc.exists) {
+        const usersArray = usersDoc.data().usersArray || [];
+        const affiliate = usersArray.find(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
+        if (affiliate) {
+          const secretsDoc = await db.collection("store_data").doc("affiliates_secrets").get();
+          if (secretsDoc.exists && secretsDoc.data()[affiliate.id]) {
+            const affiliateSecret = secretsDoc.data()[affiliate.id];
+            if (affiliateSecret.mp_access_token) {
+              const affiliateClient = new MercadoPagoConfig({ accessToken: affiliateSecret.mp_access_token });
+              checkPayment = new Payment(affiliateClient);
+              isAffiliate = true;
+            }
+          }
+        }
+      }
+    }
+    
+    // Se não for afiliado ou falhou em achar as chaves, usa o admin (pagamento normal)
+    if (!isAffiliate) {
+      checkPayment = payment;
+    }
+
+    const response = await checkPayment.get({ id: req.params.id });
+    
     return res.json({
       paid: response.status === 'approved',
       status: response.status
     });
   } catch (err) {
+    console.error("Erro ao checar pagamento:", err);
     res.status(500).json({ paid: false, status: 'error' });
   }
 });
