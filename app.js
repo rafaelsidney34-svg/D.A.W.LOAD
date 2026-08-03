@@ -770,7 +770,8 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: selectedProductForCheckout.price,
-          productId: selectedProductForCheckout.id
+          productId: selectedProductForCheckout.id,
+          affiliateCode: localStorage.getItem('dawload_ref') || ''
         })
       });
       const data = await response.json();

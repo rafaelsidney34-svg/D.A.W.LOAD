@@ -103,62 +103,95 @@ app.get('/auth/callback', async (req, res) => {
   }
 });
 
-// ===== ROTA DE PROCESSAMENTO DE PAGAMENTOS (SPLIT) =====
-app.post('/process_payment', async (req, res) => {
-  const { paymentData, affiliateCode } = req.body;
-  
-  try {
-    let affiliateSecret = null;
-    let affiliateRate = 0.30; // Padrão 30%
-
-    // 1. Buscar se existe um afiliado vinculado e pegar a taxa dele
-    if (affiliateCode && db) {
-      const usersDoc = await db.collection("store_data").doc("users_doc").get();
-      if (usersDoc.exists) {
-        const usersArray = usersDoc.data().usersArray || [];
-        const affiliate = usersArray.find(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
-        
-        if (affiliate) {
-          affiliateRate = affiliate.affiliateCommissionRate || 0.30;
-          
-          // Buscar credenciais secretas do afiliado
-          const secretsDoc = await db.collection("store_data").doc("affiliates_secrets").get();
-          if (secretsDoc.exists && secretsDoc.data()[affiliate.id]) {
-            affiliateSecret = secretsDoc.data()[affiliate.id];
-          }
+// Helper para processar pagamento com ou sem afiliado
+async function applySplitPayment(paymentData, affiliateCode) {
+  let affiliateSecret = null;
+  let affiliateRate = 0.30;
+  if (affiliateCode && db) {
+    const usersDoc = await db.collection("store_data").doc("users_doc").get();
+    if (usersDoc.exists) {
+      const usersArray = usersDoc.data().usersArray || [];
+      const affiliate = usersArray.find(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
+      if (affiliate) {
+        affiliateRate = affiliate.affiliateCommissionRate || 0.30;
+        const secretsDoc = await db.collection("store_data").doc("affiliates_secrets").get();
+        if (secretsDoc.exists && secretsDoc.data()[affiliate.id]) {
+          affiliateSecret = secretsDoc.data()[affiliate.id];
         }
       }
     }
+  }
 
-    // 2. Preparar payload do pagamento
-    const paymentPayload = {
-      body: {
-        ...paymentData
-      }
+  const paymentPayload = { body: { ...paymentData } };
+
+  if (affiliateSecret && affiliateSecret.mp_access_token) {
+    const amount = paymentData.transaction_amount;
+    const commission = parseFloat((amount * affiliateRate).toFixed(2));
+    const adminFee = parseFloat((amount - commission).toFixed(2));
+    paymentPayload.body.application_fee = adminFee;
+    
+    const affiliateClient = new MercadoPagoConfig({ accessToken: affiliateSecret.mp_access_token });
+    const affiliatePayment = new Payment({ client: affiliateClient });
+    return await affiliatePayment.create(paymentPayload);
+  } else {
+    return await payment.create(paymentPayload);
+  }
+}
+
+app.post('/api/create-pix', async (req, res) => {
+  const { amount, productId, affiliateCode } = req.body;
+  try {
+    const paymentData = {
+      transaction_amount: Number(amount),
+      description: `Produto: ${productId}`,
+      payment_method_id: 'pix',
+      payer: { email: 'contato@dawload.com' } // MP exige um email para criar o PIX
     };
+    const response = await applySplitPayment(paymentData, affiliateCode);
+    return res.json({
+      success: true,
+      paymentId: response.id,
+      pixKey: response.point_of_interaction?.transaction_data?.qr_code,
+      qrCodeImage: "data:image/jpeg;base64," + response.point_of_interaction?.transaction_data?.qr_code_base64
+    });
+  } catch (err) {
+    console.error("Erro ao criar PIX:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
-    // 3. Adicionar Split Payment se tiver afiliado conectado
-    if (affiliateSecret && affiliateSecret.mp_access_token) {
-      const amount = paymentData.transaction_amount;
-      const commission = parseFloat((amount * affiliateRate).toFixed(2));
-      const adminFee = parseFloat((amount - commission).toFixed(2)); // O que fica com o dono da loja (Admin)
-      
-      paymentPayload.body.application_fee = adminFee;
-      
-      // Criar pagamento usando a conta do afiliado, retendo a taxa do admin
-      const affiliateClient = new MercadoPagoConfig({ accessToken: affiliateSecret.mp_access_token });
-      const affiliatePayment = new Payment({ client: affiliateClient });
-      
-      const response = await affiliatePayment.create(paymentPayload);
-      return res.json(response);
-    } else {
-      // Pagamento normal sem afiliado ou afiliado não conectou a conta
-      const response = await payment.create(paymentPayload);
-      return res.json(response);
-    }
-  } catch (error) {
-    console.error("Erro no processamento de pagamento:", error);
-    res.status(500).json({ error: error.message });
+app.post('/api/pay-card', async (req, res) => {
+  const { amount, token, paymentMethodId, installments, payer, productId, affiliateCode } = req.body;
+  try {
+    const paymentData = {
+      transaction_amount: Number(amount),
+      token,
+      description: `Produto: ${productId}`,
+      installments: Number(installments),
+      payment_method_id: paymentMethodId,
+      payer
+    };
+    const response = await applySplitPayment(paymentData, affiliateCode);
+    return res.json({
+      success: response.status === 'approved' || response.status === 'in_process',
+      status: response.status,
+      paymentId: response.id
+    });
+  } catch (err) {
+    console.error("Erro no cartão:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/check-payment/:id', async (req, res) => {
+  try {
+    const response = await payment.get({ id: req.params.id });
+    return res.json({
+      paid: response.status === 'approved',
+      status: response.status
+    });
+  } catch (err) {
+    res.status(500).json({ paid: false, status: 'error' });
   }
 });
 
