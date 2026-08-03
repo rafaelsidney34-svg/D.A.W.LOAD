@@ -62,16 +62,22 @@ app.get('/auth/callback', async (req, res) => {
   }
 
   try {
-    const oauthResponse = await oauth.create({
-      body: {
-        client_secret: MP_CLIENT_SECRET,
-        grant_type: 'authorization_code',
-        code: code,
-        redirect_uri: REDIRECT_URI
+    const axios = require('axios');
+    const params = new URLSearchParams();
+    params.append('client_id', MP_CLIENT_ID);
+    params.append('client_secret', MP_CLIENT_SECRET);
+    params.append('grant_type', 'authorization_code');
+    params.append('code', code);
+    params.append('redirect_uri', REDIRECT_URI);
+
+    const response = await axios.post('https://api.mercadopago.com/oauth/token', params.toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
       }
     });
 
-    const { access_token, refresh_token, public_key, user_id } = oauthResponse;
+    const { access_token, refresh_token, public_key, user_id } = response.data;
 
     // Salvar as credenciais no Firestore do afiliado
     if (db) {
