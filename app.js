@@ -744,10 +744,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- PIX countdown e Auto Sync ---
   let currentPaymentId = null;
-  // Fallback para desenvolvimento local (file://) ou produção (caminho relativo)
+  // Configurar para apontar para o backend no Render, já que o frontend e backend estão separados
   const API_BASE = window.location.protocol === 'file:' 
-    ? 'http://localhost:3000' 
-    : '';
+    ? 'http://localhost:3005' 
+    : 'https://d-a-w-load.onrender.com';
 
   async function startPixCountdown() {
     clearInterval(pixCountdownInterval);
@@ -786,6 +786,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. Iniciar Polling (perguntar ao servidor a cada 3s se já pagou)
         pollPaymentStatus();
+      } else {
+        const pixKeyEl = document.getElementById("pixKeyDisplay");
+        if (pixKeyEl) pixKeyEl.textContent = "Erro: " + (data.error || "Servidor offline");
+        showToast("Falha no PIX: " + (data.error || "Erro desconhecido"), 5000);
       }
     } catch (err) {
       console.error("Erro ao gerar PIX:", err);
