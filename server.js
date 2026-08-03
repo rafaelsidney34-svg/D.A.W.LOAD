@@ -79,7 +79,6 @@ app.get('/auth/callback', async (req, res) => {
 
     const { access_token, refresh_token, public_key, user_id } = response.data;
 
-
     // Salvar as credenciais no Firestore do afiliado
     if (db) {
       await db.collection("store_data").doc("affiliates_secrets").set({
