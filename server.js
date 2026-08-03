@@ -41,8 +41,8 @@ const MP_CLIENT_SECRET = process.env.MP_CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:3005/auth/callback';
 
 const client = new MercadoPagoConfig({ accessToken: MP_ACCESS_TOKEN });
-const oauth = new OAuth({ client });
-const payment = new Payment({ client });
+const oauth = new OAuth(client);
+const payment = new Payment(client);
 
 // ===== ROTAS DE AUTENTICAÇÃO OAUTH =====
 app.get('/auth/mercadopago', (req, res) => {
@@ -135,7 +135,7 @@ async function applySplitPayment(paymentData, affiliateCode) {
     paymentPayload.body.application_fee = adminFee;
     
     const affiliateClient = new MercadoPagoConfig({ accessToken: affiliateSecret.mp_access_token });
-    const affiliatePayment = new Payment({ client: affiliateClient });
+    const affiliatePayment = new Payment(affiliateClient);
     return await affiliatePayment.create(paymentPayload);
   } else {
     return await payment.create(paymentPayload);
