@@ -3,40 +3,49 @@ let productsData = [];
 let combosData = [];
 
 function loadDatabase() {
+  // 1. CARREGAMENTO RÁPIDO (CACHE-FIRST)
   const saved = localStorage.getItem("dawload_products");
   if (saved) {
     const parsed = JSON.parse(saved);
-    // Verificação de integridade: se o primeiro produto não tiver o campo 'image',
-    // os dados estão corrompidos/desatualizados — resetar para o padrão.
     if (parsed.length > 0 && (!parsed[0].image || !parsed[0].desc)) {
-      console.warn("[D.A.W.LOAD] Banco de dados desatualizado. Resetando para o padrão...");
-      // Preserva os links de download configurados pelo admin
-      const mergedProducts = defaultProducts.map(defaultProd => {
-        const old = parsed.find(p => p.id === defaultProd.id);
-        return {
-          ...defaultProd,
-          price: old ? old.price : defaultProd.price,
-          oldPrice: old ? old.oldPrice : defaultProd.oldPrice,
-          downloadLink: old ? (old.downloadLink || "") : ""
-        };
-      });
-      productsData = mergedProducts;
-      localStorage.setItem("dawload_products", JSON.stringify(productsData));
+      productsData = defaultProducts.map(p => ({ ...p }));
     } else {
       productsData = parsed;
     }
   } else {
     productsData = defaultProducts.map(p => ({ ...p }));
-    localStorage.setItem("dawload_products", JSON.stringify(productsData));
   }
 
-  // Load combos
   const savedCombos = localStorage.getItem("dawload_combos");
   if (savedCombos) {
     combosData = JSON.parse(savedCombos);
   } else {
     combosData = typeof defaultCombos !== "undefined" ? defaultCombos.map(c => ({ ...c })) : [];
-    localStorage.setItem("dawload_combos", JSON.stringify(combosData));
+  }
+
+  // 2. SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
+  if (typeof db !== "undefined") {
+    // Escutar Produtos
+    db.collection("store_data").doc("products_doc").onSnapshot((doc) => {
+      if (doc.exists) {
+        productsData = doc.data().productsArray || [];
+        localStorage.setItem("dawload_products", JSON.stringify(productsData));
+        document.dispatchEvent(new Event('productsUpdated'));
+      } else {
+        db.collection("store_data").doc("products_doc").set({ productsArray: productsData });
+      }
+    });
+
+    // Escutar Combos
+    db.collection("store_data").doc("combos_doc").onSnapshot((doc) => {
+      if (doc.exists) {
+        combosData = doc.data().combosArray || [];
+        localStorage.setItem("dawload_combos", JSON.stringify(combosData));
+        document.dispatchEvent(new Event('combosUpdated'));
+      } else {
+        db.collection("store_data").doc("combos_doc").set({ combosArray: combosData });
+      }
+    });
   }
 }
 loadDatabase();
@@ -376,6 +385,15 @@ document.addEventListener("DOMContentLoaded", function () {
   //  PRODUTOS
   // ==========================================================
   window.addEventListener("storage", () => { loadDatabase(); renderProducts(); });
+
+  document.addEventListener('productsUpdated', () => {
+    if (typeof renderProducts === "function") renderProducts();
+    if (typeof renderPreVenda === "function") renderPreVenda();
+  });
+
+  document.addEventListener('combosUpdated', () => {
+    if (typeof renderCombos === "function") renderCombos();
+  });
 
   function renderProducts() {
     if (!productGrid) return;

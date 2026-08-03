@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -602,12 +602,11 @@
       }
 
       function loadProductsFromStorage() {
-        // Carrega do localStorage ou inicia com os dados embutidos
+        // 1. CARREGAMENTO RÁPIDO (CACHE-FIRST)
         const saved = localStorage.getItem("dawload_products");
         if (saved) {
           products = JSON.parse(saved);
         } else {
-          // Fallback: usa o banco de dados padrão completo do app.js
           products = JSON.parse(JSON.stringify(defaultProducts));
           localStorage.setItem("dawload_products", JSON.stringify(products));
         }
@@ -618,6 +617,30 @@
         } else {
           combos = typeof defaultCombos !== "undefined" ? JSON.parse(JSON.stringify(defaultCombos)) : [];
           localStorage.setItem("dawload_combos", JSON.stringify(combos));
+        }
+
+        // 2. SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
+        if (typeof db !== "undefined") {
+          db.collection("store_data").doc("products_doc").onSnapshot((doc) => {
+            if (doc.exists) {
+              products = doc.data().productsArray || [];
+              localStorage.setItem("dawload_products", JSON.stringify(products));
+              renderAdminProducts();
+              renderAdminPreVenda();
+            } else {
+              db.collection("store_data").doc("products_doc").set({ productsArray: products });
+            }
+          });
+
+          db.collection("store_data").doc("combos_doc").onSnapshot((doc) => {
+            if (doc.exists) {
+              combos = doc.data().combosArray || [];
+              localStorage.setItem("dawload_combos", JSON.stringify(combos));
+              renderAdminCombos();
+            } else {
+              db.collection("store_data").doc("combos_doc").set({ combosArray: combos });
+            }
+          });
         }
       }
 
@@ -1095,8 +1118,12 @@
           });
         }
 
-        // Salvar no localStorage
+        // Salvar no localStorage e no Firebase
         localStorage.setItem("dawload_products", JSON.stringify(products));
+        if (typeof db !== "undefined") {
+          db.collection("store_data").doc("products_doc").set({ productsArray: products });
+          db.collection("store_data").doc("combos_doc").set({ combosArray: combos });
+        }
         showToast("Todas as alterações salvas com sucesso!");
         
         // Re-renderizar
