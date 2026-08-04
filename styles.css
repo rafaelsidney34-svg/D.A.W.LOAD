@@ -709,7 +709,7 @@ button {
 }
 
 .product-card:hover {
-  transform: translateY(-3px);
+  transform: scale(1.02);
   border-color: var(--border-hover);
   background: var(--surface-light);
   box-shadow: 0 15px 30px rgba(129, 176, 207, 0.15);
