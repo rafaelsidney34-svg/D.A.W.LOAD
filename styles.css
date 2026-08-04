@@ -697,11 +697,22 @@ button {
   position: relative;
 }
 
+/* Área invisível estendida para impedir o mouse de escapar quando o card sobe */
+.product-card::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -20px;
+  z-index: -1;
+}
+
 .product-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-3px);
   border-color: var(--border-hover);
   background: var(--surface-light);
-  box-shadow: 0 15px 30px rgba(129, 176, 207, 0.08);
+  box-shadow: 0 15px 30px rgba(129, 176, 207, 0.15);
 }
 
 .product-media {
