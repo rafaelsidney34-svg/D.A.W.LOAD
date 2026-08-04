@@ -696,6 +696,7 @@ button {
   z-index: 1;
 }
 
+/* Base magnética para não perder o hover */
 .product-card::after {
   content: "";
   position: absolute;
