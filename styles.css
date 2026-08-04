@@ -693,6 +693,14 @@ button {
   transition: var(--transition);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   position: relative;
+  z-index: 1;
+}
+
+.product-card::after {
+  content: "";
+  position: absolute;
+  top: -10px; left: -10px; right: -10px; bottom: -20px;
+  z-index: -1;
 }
 
 .product-card:hover {
@@ -842,6 +850,9 @@ button {
   grid-template-columns: 1fr;
   gap: 8px;
   margin-top: auto;
+  position: relative;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 .btn-primary {
