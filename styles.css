@@ -693,9 +693,10 @@ button {
   transition: var(--transition);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   position: relative;
+  z-index: 1;
 }
 
-/* Área invisível estendida para impedir o mouse de escapar quando o card sobe */
+/* Hit-area invisível para segurar o mouse durante o translateY */
 .product-card::after {
   content: "";
   position: absolute;
@@ -705,6 +706,8 @@ button {
   bottom: -20px;
   z-index: -1;
 }
+
+
 
 .product-card:hover {
   transform: translateY(-3px);
