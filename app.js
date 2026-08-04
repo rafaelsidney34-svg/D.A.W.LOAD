@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (cartIconToggle) cartIconToggle.addEventListener("click", toggleCartDrawer);
   if (cartDrawerClose) cartDrawerClose.addEventListener("click", toggleCartDrawer);
   if (cartDrawerBackdrop) cartDrawerBackdrop.addEventListener("click", toggleCartDrawer);
-  if (btnClearCart) {
+    if (btnClearCart) {
     btnClearCart.addEventListener("click", () => {
       cart = [];
       saveCart();
@@ -289,11 +289,17 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCartUI();
 
   // ==========================================================
-  //  AUTH — Login, Registro, Sessão
+  //  AUTH � Login, Registro, Sess�o
   // ==========================================================
   function updateHeaderForUser() {
     const user = getCurrentUser();
     if (user) {
+      let ids = (user.purchases || []).map(p => p.productId);
+      if (user.isAffiliate && user.authorizedProducts) {
+        ids = ids.concat(user.authorizedProducts);
+      }
+      localStorage.setItem("dawload_purchases", JSON.stringify([...new Set(ids)]));
+
       if (headerActions) headerActions.style.display = "none";
       if (userGreeting) userGreeting.style.display = "flex";
       if (userGreetingName) userGreetingName.textContent = `👤 ${user.name.split(" ")[0]}`;
@@ -1683,6 +1689,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
 
 
 

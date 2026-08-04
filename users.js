@@ -223,6 +223,14 @@ function creditAffiliateCommission(affiliateCode, purchase) {
   const idx = users.findIndex(u => u.affiliateCode && u.affiliateCode.toLowerCase() === affiliateCode.toLowerCase());
   if (idx === -1) return;
 
+  // Verificação de Produtos Autorizados
+  const authorizedProducts = users[idx].authorizedProducts;
+  if (authorizedProducts && authorizedProducts.length > 0) {
+    if (!authorizedProducts.includes(purchase.productId)) {
+      return; // Bloqueia comissão: o afiliado não está autorizado a vender este produto
+    }
+  }
+
   const rate = users[idx].affiliateCommissionRate !== undefined ? users[idx].affiliateCommissionRate : COMMISSION_RATE;
   const commission = parseFloat((purchase.amount * rate).toFixed(2));
   users[idx].affiliateConversions.push({
@@ -237,11 +245,16 @@ function creditAffiliateCommission(affiliateCode, purchase) {
   saveUsers(users);
 }
 
-function updateAffiliateRateAdmin(userId, newRate) {
+function updateAffiliateRateAdmin(userId, newRate, authProducts) {
   const users = getUsers();
   const idx = users.findIndex(u => u.id === userId);
   if (idx !== -1 && users[idx].isAffiliate) {
-    users[idx].affiliateCommissionRate = parseFloat(newRate);
+    if (newRate !== undefined && !isNaN(newRate)) {
+      users[idx].affiliateCommissionRate = parseFloat(newRate);
+    }
+    if (authProducts !== undefined) {
+      users[idx].authorizedProducts = authProducts;
+    }
     saveUsers(users);
   }
 }
@@ -252,6 +265,7 @@ function getAffiliateDashboard(userId) {
   return {
     affiliateCode: user.affiliateCode,
     isAffiliate: user.isAffiliate,
+    authorizedProducts: user.authorizedProducts || [],
     totalClicks: user.totalClicks || 0,
     conversions: user.affiliateConversions || [],
     totalConversions: (user.affiliateConversions || []).length,
@@ -287,7 +301,7 @@ function trackAffiliateRef() {
 trackAffiliateRef();
 
 // --- Criação Manual pelo Admin ---
-function createAffiliateAdmin(name, email, commission, pix, password) {
+function createAffiliateAdmin(name, email, commission, pix, password, authorizedProducts = []) {
   const users = getUsers();
   
   // Verifica se email já existe
@@ -297,13 +311,15 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
       existingUser.isAffiliate = true;
       existingUser.affiliateCode = existingUser.affiliateCode || generateAffiliateCode(existingUser.name);
       existingUser.affiliateCommissionRate = parseFloat(commission);
+      existingUser.authorizedProducts = authorizedProducts;
       if (pix) existingUser.affiliatePixKey = pix;
       saveUsers(users);
     } else {
       // Já é afiliado, só atualiza os dados se fornecidos
       if (commission !== undefined) existingUser.affiliateCommissionRate = parseFloat(commission);
-      if (pix) existingUser.affiliatePixKey = pix;
+      if (pix !== undefined) existingUser.affiliatePixKey = pix;
       if (password) existingUser.passwordHash = hashPassword(password);
+      if (authorizedProducts) existingUser.authorizedProducts = authorizedProducts;
       saveUsers(users);
     }
     return existingUser;
@@ -321,6 +337,7 @@ function createAffiliateAdmin(name, email, commission, pix, password) {
     affiliateChannel: 'Cadastrado via Painel Admin',
     affiliateCommissionRate: parseFloat(commission),
     affiliatePixKey: pix || '',
+    authorizedProducts: authorizedProducts,
     affiliateConversions: [],
     affiliateClicks: 0,
     totalCommission: 0

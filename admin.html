@@ -506,6 +506,13 @@
           <input type="number" id="newAffRate" class="form-input" placeholder="Ex: 50" value="50">
         </div>
       </div>
+
+      <div class="form-group">
+        <label>Bibliotecas Autorizadas (Para Venda e Acesso Grátis)</label>
+        <div id="newAffProductsList" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.2);">
+          <!-- Populado via JS -->
+        </div>
+      </div>
       
       <button type="button" class="btn-primary" id="btnConfirmAddAffiliate" style="width: 100%; padding: 12px; border-radius: 8px;">Adicionar e Gerar Link</button>
     </div>
@@ -877,6 +884,14 @@
           const totalEarned = aff.totalCommission || 0;
           const currentRate = aff.affiliateCommissionRate !== undefined ? (aff.affiliateCommissionRate * 100).toFixed(0) : 30;
           
+          let authProductsHtml = "<div style='margin-top:12px; margin-bottom:8px;'><label style='font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px;'>Bibliotecas Autorizadas</label><div class='aff-edit-prods' data-userid='"+aff.id+"' style='max-height:100px; overflow-y:auto; border:1px solid var(--border); padding:6px; border-radius:4px;'>";
+          const activeProducts = JSON.parse(localStorage.getItem("dawload_products")) || (typeof defaultProducts !== "undefined" ? defaultProducts : []);
+          activeProducts.forEach(prod => {
+            const isChecked = (aff.authorizedProducts || []).includes(prod.id) ? "checked" : "";
+            authProductsHtml += `<label style="display:flex; align-items:center; font-size:11px; cursor:pointer;"><input type="checkbox" value="${prod.id}" ${isChecked} style="margin-right:6px; width:12px; height:12px;"> ${prod.title}</label>`;
+          });
+          authProductsHtml += "</div></div>";
+
           item.innerHTML = `
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div class="product-info-title">${aff.name}</div>
@@ -902,6 +917,8 @@
                   <label>Comissão a Pagar (R$)</label>
                   <input type="text" class="form-input input-small" value="${totalEarned.toFixed(2)}" disabled>
                 </div>
+              </div>
+              ${authProductsHtml}
               <div style="display:flex; gap: 12px;">
                 <div class="form-group" style="margin-bottom:0; flex:1;">
                   <label>Taxa de Comissão (%)</label>
@@ -948,6 +965,23 @@
           document.getElementById("newAffPix").value = "";
           document.getElementById("newAffPass").value = "123456";
           document.getElementById("newAffRate").value = "50";
+          
+          const productsList = document.getElementById("newAffProductsList");
+          if (productsList) {
+            productsList.innerHTML = "";
+            const activeProducts = JSON.parse(localStorage.getItem("dawload_products")) || (typeof defaultProducts !== "undefined" ? defaultProducts : []);
+            if (activeProducts.length === 0) {
+              productsList.innerHTML = "<p style='color:var(--text-muted); font-size:13px;'>Nenhuma biblioteca cadastrada.</p>";
+            } else {
+              activeProducts.forEach(prod => {
+                const div = document.createElement("div");
+                div.style.marginBottom = "8px";
+                div.innerHTML = `<label style="display:flex; align-items:center; cursor:pointer; font-size:13px; color:var(--text);"><input type="checkbox" class="aff-prod-cb" value="${prod.id}" style="margin-right:8px; width:16px; height:16px;"> ${prod.title}</label>`;
+                productsList.appendChild(div);
+              });
+            }
+          }
+          
           addAffiliateModal.classList.add("show");
         });
       }
@@ -969,8 +1003,10 @@
             return;
           }
           
+          const authProducts = Array.from(document.querySelectorAll(".aff-prod-cb:checked")).map(cb => cb.value);
+          
           if (typeof createAffiliateAdmin === "function") {
-            createAffiliateAdmin(name, email, parseFloat(rate) / 100, pix, pass);
+            createAffiliateAdmin(name, email, parseFloat(rate) / 100, pix, pass, authProducts);
             showToast("Parceiro criado com sucesso!");
             addAffiliateModal.classList.remove("show");
             renderAdminAffiliates(); // Recarrega a lista
@@ -1107,8 +1143,14 @@
             const passInput = affList.querySelector(`.edit-aff-pass[data-userid="${userId}"]`);
             const newPass = passInput ? passInput.value.trim() : "";
             
-            if (!isNaN(newRate) && typeof updateAffiliateRateAdmin === "function") {
-              updateAffiliateRateAdmin(userId, newRate);
+            const prodContainer = affList.querySelector(`.aff-edit-prods[data-userid="${userId}"]`);
+            let authProds = undefined;
+            if (prodContainer) {
+               authProds = Array.from(prodContainer.querySelectorAll("input[type='checkbox']:checked")).map(cb => cb.value);
+            }
+            
+            if (typeof updateAffiliateRateAdmin === "function") {
+              updateAffiliateRateAdmin(userId, newRate, authProds);
             }
             // Se houver função para atualizar senha e o campo não estiver vazio
             if (newPass && typeof updateAffiliatePasswordAdmin === "function") {
