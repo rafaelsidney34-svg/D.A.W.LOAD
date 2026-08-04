@@ -695,6 +695,10 @@ button {
   transition: var(--transition);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   position: relative;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Área invisível estendida para impedir o mouse de escapar quando o card sobe */
@@ -709,7 +713,7 @@ button {
 }
 
 .product-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-3px);
   border-color: var(--border-hover);
   background: var(--surface-light);
   box-shadow: 0 15px 30px rgba(129, 176, 207, 0.15);
