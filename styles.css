@@ -633,7 +633,6 @@ button {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   scrollbar-width: none;
   scroll-behavior: smooth;
   padding: 4px;
@@ -685,7 +684,6 @@ button {
 /* Product Card styling */
 .product-card {
   flex: 0 0 calc(33.333% - 11px);
-  scroll-snap-align: start;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -743,7 +741,7 @@ button {
 }
 
 .product-card:hover .product-media img {
-  transform: scale(1.5);
+  transform: scale(1.44);
 }
 
 .product-details {
