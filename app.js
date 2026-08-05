@@ -1,4 +1,4 @@
-// Dados DinÃ¢micos em MemÃ³ria Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â defaultProducts vem de database.js
+// Dados Dinâmicos em Memória Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
@@ -23,7 +23,7 @@ function loadDatabase() {
     combosData = typeof defaultCombos !== "undefined" ? defaultCombos.map(c => ({ ...c })) : [];
   }
 
-  // 2. SINCRONIZAÃƒÆ’Ã†â€™Ã¢Ã¢â€šÂ¬Ã‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢O EM TEMPO REAL COM FIREBASE
+  // 2. SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
   if (typeof db !== "undefined") {
     // Escutar Produtos
     db.collection("store_data").doc("products_doc").onSnapshot((doc) => {
@@ -50,7 +50,7 @@ function loadDatabase() {
 }
 loadDatabase();
 
-// FunÃ§Ãµes de Gerenciamento de Compras Simuladas
+// Funções de Gerenciamento de Compras Simuladas
 function getPurchasedIds() {
   const saved = localStorage.getItem("dawload_purchases");
   return saved ? JSON.parse(saved) : [];
@@ -59,7 +59,7 @@ function getPurchasedIds() {
 function addPurchaseId(idString) {
   let idsToProcess = idString;
   if (idString === 'all-paid') {
-      idsToProcess = productsData.filter(p => p.category !== "GrÃ¡tis").map(p => p.id).join(',');
+      idsToProcess = productsData.filter(p => p.category !== "Grátis").map(p => p.id).join(',');
   }
   const ids = idsToProcess.split(',');
   const purchases = getPurchasedIds();
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cartItemsContainer) {
       cartItemsContainer.innerHTML = '';
       if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<div class="cart-empty-msg">Seu carrinho estÃ¡ vazio.</div>';
+        cartItemsContainer.innerHTML = '<div class="cart-empty-msg">Seu carrinho está vazio.</div>';
         if (cartTotalPrice) cartTotalPrice.textContent = 'R$ 0,00';
         if (btnCheckoutCart) btnCheckoutCart.disabled = true;
         return;
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="cart-item-title">${item.title}</div>
             <div class="cart-item-price">${formatBRL(item.price)}</div>
           </div>
-          <button class="cart-item-remove" data-index="${index}" title="Remover">Ã¢Ãƒâ€¦Ã¢â‚¬Å“Ã¢Ã¢â€šÂ¬Ã‚Â¢</button>
+          <button class="cart-item-remove" data-index="${index}" title="Remover">❌</button>
         `;
         cartItemsContainer.appendChild(div);
       });
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCartUI();
 
   // ==========================================================
-  //  AUTH Ã­Â¯Ãƒâ€šÃ‚Â¿Ãƒâ€šÃ‚Â½ Login, Registro, SessÃ­Â¯Ãƒâ€šÃ‚Â¿Ãƒâ€šÃ‚Â½o
+  //  AUTH - Login, Registro, Sess-o
   // ==========================================================
   function updateHeaderForUser() {
     const user = getCurrentUser();
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeAuthModal(loginModal);
       updateHeaderForUser();
       renderProducts();
-      showToast(`Bem-vindo de volta, ${result.user.name.split(" ")[0]}! Ã­Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¹`);
+      showToast(`Bem-vindo de volta, ${result.user.name.split(" ")[0]}! 🎉`);
     } else {
       if (loginError) { loginError.textContent = result.error; loginError.classList.add("show"); }
     }
@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const passwordConfirm = document.getElementById("registerPasswordConfirm").value;
 
     if (password !== passwordConfirm) {
-      if (registerError) { registerError.textContent = "As senhas nÃ£o coincidem."; registerError.classList.add("show"); }
+      if (registerError) { registerError.textContent = "As senhas não coincidem."; registerError.classList.add("show"); }
       return;
     }
 
@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeAuthModal(registerModal);
       updateHeaderForUser();
       renderProducts();
-      showToast(`Conta criada com sucesso! Bem-vindo, ${result.user.name.split(" ")[0]}! Ã­Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ã¢Ã¢â€šÂ¬Ã‚Â°`);
+      showToast(`Conta criada com sucesso! Bem-vindo, ${result.user.name.split(" ")[0]}! 🎉`);
     } else {
       if (registerError) { registerError.textContent = result.error; registerError.classList.add("show"); }
     }
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
       logoutUser();
       updateHeaderForUser();
       renderProducts();
-      showToast("VocÃª saiu da sua conta.");
+      showToast("Você saiu da sua conta.");
     });
   }
 
@@ -436,21 +436,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (prod.category === "pre-venda") {
       badgeBg = "#f59e0b"; // Orange
-      badgeText = "PrÃ©-Venda";
+      badgeText = "Pré-Venda";
       buttonLabel = "Adicionar ao Carrinho";
     }
 
     if (isFree) {
-      badgeBg = "#25a244"; badgeText = "GrÃ¡tis";
-      buttonLabel = "Download GrÃ¡tis"; buyClass += " free-btn";
+      badgeBg = "#25a244"; badgeText = "Grátis";
+      buttonLabel = "Download Grátis"; buyClass += " free-btn";
     } else if (isPurchased) {
       badgeBg = "#25a244"; badgeText = "Adquirido";
-      buttonLabel = prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "") ? "Aguardando LanÃ§amento" : "Baixar Biblioteca"; 
+      buttonLabel = prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "") ? "Aguardando Lançamento" : "Baixar Biblioteca"; 
       buyClass += " download-btn";
       priceStyle = "#52b788";
     }
 
-    const priceText = isFree ? "GrÃ¡tis" : formatBRL(prod.price);
+    const priceText = isFree ? "Grátis" : formatBRL(prod.price);
     const oldPriceText = (!isFree && prod.oldPrice) ? formatBRL(prod.oldPrice) : "";
 
     card.innerHTML = `
@@ -465,7 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <p class="product-desc">${prod.desc}</p>
         <div class="product-sales">
           <div class="sales-row">
-            ${prod.category === "pre-venda" && prod.releaseDate ? `<div class="rating-score" style="color:#f59e0b;font-size:11px;">LanÃ§amento: ${prod.releaseDate}</div>` : `<div class="rating-score">Ã¢Ãƒâ€¹Ã…â€œÃ¢Ã¢â€šÂ¬Ã‚Â¦ <span>${prod.rating.toFixed(1)}</span></div>`}
+            ${prod.category === "pre-venda" && prod.releaseDate ? `<div class="rating-score" style="color:#f59e0b;font-size:11px;">Lançamento: ${prod.releaseDate}</div>` : `<div class="rating-score">⭐ <span>${prod.rating.toFixed(1)}</span></div>`}
             ${oldPriceText ? `<div class="price-old">${oldPriceText}</div>` : ""}
           </div>
           <div class="price-row">
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="product-meta">${prod.meta.map(m => `<span>${m}</span>`).join("")}</div>
         <div class="product-actions">
           <a href="#" class="${buyClass}">${buttonLabel}</a>
-          ${prod.youtube ? `<a href="${prod.youtube}" target="_blank" class="btn-secondary">Ver VÃ­deo</a>` : ""}
+          ${prod.youtube ? `<a href="${prod.youtube}" target="_blank" class="btn-secondary">Ver Vídeo</a>` : ""}
         </div>
       </div>`;
     return card;
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           const itemExists = cart.find(i => i.id === prod.id);
           if (itemExists) {
-            showToast("Este item jÃ¡ estÃ¡ no carrinho!");
+            showToast("Este item jÃ¡ está no carrinho!");
           } else {
             cart.push(prod);
             saveCart();
@@ -519,7 +519,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btnGoToYoutube")?.addEventListener("click", () => {
     localStorage.setItem("dawload_yt_sub", "true");
     closeAuthModal(ytSubModal);
-    showToast("Obrigado por se inscrever! Liberando download... Ã­Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ã¢Ã¢â€šÂ¬Ã‚Â°");
+    showToast("Obrigado por se inscrever! Liberando download... 🎉");
     if (pendingDownloadProduct) {
       const prod = pendingDownloadProduct;
       pendingDownloadProduct = null;
@@ -530,13 +530,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function triggerDownload(prod) {
     // 1. Exigir cadastro/login no site
     if (!isLoggedIn()) {
-      showToast("Cadastre-se ou faÃ§a login gratuitamente para baixar!");
+      showToast("Cadastre-se ou faça login gratuitamente para baixar!");
       openAuthModal(registerModal);
       return;
     }
 
-    // 2. Exigir inscriÃ§Ã£o no YouTube para libs GrÃ¡tis
-    if (prod.category === "GrÃ¡tis" && localStorage.getItem("dawload_yt_sub") !== "true") {
+    // 2. Exigir inscrição no YouTube para libs Grátis
+    if (prod.category === "Grátis" && localStorage.getItem("dawload_yt_sub") !== "true") {
       pendingDownloadProduct = prod;
       const titleEl = document.getElementById("ytSubProdTitle");
       if (titleEl) titleEl.textContent = `Liberar: ${prod.title}`;
@@ -544,9 +544,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // 3. Efetuar download ou barrar prÃ©-venda
+    // 3. Efetuar download ou barrar pré-venda
     if (prod.category === "pre-venda" && (!prod.downloadLink || prod.downloadLink.trim() === "")) {
-      showToast(`Ainda em prÃ©-venda! DisponÃ­vel a partir de: ${prod.releaseDate || 'Breve'}`);
+      showToast(`Ainda em pré-venda! Disponível a partir de: ${prod.releaseDate || 'Breve'}`);
       return;
     }
 
@@ -554,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showToast(`Iniciando download: ${prod.title}...`);
       setTimeout(() => window.open(prod.downloadLink, "_blank"), 800);
     } else {
-      showToast("Link de download nÃ£o configurado. Acesse o Painel Admin.");
+      showToast("Link de download não configurado. Acesse o Painel Admin.");
     }
   }
 
@@ -587,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
       let featuresHtml = "";
       if (combo.features && combo.features.length) {
-        featuresHtml = `<ul class="plan-features">` + combo.features.map(f => `<li>Ã¢Ãƒâ€¦Ã¢â‚¬Å“Ã¢Ã¢â€šÂ¬Ã…â€œ ${f}</li>`).join('') + `</ul>`;
+        featuresHtml = `<ul class="plan-features">` + combo.features.map(f => `<li>✅ ${f}</li>`).join('') + `</ul>`;
       }
 
       card.innerHTML = `
@@ -620,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         const itemExists = cart.find(i => i.id === comboProd.id);
         if (itemExists) {
-            showToast("Este combo jÃ¡ estÃ¡ no carrinho!");
+            showToast("Este combo jÃ¡ está no carrinho!");
         } else {
             cart.push(comboProd);
             saveCart();
@@ -665,7 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedSuggestionIndex = -1;
     if (!currentSuggestions.length) { suggestionsDropdown.classList.remove("show"); return; }
     suggestionsDropdown.innerHTML = currentSuggestions.map((term, i) =>
-      `<button class="suggestion-option" type="button" data-index="${i}"><span>Ã¢Ãƒâ€¦Ã¢â‚¬â„¢Ã¢Ã¢â€šÂ¬Ã‚Â¢</span><span>${highlightSuggestion(term, query)}</span></button>`
+      `<button class="suggestion-option" type="button" data-index="${i}"><span>🎵</span><span>${highlightSuggestion(term, query)}</span></button>`
     ).join("");
     suggestionsDropdown.classList.add("show");
     suggestionsDropdown.querySelectorAll(".suggestion-option").forEach(opt => {
@@ -737,7 +737,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================================================
 
   // ==========================================================
-  //  CHECKOUT Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â 3 Abas: PIX / CrÃ©dito / DÃ©bito
+  //  CHECKOUT Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â 3 Abas: PIX / Crédito / Débito
   // ==========================================================
   // ----------------------------------------------------------------------
   // configuraÃ§Ã£o MERCADO PAGO - CARTÃƒÆ’Ã†â€™Ã¢Ã¢â€šÂ¬Ã‚Â¢ES (FRONTEND)
@@ -1068,7 +1068,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      // 2. Tokenizar CartÃ£o de CrÃ©dito/DÃ©bito direto na API do Mercado Pago
+      // 2. Tokenizar CartÃ£o de Crédito/Débito direto na API do Mercado Pago
       const tokenReq = await fetch(`https://api.mercadopago.com/v1/card_tokens?public_key=${MP_PUBLIC_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1091,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!tokenResponse || !tokenResponse.id) {
         console.error("Erro no MP:", tokenResponse);
-        throw new Error(tokenResponse.message || "NÃ£o foi possÃ­vel gerar o Token do CartÃ£o. Verifique os dados.");
+        throw new Error(tokenResponse.message || "Não foi possÃ­vel gerar o Token do CartÃ£o. Verifique os dados.");
       }
 
       // 3. Enviar o Token para o Servidor cobrar
@@ -1103,7 +1103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           productId: selectedProductForCheckout.id,
           token: tokenResponse.id,
           installments: installments,
-          paymentMethodId: method === "DÃ©bito" ? "debmaster" : "master", // SerÃ¡ descoberto pelo backend/SDK, mas enviamos fallback
+          paymentMethodId: method === "Débito" ? "debmaster" : "master", // SerÃ¡ descoberto pelo backend/SDK, mas enviamos fallback
           payer: {
             email: cardData.email,
             identification: { type: "CPF", number: rawCpf },
@@ -1146,7 +1146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
     }
     
-    processPayment("CartÃ£o de CrÃ©dito", installments, cardData);
+    processPayment("CartÃ£o de Crédito", installments, cardData);
   });
 
   document.getElementById("btnConfirmDebit")?.addEventListener("click", () => {
@@ -1163,7 +1163,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
     }
 
-    processPayment("DÃ©bito", 1, cardData);
+    processPayment("Débito", 1, cardData);
   });
 
   btnGoToDownload?.addEventListener("click", () => {
@@ -1215,7 +1215,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!myAccountDownloadsList) return;
     myAccountDownloadsList.innerHTML = "";
     const purchases = getPurchasedIds();
-    const myLibs = productsData.filter(p => p.category === "GrÃ¡tis" || purchases.includes(p.id));
+    const myLibs = productsData.filter(p => p.category === "Grátis" || purchases.includes(p.id));
 
     if (!myLibs.length) {
       myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponÃ­vel ainda.</div>`;
@@ -1231,7 +1231,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="purchase-history-info">
           <div class="purchase-history-title">${prod.title}</div>
-          <div class="purchase-history-meta" style="color:${prod.category==='GrÃ¡tis'?'#52b788':'var(--accent)'};">${prod.category==='GrÃ¡tis'?'GrÃ¡tis':'Adquirida'}</div>
+          <div class="purchase-history-meta" style="color:${prod.category==='Grátis'?'#52b788':'var(--accent)'};">${prod.category==='Grátis'?'Grátis':'Adquirida'}</div>
         </div>
         <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">Ã¢Ãƒâ€šÃ‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â¡ Download</button>`;
       myAccountDownloadsList.appendChild(div);
@@ -1325,7 +1325,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!user) { showToast("FaÃ§a login para se tornar afiliado."); openAuthModal(loginModal); return; }
     const channel = document.getElementById("affiliateChannelInput")?.value || "";
     registerAsAffiliate(user.id, channel);
-    showToast("VocÃª agora Ã© um Afiliado D.A.W.LOAD! ðŸŽ‰");
+    showToast("Você agora é um Afiliado D.A.W.LOAD! ðŸŽ‰");
     updateAffiliateDashboard();
   });
 
@@ -1633,14 +1633,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (topic === "download") {
       userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¥ Tenho problemas no download";
-      botReply = `Se o seu download nÃ£o iniciou ou foi interrompido, verifique:<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se a sua conexÃ£o com a internet estÃ¡ estÃ¡vel.<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se o seu navegador nÃ£o bloqueou a janela pop-up do download.<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Para bibliotecas GrÃ¡tis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
+      botReply = `Se o seu download não iniciou ou foi interrompido, verifique:<br>
+      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se a sua conexÃ£o com a internet está estável.<br>
+      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se o seu navegador não bloqueou a janela pop-up do download.<br>
+      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
       Caso o problema persista, fale agora com a nossa equipe no WhatsApp:
       ${renderHumanSupportCard("Tenho um problema no download da minha biblioteca no D.A.W.LOAD")}`;
     } else if (topic === "kontakt") {
-      userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¹ DÃºvida sobre instalaÃ§Ã£o / Kontakt";
+      userText = "🎉 DÃºvida sobre instalaÃ§Ã£o / Kontakt";
       botReply = `Nossas bibliotecas sÃ£o compatÃ­veis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
       <strong>Passo a passo rÃ¡pido:</strong><br>
       1. Baixe e extraia o arquivo da biblioteca (.rar ou .zip).<br>
@@ -1651,7 +1651,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (topic === "pagamento") {
       userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³ DÃºvidas de Pagamento / Comprovante";
       botReply = `Pagamentos por **PIX** e **CartÃ£o** sÃ£o verificados e liberados no site.<br><br>
-      Se vocÃª efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dÃºvida de cobranÃ§a:
+      Se você efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dÃºvida de cobranÃ§a:
       ${renderHumanSupportCard("Gostaria de enviar o comprovante do meu pagamento no D.A.W.LOAD")}`;
     } else if (topic === "humano") {
       userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬ Quero falar com suporte humano";
@@ -1686,16 +1686,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let reply = "";
 
     if (norm.includes("download") || norm.includes("baixar") || norm.includes("link")) {
-      reply = `Se vocÃª nÃ£o conseguiu baixar, certifique-se de estar logado no site e ter liberado o link.<br><br>Para ajuda direta dos desenvolvedores:
+      reply = `Se você não conseguiu baixar, certifique-se de estar logado no site e ter liberado o link.<br><br>Para ajuda direta dos desenvolvedores:
       ${renderHumanSupportCard(text)}`;
     } else if (norm.includes("kontakt") || norm.includes("instalar") || norm.includes("erro") || norm.includes("nki")) {
-      reply = `As bibliotecas exigem Kontakt 6 ou 7 Full.<br><br>Quer que ajudemos vocÃª a configurar no seu computador?
+      reply = `As bibliotecas exigem Kontakt 6 ou 7 Full.<br><br>Quer que ajudemos você a configurar no seu computador?
       ${renderHumanSupportCard(text)}`;
     } else if (norm.includes("pix") || norm.includes("pagar") || norm.includes("comprar") || norm.includes("comprovante")) {
       reply = `Encaminhando seu comprovante / dÃºvida de pagamento para verificaÃ§Ã£o rÃ¡pida:
       ${renderHumanSupportCard(text)}`;
     } else {
-      reply = `Entendi a sua solicitaÃ§Ã£o! Para te responder com atenÃ§Ã£o total, escolha quem vocÃª deseja chamar no WhatsApp:
+      reply = `Entendi a sua solicitaÃ§Ã£o! Para te responder com atenÃ§Ã£o total, escolha quem você deseja chamar no WhatsApp:
       ${renderHumanSupportCard(text)}`;
     }
 
