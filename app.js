@@ -1,9 +1,9 @@
-// Dados Dinâmicos em Memória Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â defaultProducts vem de database.js
+// Dados Dinâmicos em Memória ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
 function loadDatabase() {
-  // 1. CARREGAMENTO RÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂPIDO (CACHE-FIRST)
+  // 1. CARREGAMENTO RÃÆ’Ã†â€™Ãâ€šÂÂPIDO (CACHE-FIRST)
   const saved = localStorage.getItem("dawload_products");
   if (saved) {
     const parsed = JSON.parse(saved);
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let cart = JSON.parse(localStorage.getItem('dawload_cart')) || [];
 
   // ==========================================================
-  //  UTILITÃƒÆ’Ã†â€™Ãƒâ€šÃ‚ÂRIOS
+  //  UTILITÃÆ’Ã†â€™Ãâ€šÂÂRIOS
   // ==========================================================
   function showToast(msg, duration) {
     if (!toast) return;
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           const itemExists = cart.find(i => i.id === prod.id);
           if (itemExists) {
-            showToast("Este item jÃ¡ está no carrinho!");
+            showToast("Este item já está no carrinho!");
           } else {
             cart.push(prod);
             saveCart();
@@ -620,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         const itemExists = cart.find(i => i.id === comboProd.id);
         if (itemExists) {
-            showToast("Este combo jÃ¡ está no carrinho!");
+            showToast("Este combo já está no carrinho!");
         } else {
             cart.push(comboProd);
             saveCart();
@@ -631,10 +631,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Chamar logo na inicializaÃ§Ã£o
+  // Chamar logo na inicialização
   renderCombos();
   // ==========================================================
-  //  BUSCA & SUGESTÃƒÆ’Ã†â€™Ã¢Ã¢â€šÂ¬Ã‚Â¢ES
+  //  BUSCA & SUGESTÃÆ’Ã†â€™âââ€šÂ¬ÂÂ¢ES
   // ==========================================================
   function normalize(t) {
     return String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -737,12 +737,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================================================
 
   // ==========================================================
-  //  CHECKOUT Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â 3 Abas: PIX / Crédito / Débito
+  //  CHECKOUT ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ 3 Abas: PIX / Crédito / Débito
   // ==========================================================
   // ----------------------------------------------------------------------
-  // configuraÃ§Ã£o MERCADO PAGO - CARTÃƒÆ’Ã†â€™Ã¢Ã¢â€šÂ¬Ã‚Â¢ES (FRONTEND)
+  // configuração MERCADO PAGO - CARTÃÆ’Ã†â€™âââ€šÂ¬ÂÂ¢ES (FRONTEND)
   // ----------------------------------------------------------------------
-  // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave PÃºblica) do Mercado Pago
+  // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave Pública) do Mercado Pago
   const MP_PUBLIC_KEY = 'APP_USR-4a1c9479-eeb2-49e0-843c-4dadd505cba8'; 
   const mp = typeof MercadoPago !== 'undefined' ? new MercadoPago(MP_PUBLIC_KEY) : null;
   // ----------------------------------------------------------------------
@@ -769,7 +769,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- PIX countdown e Auto Sync ---
   let currentPaymentId = null;
-  // Agora o frontend e backend rodam no mesmo domÃ­nio do Render!
+  // Agora o frontend e backend rodam no mesmo domínio do Render!
   const API_BASE = window.location.protocol === 'file:' 
     ? 'http://localhost:3005' 
     : '';
@@ -809,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const qrImg = document.querySelector(".pix-qr-box img");
         if (qrImg && data.qrCodeImage) qrImg.src = data.qrCodeImage;
 
-        // 2. Iniciar Polling (perguntar ao servidor a cada 3s se jÃ¡ pagou)
+        // 2. Iniciar Polling (perguntar ao servidor a cada 3s se já pagou)
         pollPaymentStatus();
       } else {
         const pixKeyEl = document.getElementById("pixKeyDisplay");
@@ -827,7 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     pixAutoSyncTimer = setTimeout(async () => {
       if (!selectedProductForCheckout || !document.getElementById("tab-pix")?.classList.contains("active")) {
-        return; // UsuÃ¡rio fechou ou trocou de aba
+        return; // Usuário fechou ou trocou de aba
       }
 
       try {
@@ -868,12 +868,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Card 3D Flip helpers ---
   function detectBrand(num) {
     const n = num.replace(/\s/g, "");
-    if (/^4/.test(n)) return { label: "VISA", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³", css: "brand-visa" };
-    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â´Ã­Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¡", css: "brand-mastercard" };
-    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ã¢Ã¢â€šÂ¬Ã‚Âº", css: "brand-elo" };
-    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â´", css: "brand-hipercard" };
-    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã‚ÂÂ·", css: "brand-amex" };
-    return { label: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³", emoji: "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³", css: "" };
+    if (/^4/.test(n)) return { label: "VISA", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", css: "brand-visa" };
+    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÃâ€šÂÂ´íÂ°Ãâ€¦ÂÂ¸Ãâ€¦ÂÂ¸Ãâ€šÂÂ¡", css: "brand-mastercard" };
+    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢âââ€šÂ¬ÂÂº", css: "brand-elo" };
+    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÃâ€šÂÂ´", css: "brand-hipercard" };
+    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÂ·", css: "brand-amex" };
+    return { label: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", css: "" };
   }
 
   function maskCardNumber(val) {
@@ -896,8 +896,8 @@ document.addEventListener("DOMContentLoaded", function () {
     numInput?.addEventListener("input", e => {
       const masked = maskCardNumber(e.target.value);
       e.target.value = masked;
-      const display = masked || "Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";
-      if (numDisplay) numDisplay.textContent = display.padEnd(19, "Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢").replace(/(.{4})/g, "$1 ").trim();
+      const display = masked || "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢";
+      if (numDisplay) numDisplay.textContent = display.padEnd(19, "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢").replace(/(.{4})/g, "$1 ").trim();
       const brand = detectBrand(masked);
       if (brandDisplay) brandDisplay.textContent = brand.emoji;
     });
@@ -918,7 +918,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cvvInput?.addEventListener("input", e => {
       const v = e.target.value.replace(/\D/g, "").substring(0, 4);
       e.target.value = v;
-      if (cvvDisplay) cvvDisplay.textContent = v ? "Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢".repeat(v.length) : "Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";
+      if (cvvDisplay) cvvDisplay.textContent = v ? "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢".repeat(v.length) : "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢";
     });
   }
 
@@ -935,7 +935,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("option");
       opt.value = i;
       opt.textContent = i === 1
-        ? `1x de ${formatBRL(price)} (ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  vista)`
+        ? `1x de ${formatBRL(price)} (ÃÆ’Ã†â€™Ãâ€šÂÂ  vista)`
         : `${i}x de ${formatBRL(installment)} (total ${formatBRL(total)})`;
       sel.appendChild(opt);
     }
@@ -959,7 +959,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Require login
     if (!isLoggedIn()) {
-      showToast("FaÃ§a login ou cadastre-se para finalizar a compra.");
+      showToast("Faça login ou cadastre-se para finalizar a compra.");
       openAuthModal(registerModal);
       return;
     }
@@ -989,7 +989,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Iniciar countdown PIX
     startPixCountdown();
 
-    // Setup cartÃ£o
+    // Setup cartão
     setupCardInputs("credit", "card3dCredit");
     setupCardInputs("debit", "card3dDebit");
     setupInstallments(prod.price);
@@ -1061,14 +1061,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Validar e Formatar CPF
     const rawCpf = cardData.cpf.replace(/\D/g, '');
     if (rawCpf.length !== 11) {
-      showToast("CPF invÃ¡lido! Por favor digite corretamente.", 4000);
+      showToast("CPF inválido! Por favor digite corretamente.", 4000);
       checkoutBody.style.display = "";
       checkoutProcessing.style.display = "none";
       return;
     }
 
     try {
-      // 2. Tokenizar CartÃ£o de Crédito/Débito direto na API do Mercado Pago
+      // 2. Tokenizar Cartão de Crédito/Débito direto na API do Mercado Pago
       const tokenReq = await fetch(`https://api.mercadopago.com/v1/card_tokens?public_key=${MP_PUBLIC_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1091,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!tokenResponse || !tokenResponse.id) {
         console.error("Erro no MP:", tokenResponse);
-        throw new Error(tokenResponse.message || "Não foi possÃ­vel gerar o Token do CartÃ£o. Verifique os dados.");
+        throw new Error(tokenResponse.message || "Não foi possível gerar o Token do Cartão. Verifique os dados.");
       }
 
       // 3. Enviar o Token para o Servidor cobrar
@@ -1103,7 +1103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           productId: selectedProductForCheckout.id,
           token: tokenResponse.id,
           installments: installments,
-          paymentMethodId: method === "Débito" ? "debmaster" : "master", // SerÃ¡ descoberto pelo backend/SDK, mas enviamos fallback
+          paymentMethodId: method === "Débito" ? "debmaster" : "master", // Será descoberto pelo backend/SDK, mas enviamos fallback
           payer: {
             email: cardData.email,
             identification: { type: "CPF", number: rawCpf },
@@ -1120,8 +1120,8 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(data.error || "O banco recusou o pagamento.");
       }
     } catch (err) {
-      console.error("Erro ao processar cartÃ£o:", err);
-      showToast(err.message || "Erro ao processar o cartÃ£o. Tente novamente.", 4000);
+      console.error("Erro ao processar cartão:", err);
+      showToast(err.message || "Erro ao processar o cartão. Tente novamente.", 4000);
       checkoutBody.style.display = "";
       checkoutProcessing.style.display = "none";
     }
@@ -1143,10 +1143,10 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     if (!cardData.number || !cardData.exp || !cardData.cvv || !cardData.name || !cardData.cpf || !cardData.email) {
-      return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
+      return showToast("Preencha todos os campos do cartão (inclusive CPF e E-mail).", 3000);
     }
     
-    processPayment("CartÃ£o de Crédito", installments, cardData);
+    processPayment("Cartão de Crédito", installments, cardData);
   });
 
   document.getElementById("btnConfirmDebit")?.addEventListener("click", () => {
@@ -1160,7 +1160,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     if (!cardData.number || !cardData.exp || !cardData.cvv || !cardData.name || !cardData.cpf || !cardData.email) {
-      return showToast("Preencha todos os campos do cartÃ£o (inclusive CPF e E-mail).", 3000);
+      return showToast("Preencha todos os campos do cartão (inclusive CPF e E-mail).", 3000);
     }
 
     processPayment("Débito", 1, cardData);
@@ -1174,13 +1174,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ==========================================================
-  //  MINHA CONTA Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â Painel com abas
+  //  MINHA CONTA ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ Painel com abas
   // ==========================================================
   function openMyAccount() {
     if (!myAccountOverlay) return;
     const user = getCurrentUser();
     const emailEl = document.getElementById("accountUserEmail");
-    if (emailEl) emailEl.textContent = user ? user.email : "Downloads DisponÃ­veis";
+    if (emailEl) emailEl.textContent = user ? user.email : "Downloads Disponíveis";
     updateMyAccountList();
     updatePurchaseHistory();
     updateAffiliateDashboard();
@@ -1218,7 +1218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const myLibs = productsData.filter(p => p.category === "Grátis" || purchases.includes(p.id));
 
     if (!myLibs.length) {
-      myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponÃ­vel ainda.</div>`;
+      myAccountDownloadsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Nenhum download disponível ainda.</div>`;
       return;
     }
 
@@ -1233,7 +1233,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="purchase-history-title">${prod.title}</div>
           <div class="purchase-history-meta" style="color:${prod.category==='Grátis'?'#52b788':'var(--accent)'};">${prod.category==='Grátis'?'Grátis':'Adquirida'}</div>
         </div>
-        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">Ã¢Ãƒâ€šÃ‚Â¬Ã¢Ã¢â€šÂ¬Ã‚Â¡ Download</button>`;
+        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">âÃâ€šÂÂ¬âââ€šÂ¬ÂÂ¡ Download</button>`;
       myAccountDownloadsList.appendChild(div);
     });
 
@@ -1265,7 +1265,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.innerHTML = `
         <div class="purchase-history-info">
           <div class="purchase-history-title">${p.productTitle}</div>
-          <div class="purchase-history-meta">${date} ÃƒÆ’Ã¢â‚¬Å¡Â· ${p.paymentMethod} ÃƒÆ’Ã¢â‚¬Å¡Â· ${formatBRL(p.amount)}</div>
+          <div class="purchase-history-meta">${date} ÃÆ’ââ‚¬Å¡Â· ${p.paymentMethod} ÃÆ’ââ‚¬Å¡Â· ${formatBRL(p.amount)}</div>
         </div>`;
       list.appendChild(div);
     });
@@ -1295,11 +1295,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const convList = document.getElementById("conversionsList");
       if (convList) {
         if (!stats.conversions.length) {
-          convList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px;">Nenhuma venda atribuÃ­da ainda.</div>`;
+          convList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px;">Nenhuma venda atribuída ainda.</div>`;
         } else {
           convList.innerHTML = stats.conversions.map(c => `
             <div class="conversion-item">
-              <span>${new Date(c.date).toLocaleDateString("pt-BR")} ÃƒÆ’Ã¢â‚¬Å¡Â· ${c.productTitle}</span>
+              <span>${new Date(c.date).toLocaleDateString("pt-BR")} ÃÆ’ââ‚¬Å¡Â· ${c.productTitle}</span>
               <span class="conversion-commission">+${formatBRL(c.commission)}</span>
             </div>`).join("");
         }
@@ -1322,7 +1322,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("btnRegisterAffiliate")?.addEventListener("click", () => {
     const user = getCurrentUser();
-    if (!user) { showToast("FaÃ§a login para se tornar afiliado."); openAuthModal(loginModal); return; }
+    if (!user) { showToast("Faça login para se tornar afiliado."); openAuthModal(loginModal); return; }
     const channel = document.getElementById("affiliateChannelInput")?.value || "";
     registerAsAffiliate(user.id, channel);
     showToast("Você agora é um Afiliado D.A.W.LOAD! ðŸŽ‰");
@@ -1355,7 +1355,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeMyAccount(); // Fecha o overlay da conta para exibir o checkout limpo
       openCheckout({
         id: "sub_vip",
-        title: "Assinatura Ãrea VIP Mensal",
+        title: "Assinatura Área VIP Mensal",
         price: 29.99,
         category: "vip"
       });
@@ -1368,7 +1368,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnResetPurchases?.addEventListener("click", () => {
     clearPurchases();
-    showToast("HistÃ³rico de compras resetado.");
+    showToast("Histórico de compras resetado.");
     updateMyAccountList();
     renderProducts();
   });
@@ -1389,7 +1389,7 @@ document.addEventListener("DOMContentLoaded", function () {
       slide.className = `hero-slide ${index === 0 ? "active" : ""}`;
       const bgImage = prod.image || `assets/${prod.id.replace(/-/g, '_')}.png`;
       
-      // configuraÃ§Ã£o para caixas de produtos verticais (3 camadas)
+      // configuração para caixas de produtos verticais (3 camadas)
       // 1. Gradiente para dar contraste no texto
       // 2. Imagem contida na direita
       // 3. Imagem esticada bem escura preenchendo o fundo
@@ -1407,7 +1407,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (prod.demoUrl || prod.youtubeUrl) {
         demoBtn = `<button type="button" class="hero-btn demo-button" data-title="${prod.title}" data-midi="${prod.demoUrl || ''}" data-youtube="${prod.youtubeUrl || ''}">Conhecer Biblioteca</button>`;
       } else {
-        demoBtn = `<a href="#storeGrid" class="hero-btn">Ver CatÃ¡logo</a>`;
+        demoBtn = `<a href="#storeGrid" class="hero-btn">Ver Catálogo</a>`;
       }
 
       slide.innerHTML = `
@@ -1540,7 +1540,7 @@ document.addEventListener("DOMContentLoaded", function () {
   topMembersRankButton?.addEventListener("click", openMemberOverlay);
   topMembersJoinButton?.addEventListener("click", () => {
     if (!isLoggedIn()) {
-      showToast("FaÃ§a login para acessar a Ãrea VIP.");
+      showToast("Faça login para acessar a Área VIP.");
       openAuthModal(loginModal);
       return;
     }
@@ -1601,7 +1601,7 @@ document.addEventListener("DOMContentLoaded", function () {
   supportModalBackdrop?.addEventListener("click", closeSupportModal);
 
   function renderHumanSupportCard(userQuery) {
-    const defaultText = userQuery ? `OlÃ¡, preciso de suporte no D.A.W.LOAD: ${userQuery}` : "OlÃ¡, preciso de ajuda no D.A.W.LOAD";
+    const defaultText = userQuery ? `Olá, preciso de suporte no D.A.W.LOAD: ${userQuery}` : "Olá, preciso de ajuda no D.A.W.LOAD";
     const encText = encodeURIComponent(defaultText);
     const rafaelLink = `https://wa.me/5521981134378?text=${encText}`;
     const alexLink = `https://wa.me/5513991298707?text=${encText}`;
@@ -1610,10 +1610,10 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="human-support-card">
         <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:2px;">Fale diretamente no WhatsApp:</div>
         <a href="${rafaelLink}" target="_blank" class="human-contact-btn rafael">
-          <span>Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬</span> Falar com Rafael (+55 21 981134378)
+          <span>íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬</span> Falar com Rafael (+55 21 981134378)
         </a>
         <a href="${alexLink}" target="_blank" class="human-contact-btn alex">
-          <span>Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬</span> Falar com Alex (+55 13 99129-8707)
+          <span>íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬</span> Falar com Alex (+55 13 99129-8707)
         </a>
       </div>`;
   }
@@ -1632,31 +1632,31 @@ document.addEventListener("DOMContentLoaded", function () {
     let botReply = "";
 
     if (topic === "download") {
-      userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¥ Tenho problemas no download";
+      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬Ã…â€œÃâ€šÂÂ¥ Tenho problemas no download";
       botReply = `Se o seu download não iniciou ou foi interrompido, verifique:<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se a sua conexÃ£o com a internet está estável.<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Se o seu navegador não bloqueou a janela pop-up do download.<br>
-      Ã¢Ã¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
+      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Se a sua conexão com a internet está estável.<br>
+      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Se o seu navegador não bloqueou a janela pop-up do download.<br>
+      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
       Caso o problema persista, fale agora com a nossa equipe no WhatsApp:
       ${renderHumanSupportCard("Tenho um problema no download da minha biblioteca no D.A.W.LOAD")}`;
     } else if (topic === "kontakt") {
-      userText = "🎉 DÃºvida sobre instalaÃ§Ã£o / Kontakt";
-      botReply = `Nossas bibliotecas sÃ£o compatÃ­veis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
-      <strong>Passo a passo rÃ¡pido:</strong><br>
+      userText = "🎉 Dúvida sobre instalação / Kontakt";
+      botReply = `Nossas bibliotecas são compatíveis com **Kontakt Full (6 ou 7)** no Windows e macOS.<br><br>
+      <strong>Passo a passo rápido:</strong><br>
       1. Baixe e extraia o arquivo da biblioteca (.rar ou .zip).<br>
       2. Abra seu Kontakt.<br>
       3. Arraste a pasta/arquivo .nki para dentro do Kontakt.<br><br>
-      Precisa de auxÃ­lio direto na instalaÃ§Ã£o ou configuraÃ§Ã£o?
-      ${renderHumanSupportCard("Preciso de ajuda na instalaÃ§Ã£o/configuraÃ§Ã£o do Kontakt")}`;
+      Precisa de auxílio direto na instalação ou configuração?
+      ${renderHumanSupportCard("Preciso de ajuda na instalação/configuração do Kontakt")}`;
     } else if (topic === "pagamento") {
-      userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³ DÃºvidas de Pagamento / Comprovante";
-      botReply = `Pagamentos por **PIX** e **CartÃ£o** sÃ£o verificados e liberados no site.<br><br>
-      Se você efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dÃºvida de cobranÃ§a:
+      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³ Dúvidas de Pagamento / Comprovante";
+      botReply = `Pagamentos por **PIX** e **Cartão** são verificados e liberados no site.<br><br>
+      Se você efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dúvida de cobrança:
       ${renderHumanSupportCard("Gostaria de enviar o comprovante do meu pagamento no D.A.W.LOAD")}`;
     } else if (topic === "humano") {
-      userText = "Ã­Â°Ãƒâ€¦Ã‚Â¸Ã¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬ Quero falar com suporte humano";
+      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬ Quero falar com suporte humano";
       botReply = `Com certeza! Escolha abaixo com quem prefere falar diretamente no WhatsApp:
-      ${renderHumanSupportCard("OlÃ¡! Gostaria de falar com o suporte do D.A.W.LOAD.")}`;
+      ${renderHumanSupportCard("Olá! Gostaria de falar com o suporte do D.A.W.LOAD.")}`;
     }
 
     if (userText) appendChatMessage("user", userText);
@@ -1665,7 +1665,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Clique nos botÃµes de tÃ³picos
+  // Clique nos botões de tópicos
   document.getElementById("supportOptionsGrid")?.addEventListener("click", e => {
     const btn = e.target.closest(".chat-option-btn");
     if (btn) {
@@ -1673,7 +1673,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // FormulÃ¡rio de mensagem de texto livre
+  // Formulário de mensagem de texto livre
   supportChatForm?.addEventListener("submit", e => {
     e.preventDefault();
     const text = supportChatInput?.value.trim();
@@ -1692,10 +1692,10 @@ document.addEventListener("DOMContentLoaded", function () {
       reply = `As bibliotecas exigem Kontakt 6 ou 7 Full.<br><br>Quer que ajudemos você a configurar no seu computador?
       ${renderHumanSupportCard(text)}`;
     } else if (norm.includes("pix") || norm.includes("pagar") || norm.includes("comprar") || norm.includes("comprovante")) {
-      reply = `Encaminhando seu comprovante / dÃºvida de pagamento para verificaÃ§Ã£o rÃ¡pida:
+      reply = `Encaminhando seu comprovante / dúvida de pagamento para verificação rápida:
       ${renderHumanSupportCard(text)}`;
     } else {
-      reply = `Entendi a sua solicitaÃ§Ã£o! Para te responder com atenÃ§Ã£o total, escolha quem você deseja chamar no WhatsApp:
+      reply = `Entendi a sua solicitação! Para te responder com atenção total, escolha quem você deseja chamar no WhatsApp:
       ${renderHumanSupportCard(text)}`;
     }
 
