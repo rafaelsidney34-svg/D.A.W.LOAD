@@ -304,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (userGreeting) userGreeting.style.display = "flex";
       if (userGreetingName) userGreetingName.textContent = `👤 ${user.name.split(" ")[0]}`;
     } else {
+      clearPurchases();
       if (headerActions) headerActions.style.display = "flex";
       if (userGreeting) userGreeting.style.display = "none";
     }
