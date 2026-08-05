@@ -315,10 +315,31 @@
           </div>
         </div>
         
-        <div id="vipIsMember" style="display:none; text-align:center; padding:30px 10px;">
-          <div style="font-size:40px; margin-bottom:15px;">👑</div>
-          <h3 style="color:#f9a826; margin-bottom:10px; font-size:22px;">Bem-vindo à Área VIP!</h3>
-          <p style="color:var(--text-muted); font-size:15px; line-height:1.6;">Você é um membro VIP ativo.<br><br>Em breve, este painel será atualizado com arquivos exclusivos, plugins e masterclasses. Fique ligado!</p>
+        <div id="vipIsMember" style="display:none; padding:10px;">
+          <div style="text-align:center; margin-bottom:20px;">
+            <div style="font-size:30px; margin-bottom:5px;">👑</div>
+            <h3 style="color:#f9a826; font-size:22px; margin-bottom:5px;">Bem-vindo à Área VIP!</h3>
+            <p style="color:var(--text-muted); font-size:14px;">Escolha uma categoria para explorar os conteúdos exclusivos.</p>
+          </div>
+          
+          <div class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
+            <button class="category-btn" type="button" onclick="window.location.href='vip.html#multitracks'">
+              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎛️</div>
+              <span class="category-label" style="font-size:13px;">Multi Tracks</span>
+            </button>
+            <button class="category-btn" type="button" onclick="window.location.href='vip.html#plugins'">
+              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎁</div>
+              <span class="category-label" style="font-size:13px;">Plugins Grátis</span>
+            </button>
+            <button class="category-btn" type="button" onclick="window.location.href='vip.html#samples'">
+              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🥁</div>
+              <span class="category-label" style="font-size:13px;">Samples & Loops</span>
+            </button>
+            <button class="category-btn" type="button" onclick="window.location.href='vip.html#masterclass'">
+              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎓</div>
+              <span class="category-label" style="font-size:13px;">Masterclasses</span>
+            </button>
+          </div>
         </div>
       </div>
 
