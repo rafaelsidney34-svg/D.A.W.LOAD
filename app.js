@@ -1,4 +1,4 @@
-﻿// Dados DinÃƒÆ’Ã‚Â¢micos em MemÃƒÆ’Ã‚Â³ria ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â defaultProducts vem de database.js
+// Dados DinÃƒÆ’Ã‚Â¢micos em MemÃƒÆ’Ã‚Â³ria ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
@@ -1521,7 +1521,7 @@ document.addEventListener("DOMContentLoaded", function () {
     listEl.classList.add("changing");
     setTimeout(() => {
       const member = topWeekMembers[topWeekIndex];
-            listEl.innerHTML = <span class="fixed-item"><span>${member.icone}</span><span>${member.nome}</span></span>;
+            listEl.innerHTML = `<span class="fixed-item"><span>${member.icone}</span><span>${member.nome}</span></span>`;
       topWeekIndex = (topWeekIndex + 1) % topWeekMembers.length;
       listEl.classList.remove("changing");
     }, 240);
@@ -1533,7 +1533,7 @@ document.addEventListener("DOMContentLoaded", function () {
     topWeekMembers.forEach((member, i) => {
       const item = document.createElement("li");
       item.className = "member-rank-item";
-      item.innerHTML = <span class="member-rank-position">#</span><span class="member-rank-name"></span><span class="member-rank-icon"></span>;
+      item.innerHTML = `<span class="member-rank-position">#${i + 1}</span><span class="member-rank-name">${member.nome}</span><span class="member-rank-icon">${member.icone}</span>`;
       memberRankList.appendChild(item);
     });
     memberOverlay.classList.add("is-open");
