@@ -322,23 +322,88 @@
             <p style="color:var(--text-muted); font-size:14px;">Escolha uma categoria para explorar os conteúdos exclusivos.</p>
           </div>
           
-          <div class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
-            <button class="category-btn" type="button" onclick="window.location.href='vip.html#multitracks'">
+          <div id="vipCategoriesGrid" class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
+            <button class="category-btn" type="button" onclick="document.getElementById('vipCategoriesGrid').style.display='none'; document.getElementById('vipPluginsList').style.display='block';">
               <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎛️</div>
-              <span class="category-label" style="font-size:13px;">Multi Tracks</span>
+              <span class="category-label" style="font-size:13px;">Plugins</span>
             </button>
-            <button class="category-btn" type="button" onclick="window.location.href='vip.html#plugins'">
-              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎁</div>
-              <span class="category-label" style="font-size:13px;">Plugins Grátis</span>
+          </div>
+
+          <!-- Lista de Plugins (Kontakt) -->
+          <div id="vipPluginsList" style="display:none; text-align:left;">
+            <button class="btn-secondary" style="margin-bottom:15px; padding:8px 12px; font-size:12px; display:inline-flex; align-items:center; gap:5px;" onclick="document.getElementById('vipPluginsList').style.display='none'; document.getElementById('vipCategoriesGrid').style.display='grid';">
+              <span>⬅</span> Voltar
             </button>
-            <button class="category-btn" type="button" onclick="window.location.href='vip.html#samples'">
-              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🥁</div>
-              <span class="category-label" style="font-size:13px;">Samples & Loops</span>
-            </button>
-            <button class="category-btn" type="button" onclick="window.location.href='vip.html#masterclass'">
-              <div class="category-icon-wrap" style="font-size:24px; padding:10px;">🎓</div>
-              <span class="category-label" style="font-size:13px;">Masterclasses</span>
-            </button>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:15px;">
+              
+              <!-- Plugin 1 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT 5.6.6 (D.A.W.LOAD)</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+              <!-- Plugin 2 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT 6.0.2 (D.A.W.LOAD)</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+              <!-- Plugin 3 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT 6.4.2 (D.A.W.LOAD)</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+              <!-- Plugin 4 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT 6.5.2 (D.A.W.LOAD)</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+              <!-- Plugin 5 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT 6.7.1 PORTABLE D.A.W.LOAD</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+              <!-- Plugin 6 -->
+              <div style="background:#1a1a1a; border-radius:8px; overflow:hidden; border:1px solid #333; display:flex; flex-direction:column;">
+                <div style="height:100px; background:#111; display:flex; align-items:center; justify-content:center; font-size:36px;">
+                  📦
+                </div>
+                <div style="padding:12px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                  <h4 style="font-size:12px; margin-bottom:15px; color:#fff; line-height:1.4;">KONTAKT PORTABLE 8 (D.A.W.LOAD)</h4>
+                  <a href="#" class="btn-primary" style="text-align:center; padding:8px; font-size:12px; text-decoration:none;">Download</a>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
