@@ -3,7 +3,6 @@ let productsData = [];
 let combosData = [];
 
 function loadDatabase() {
-  // 1. CARREGAMENTO RÃÆ’Ã†â€™Ãâ€šÂÂPIDO (CACHE-FIRST)
   const saved = localStorage.getItem("dawload_products");
   if (saved) {
     const parsed = JSON.parse(saved);
@@ -23,27 +22,40 @@ function loadDatabase() {
     combosData = typeof defaultCombos !== "undefined" ? defaultCombos.map(c => ({ ...c })) : [];
   }
 
-  // 2. SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
+  function applyVipLinks(vipLinks) {
+    for(let i=1; i<=6; i++) {
+      const btn = document.getElementById("vipBtnLink" + i);
+      if (btn && vipLinks["link" + i]) btn.href = vipLinks["link" + i];
+    }
+  }
+
+  const savedVipLinks = localStorage.getItem("dawload_vip_links");
+  if (savedVipLinks) {
+    applyVipLinks(JSON.parse(savedVipLinks));
+  }
+
   if (typeof db !== "undefined") {
-    // Escutar Produtos
     db.collection("store_data").doc("products_doc").onSnapshot((doc) => {
       if (doc.exists) {
         productsData = doc.data().productsArray || [];
         localStorage.setItem("dawload_products", JSON.stringify(productsData));
         document.dispatchEvent(new Event('productsUpdated'));
-      } else {
-        db.collection("store_data").doc("products_doc").set({ productsArray: productsData });
       }
     });
 
-    // Escutar Combos
     db.collection("store_data").doc("combos_doc").onSnapshot((doc) => {
       if (doc.exists) {
         combosData = doc.data().combosArray || [];
         localStorage.setItem("dawload_combos", JSON.stringify(combosData));
         document.dispatchEvent(new Event('combosUpdated'));
-      } else {
-        db.collection("store_data").doc("combos_doc").set({ combosArray: combosData });
+      }
+    });
+
+    db.collection("store_data").doc("vip_links_doc").onSnapshot((doc) => {
+      if (doc.exists) {
+        const vipLinks = doc.data();
+        localStorage.setItem("dawload_vip_links", JSON.stringify(vipLinks));
+        applyVipLinks(vipLinks);
       }
     });
   }
