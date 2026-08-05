@@ -1180,6 +1180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateMyAccountList();
     updatePurchaseHistory();
     updateAffiliateDashboard();
+    updateVIPDashboard();
     myAccountOverlay.classList.add("is-open");
     document.body.classList.add("search-overlay-open");
   }
@@ -1323,6 +1324,48 @@ document.addEventListener("DOMContentLoaded", function () {
     showToast("Você agora é um Afiliado D.A.W.LOAD! 🎉");
     updateAffiliateDashboard();
   });
+
+  // --- Lógica VIP ---
+  function updateVIPDashboard() {
+    const user = getCurrentUser();
+    if (!user) return;
+    
+    const notMemberDiv = document.getElementById("vipNotMember");
+    const isMemberDiv = document.getElementById("vipIsMember");
+    
+    if (notMemberDiv && isMemberDiv) {
+      if (user.isVIPMember) {
+        notMemberDiv.style.display = "none";
+        isMemberDiv.style.display = "block";
+      } else {
+        notMemberDiv.style.display = "block";
+        isMemberDiv.style.display = "none";
+      }
+    }
+  }
+  
+  const btnSubscribeVIP = document.getElementById("btnSubscribeVIP");
+  if (btnSubscribeVIP) {
+    btnSubscribeVIP.addEventListener("click", () => {
+      const user = getCurrentUser();
+      if (!user) return;
+      
+      btnSubscribeVIP.textContent = "Processando...";
+      btnSubscribeVIP.disabled = true;
+      
+      setTimeout(() => {
+        if (typeof becomeVIPMember === "function") {
+          becomeVIPMember(user.id);
+          showToast("Assinatura VIP confirmada! Bem-vindo!");
+          updateVIPDashboard();
+        } else {
+          showToast("Erro de script.");
+        }
+        btnSubscribeVIP.textContent = "Assinar Agora";
+        btnSubscribeVIP.disabled = false;
+      }, 1500);
+    });
+  }
 
   navMinhaContaLink?.addEventListener("click", e => { e.preventDefault(); openMyAccount(); });
   myAccountOverlayClose?.addEventListener("click", closeMyAccount);

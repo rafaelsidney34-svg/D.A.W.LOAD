@@ -165,6 +165,18 @@ function isLoggedIn() {
   return getCurrentUser() !== null;
 }
 
+// --- Status VIP ---
+function becomeVIPMember(userId) {
+  const users = getUsers();
+  const idx = users.findIndex(u => u.id === userId);
+  if (idx !== -1) {
+    users[idx].isVIPMember = true;
+    saveUsers(users);
+    return true;
+  }
+  return false;
+}
+
 // --- Compras ---
 
 function addUserPurchase(userId, product, paymentMethod, amount, installments) {
