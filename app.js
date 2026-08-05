@@ -1329,16 +1329,14 @@ document.addEventListener("DOMContentLoaded", function () {
     updateAffiliateDashboard();
   });
 
-  // --- LÃ³gica VIP ---
+  // --- Lógica VIP ---
   function updateVIPDashboard() {
     const user = getCurrentUser();
-    if (!user) return;
-    
     const notMemberDiv = document.getElementById("vipNotMember");
     const isMemberDiv = document.getElementById("vipIsMember");
     
     if (notMemberDiv && isMemberDiv) {
-      if (user.isVIPMember) {
+      if (user && user.isVIPMember) {
         notMemberDiv.style.display = "none";
         isMemberDiv.style.display = "block";
       } else {
