@@ -1,4 +1,4 @@
-// Dados Dinâmicos em Memória ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ defaultProducts vem de database.js
+// Dados Dinâmicos em Memória - defaultProducts vem de database.js
 let productsData = [];
 let combosData = [];
 
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let cart = JSON.parse(localStorage.getItem('dawload_cart')) || [];
 
   // ==========================================================
-  //  UTILITÃÆ’Ã†â€™Ãâ€šÂÂRIOS
+  //  UTILITÃÆ’Ã†â€™Ãâ€šRIOS
   // ==========================================================
   function showToast(msg, duration) {
     if (!toast) return;
@@ -646,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Chamar logo na inicialização
   renderCombos();
   // ==========================================================
-  //  BUSCA & SUGESTÃÆ’Ã†â€™âââ€šÂ¬ÂÂ¢ES
+  //  BUSCA & SUGESTÕES
   // ==========================================================
   function normalize(t) {
     return String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -749,10 +749,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================================================
 
   // ==========================================================
-  //  CHECKOUT ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ 3 Abas: PIX / Crédito / Débito
+  //  CHECKOUT - 3 Abas: PIX / Crédito / Débito
   // ==========================================================
   // ----------------------------------------------------------------------
-  // configuração MERCADO PAGO - CARTÃÆ’Ã†â€™âââ€šÂ¬ÂÂ¢ES (FRONTEND)
+  // configuração MERCADO PAGO - CARTÕES (FRONTEND)
   // ----------------------------------------------------------------------
   // IMPORTANTE: Substitua pela sua PUBLIC KEY (Chave Pública) do Mercado Pago
   const MP_PUBLIC_KEY = 'APP_USR-4a1c9479-eeb2-49e0-843c-4dadd505cba8'; 
@@ -880,12 +880,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Card 3D Flip helpers ---
   function detectBrand(num) {
     const n = num.replace(/\s/g, "");
-    if (/^4/.test(n)) return { label: "VISA", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", css: "brand-visa" };
-    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÃâ€šÂÂ´íÂ°Ãâ€¦ÂÂ¸Ãâ€¦ÂÂ¸Ãâ€šÂÂ¡", css: "brand-mastercard" };
-    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢âââ€šÂ¬ÂÂº", css: "brand-elo" };
-    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÃâ€šÂÂ´", css: "brand-hipercard" };
-    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ÂÂÂ·", css: "brand-amex" };
-    return { label: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", emoji: "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³", css: "" };
+    if (/^4/.test(n)) return { label: "VISA", emoji: "💳", css: "brand-visa" };
+    if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return { label: "MC", emoji: "💳", css: "brand-mastercard" };
+    if (/^6(36368|36369|36370|504175|362|38|09)/.test(n)) return { label: "ELO", emoji: "💳", css: "brand-elo" };
+    if (/^(384|385|386|368)/.test(n)) return { label: "HIPER", emoji: "💳", css: "brand-hipercard" };
+    if (/^3[47]/.test(n)) return { label: "AMEX", emoji: "💳", css: "brand-amex" };
+    return { label: "💳", emoji: "💳", css: "" };
   }
 
   function maskCardNumber(val) {
@@ -908,8 +908,8 @@ document.addEventListener("DOMContentLoaded", function () {
     numInput?.addEventListener("input", e => {
       const masked = maskCardNumber(e.target.value);
       e.target.value = masked;
-      const display = masked || "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢";
-      if (numDisplay) numDisplay.textContent = display.padEnd(19, "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢").replace(/(.{4})/g, "$1 ").trim();
+      const display = masked || "•••• •••• •••• ••••";
+      if (numDisplay) numDisplay.textContent = display.padEnd(19, "•").replace(/(.{4})/g, "$1 ").trim();
       const brand = detectBrand(masked);
       if (brandDisplay) brandDisplay.textContent = brand.emoji;
     });
@@ -930,7 +930,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cvvInput?.addEventListener("input", e => {
       const v = e.target.value.replace(/\D/g, "").substring(0, 4);
       e.target.value = v;
-      if (cvvDisplay) cvvDisplay.textContent = v ? "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢".repeat(v.length) : "ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢";
+      if (cvvDisplay) cvvDisplay.textContent = v ? "•".repeat(v.length) : "•••";
     });
   }
 
@@ -947,7 +947,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const opt = document.createElement("option");
       opt.value = i;
       opt.textContent = i === 1
-        ? `1x de ${formatBRL(price)} (ÃÆ’Ã†â€™Ãâ€šÂÂ  vista)`
+        ? `1x de ${formatBRL(price)} (à vista)`
         : `${i}x de ${formatBRL(installment)} (total ${formatBRL(total)})`;
       sel.appendChild(opt);
     }
@@ -1186,7 +1186,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ==========================================================
-  //  MINHA CONTA ââââ‚¬Å¡ÂÂ¬âââ€šÂ¬ÂÂ Painel com abas
+  //  MINHA CONTA - Painel com abas
   // ==========================================================
   function openMyAccount() {
     if (!myAccountOverlay) return;
@@ -1245,7 +1245,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="purchase-history-title">${prod.title}</div>
           <div class="purchase-history-meta" style="color:${prod.category==='Grátis'?'#52b788':'var(--accent)'};">${prod.category==='Grátis'?'Grátis':'Adquirida'}</div>
         </div>
-        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">âÃâ€šÂÂ¬âââ€šÂ¬ÂÂ¡ Download</button>`;
+        <button type="button" class="btn-dl-small acc-dl-btn" data-id="${prod.id}">⇩ Download</button>`;
       myAccountDownloadsList.appendChild(div);
     });
 
@@ -1277,7 +1277,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.innerHTML = `
         <div class="purchase-history-info">
           <div class="purchase-history-title">${p.productTitle}</div>
-          <div class="purchase-history-meta">${date} ÃÆ’ââ‚¬Å¡Â· ${p.paymentMethod} ÃÆ’ââ‚¬Å¡Â· ${formatBRL(p.amount)}</div>
+          <div class="purchase-history-meta">${date} • ${p.paymentMethod} • ${formatBRL(p.amount)}</div>
         </div>`;
       list.appendChild(div);
     });
@@ -1311,7 +1311,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           convList.innerHTML = stats.conversions.map(c => `
             <div class="conversion-item">
-              <span>${new Date(c.date).toLocaleDateString("pt-BR")} ÃÆ’ââ‚¬Å¡Â· ${c.productTitle}</span>
+              <span>${new Date(c.date).toLocaleDateString("pt-BR")} • ${c.productTitle}</span>
               <span class="conversion-commission">+${formatBRL(c.commission)}</span>
             </div>`).join("");
         }
@@ -1622,10 +1622,10 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="human-support-card">
         <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:2px;">Fale diretamente no WhatsApp:</div>
         <a href="${rafaelLink}" target="_blank" class="human-contact-btn rafael">
-          <span>íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬</span> Falar com Rafael (+55 21 981134378)
+          <span>💬</span> Falar com Rafael (+55 21 981134378)
         </a>
         <a href="${alexLink}" target="_blank" class="human-contact-btn alex">
-          <span>íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬</span> Falar com Alex (+55 13 99129-8707)
+          <span>💬</span> Falar com Alex (+55 13 99129-8707)
         </a>
       </div>`;
   }
@@ -1644,11 +1644,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let botReply = "";
 
     if (topic === "download") {
-      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬Ã…â€œÃâ€šÂÂ¥ Tenho problemas no download";
+      userText = "🚨 Tenho problemas no download";
       botReply = `Se o seu download não iniciou ou foi interrompido, verifique:<br>
-      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Se a sua conexão com a internet está estável.<br>
-      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Se o seu navegador não bloqueou a janela pop-up do download.<br>
-      ââââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
+      • Se a sua conexão com a internet está estável.<br>
+      • Se o seu navegador não bloqueou a janela pop-up do download.<br>
+      • Para bibliotecas Grátis, certifique-se de estar logado no site e inscrito no canal do YouTube.<br><br>
       Caso o problema persista, fale agora com a nossa equipe no WhatsApp:
       ${renderHumanSupportCard("Tenho um problema no download da minha biblioteca no D.A.W.LOAD")}`;
     } else if (topic === "kontakt") {
@@ -1661,12 +1661,12 @@ document.addEventListener("DOMContentLoaded", function () {
       Precisa de auxílio direto na instalação ou configuração?
       ${renderHumanSupportCard("Preciso de ajuda na instalação/configuração do Kontakt")}`;
     } else if (topic === "pagamento") {
-      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ³ Dúvidas de Pagamento / Comprovante";
+      userText = "💳 Dúvidas de Pagamento / Comprovante";
       botReply = `Pagamentos por **PIX** e **Cartão** são verificados e liberados no site.<br><br>
       Se você efetuou o pagamento e deseja enviar seu comprovante ou tirar uma dúvida de cobrança:
       ${renderHumanSupportCard("Gostaria de enviar o comprovante do meu pagamento no D.A.W.LOAD")}`;
     } else if (topic === "humano") {
-      userText = "íÂ°Ãâ€¦ÂÂ¸âââ€šÂ¬ââ€žÂ¢Ãâ€šÂÂ¬ Quero falar com suporte humano";
+      userText = "💬 Quero falar com suporte humano";
       botReply = `Com certeza! Escolha abaixo com quem prefere falar diretamente no WhatsApp:
       ${renderHumanSupportCard("Olá! Gostaria de falar com o suporte do D.A.W.LOAD.")}`;
     }
