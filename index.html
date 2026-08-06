@@ -307,11 +307,43 @@
       <!-- Aba: Membros VIP -->
       <div class="account-tab-content" id="acctab-vip">
         <div id="vipNotMember">
-          <div style="background: linear-gradient(135deg, #2a2a2a, #111); padding: 20px; border-radius: 8px; border: 1px solid #f9a826; text-align: center;">
+          <div style="text-align: center; margin-bottom: 20px;">
             <h3 style="color:#f9a826; margin-bottom:10px; font-size:20px;">Seja um Membro VIP!</h3>
-            <p style="color:var(--text-muted); font-size:14px; margin-bottom:15px; line-height:1.5;">Tenha acesso exclusivo a novas bibliotecas, plugins VSTs raros, aulas e masterclasses. O painel VIP está sendo preparado e você já pode garantir seu acesso mensal.</p>
-            <h2 style="color:#fff; margin-bottom:20px;">R$ 29,99 <span style="font-size:14px; color:var(--text-muted); font-weight:normal;">/mês</span></h2>
-            <button class="btn-primary" id="btnSubscribeVIP" style="background:#f9a826; color:#000; width:100%; font-weight:bold; font-size:16px; padding:14px;">Assinar Agora</button>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.5;">Tenha acesso exclusivo a novas bibliotecas, plugins VSTs raros, aulas e masterclasses.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+            <!-- Mensal -->
+            <div style="background: linear-gradient(135deg, #2a2a2a, #111); padding: 20px; border-radius: 8px; border: 1px solid #333; text-align: center; display: flex; flex-direction: column;">
+              <h4 style="color:#fff; margin-bottom:10px; font-size:18px;">Mensal</h4>
+              <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px; flex: 1;">Acesso renovado mês a mês.</p>
+              <h2 style="color:#f9a826; margin-bottom:20px; font-size:24px;">R$ 29,99</h2>
+              <button class="btn-primary btn-subscribe-vip" data-plan="1" data-price="29.99" style="background:#f9a826; color:#000; width:100%; font-weight:bold; padding:12px;">Assinar Mensal</button>
+            </div>
+            <!-- Trimestral -->
+            <div style="background: linear-gradient(135deg, #2a2a2a, #111); padding: 20px; border-radius: 8px; border: 1px solid #333; text-align: center; display: flex; flex-direction: column;">
+              <h4 style="color:#fff; margin-bottom:10px; font-size:18px;">Trimestral</h4>
+              <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px; flex: 1;">3 meses de acesso.</p>
+              <div style="text-decoration: line-through; color: #888; font-size: 13px;">De R$ 89,97</div>
+              <h2 style="color:#f9a826; margin-bottom:20px; font-size:24px;">R$ 79,99</h2>
+              <button class="btn-primary btn-subscribe-vip" data-plan="3" data-price="79.99" style="background:#f9a826; color:#000; width:100%; font-weight:bold; padding:12px;">Assinar Trimestral</button>
+            </div>
+            <!-- Semestral -->
+            <div style="background: linear-gradient(135deg, #2a2a2a, #111); padding: 20px; border-radius: 8px; border: 1px solid #333; text-align: center; display: flex; flex-direction: column;">
+              <h4 style="color:#fff; margin-bottom:10px; font-size:18px;">Semestral</h4>
+              <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px; flex: 1;">6 meses de acesso.</p>
+              <div style="text-decoration: line-through; color: #888; font-size: 13px;">De R$ 179,94</div>
+              <h2 style="color:#f9a826; margin-bottom:20px; font-size:24px;">R$ 169,99</h2>
+              <button class="btn-primary btn-subscribe-vip" data-plan="6" data-price="169.99" style="background:#f9a826; color:#000; width:100%; font-weight:bold; padding:12px;">Assinar Semestral</button>
+            </div>
+            <!-- Anual -->
+            <div style="background: linear-gradient(135deg, #2a2a2a, #111); padding: 20px; border-radius: 8px; border: 1px solid #f9a826; text-align: center; display: flex; flex-direction: column; position: relative;">
+              <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f9a826; color: #000; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: bold;">MAIOR DESCONTO</div>
+              <h4 style="color:#fff; margin-bottom:10px; font-size:18px; margin-top:5px;">Anual</h4>
+              <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px; flex: 1;">1 ano de acesso completo.</p>
+              <div style="text-decoration: line-through; color: #888; font-size: 13px;">De R$ 359,88</div>
+              <h2 style="color:#f9a826; margin-bottom:20px; font-size:24px;">R$ 299,99</h2>
+              <button class="btn-primary btn-subscribe-vip" data-plan="12" data-price="299.99" style="background:#f9a826; color:#000; width:100%; font-weight:bold; padding:12px;">Assinar Anual</button>
+            </div>
           </div>
         </div>
         
@@ -319,6 +351,7 @@
           <div style="text-align:center; margin-bottom:20px;">
             <div style="font-size:30px; margin-bottom:5px;">👑</div>
             <h3 style="color:#f9a826; font-size:22px; margin-bottom:5px;">Bem-vindo à Área VIP!</h3>
+            <p id="vipExpirationText" style="color:#888; font-size:12px; margin-bottom:15px;"></p>
             <p style="color:var(--text-muted); font-size:14px;">Escolha uma categoria para explorar os conteúdos exclusivos.</p>
           </div>
           

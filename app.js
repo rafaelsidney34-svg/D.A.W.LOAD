@@ -1037,8 +1037,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       if (user) {
         addUserPurchase(user.id, selectedProductForCheckout, method, selectedProductForCheckout.price, installments);
-        if (selectedProductForCheckout.id === "sub_vip") {
-          becomeVIPMember(user.id);
+        if (selectedProductForCheckout.category === "vip") {
+          const duration = selectedProductForCheckout.durationDays || 30; // fallback para 30 dias
+          becomeVIPMember(user.id, duration);
           updateVIPDashboard();
         }
       } else {
@@ -1346,11 +1347,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const user = getCurrentUser();
     const notMemberDiv = document.getElementById("vipNotMember");
     const isMemberDiv = document.getElementById("vipIsMember");
+    const vipExpirationText = document.getElementById("vipExpirationText");
     
     if (notMemberDiv && isMemberDiv) {
       if (user && user.isVIPMember) {
-        notMemberDiv.style.display = "none";
-        isMemberDiv.style.display = "block";
+        // Verificar se expirou
+        if (user.vipExpirationDate && Date.now() > user.vipExpirationDate) {
+          user.isVIPMember = false;
+          saveUsers(getUsers()); // update local storage
+          notMemberDiv.style.display = "block";
+          isMemberDiv.style.display = "none";
+        } else {
+          notMemberDiv.style.display = "none";
+          isMemberDiv.style.display = "block";
+          
+          if (vipExpirationText && user.vipExpirationDate) {
+            const expDate = new Date(user.vipExpirationDate);
+            vipExpirationText.textContent = "Sua assinatura expira em: " + expDate.toLocaleDateString("pt-BR");
+          } else if (vipExpirationText) {
+            vipExpirationText.textContent = "Assinatura Ativa (Vitalícia)";
+          }
+        }
       } else {
         notMemberDiv.style.display = "block";
         isMemberDiv.style.display = "none";
@@ -1358,21 +1375,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   
-  const btnSubscribeVIP = document.getElementById("btnSubscribeVIP");
-  if (btnSubscribeVIP) {
-    btnSubscribeVIP.addEventListener("click", () => {
+  const subscribeBtns = document.querySelectorAll(".btn-subscribe-vip");
+  subscribeBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
       const user = getCurrentUser();
       if (!user) return;
       
+      const planMonths = parseInt(e.target.getAttribute("data-plan"));
+      const planPrice = parseFloat(e.target.getAttribute("data-price"));
+      let planTitle = "Assinatura Área VIP Mensal";
+      let days = 30;
+      
+      if (planMonths === 3) {
+        planTitle = "Assinatura Área VIP Trimestral";
+        days = 90;
+      } else if (planMonths === 6) {
+        planTitle = "Assinatura Área VIP Semestral";
+        days = 180;
+      } else if (planMonths === 12) {
+        planTitle = "Assinatura Área VIP Anual";
+        days = 365;
+      }
+      
       closeMyAccount(); // Fecha o overlay da conta para exibir o checkout limpo
       openCheckout({
-        id: "sub_vip",
-        title: "Assinatura Área VIP Mensal",
-        price: 29.99,
-        category: "vip"
+        id: "sub_vip_" + planMonths,
+        title: planTitle,
+        price: planPrice,
+        category: "vip",
+        durationDays: days
       });
     });
-  }
+  });
 
   navMinhaContaLink?.addEventListener("click", e => { e.preventDefault(); openMyAccount(); });
   myAccountOverlayClose?.addEventListener("click", closeMyAccount);

@@ -166,11 +166,24 @@ function isLoggedIn() {
 }
 
 // --- Status VIP ---
-function becomeVIPMember(userId) {
+function becomeVIPMember(userId, durationDays) {
   const users = getUsers();
   const idx = users.findIndex(u => u.id === userId);
   if (idx !== -1) {
     users[idx].isVIPMember = true;
+    
+    // Calcula a data de expiração
+    const now = Date.now();
+    // Se o usuário já tiver uma data futura de expiração, somamos a partir dela,
+    // senão somamos a partir de hoje
+    let baseDate = now;
+    if (users[idx].vipExpirationDate && users[idx].vipExpirationDate > now) {
+      baseDate = users[idx].vipExpirationDate;
+    }
+    
+    // durationDays * 24 horas * 60 minutos * 60 segundos * 1000 milissegundos
+    users[idx].vipExpirationDate = baseDate + (durationDays * 86400000);
+    
     saveUsers(users);
     return true;
   }
