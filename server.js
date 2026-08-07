@@ -95,8 +95,27 @@ app.get('/auth/callback', async (req, res) => {
         }
       }, { merge: true });
     }
-
-    res.send("Conta conectada com sucesso! Você já pode fechar esta janela e voltar para a loja.");
+    res.send(`
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Conectado com Sucesso</title>
+          <style>
+            body { font-family: sans-serif; background: #111; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+            h2 { color: #f9a826; }
+          </style>
+        </head>
+        <body>
+          <h2>Conta conectada com sucesso!</h2>
+          <p>Redirecionando você de volta para a loja...</p>
+          <script>
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 3000);
+          </script>
+        </body>
+      </html>
+    `);
   } catch (error) {
     console.error("Erro na autorização:", error);
     res.status(500).send(`
